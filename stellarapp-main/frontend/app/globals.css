@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --nvidia-green: #76b900;
+  --nvidia-dark: #000000;
+  --nvidia-elevated: #1a1a1a;
+  --nvidia-hairline: #333333;
+}
+
+body {
+  color: #ffffff;
+  background-color: #000000;
+  font-family: "Inter", "Arial", Helvetica, sans-serif;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NVIDIA Engineering Grid & Sharp Corners */
+* {
+  border-radius: 2px !important;
+}
+
+/* Custom technical scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 0px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #76b900;
+}
+
+/* NVIDIA Decorative Corner Square */
+.corner-square {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #76b900;
+}
+
+.corner-square-br {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #76b900;
+}

@@ -1,0 +1,165 @@
+{
+  "metadata": {
+    "nombre": "Base de Datos EcoExo Fire Guard / StellarApp",
+    "version": "1.0",
+    "fecha": "2026-11-14",
+    "fuente_principal": "NASA Physical Sciences Informatics (PSI-159) + estándares ISS/Saffire",
+    "descripcion": "Base de datos estructurada para el simulador de incendios en microgravedad. Contiene parámetros ambientales, materiales, estadísticas de sensores y constantes de calibración extraídas de experimentos reales."
+  },
+  "parametros_ambientales": {
+    "oxigeno": {
+      "iss": 21.0,
+      "exploracion_min": 30.0,
+      "exploracion_max": 37.0,
+      "unidad": "%",
+      "notas": "Atmósferas normóxicas para Artemis / Luna / Marte"
+    },
+    "gravedad": {
+      "orbital": 0.0,
+      "lunar": 0.16,
+      "marciana": 0.38,
+      "unidad": "g"
+    },
+    "ventilacion": {
+      "nominal_iss": 0.2,
+      "rango_bajo": 0.1,
+      "rango_alto": 0.5,
+      "unidad": "m/s"
+    },
+    "temperatura": {
+      "ambiente_tipica": 23.0,
+      "rango_min": 20.0,
+      "rango_max": 25.0,
+      "unidad": "°C"
+    },
+    "co2": {
+      "normal": 0.4,
+      "unidad": "%"
+    }
+  },
+  "materiales": [
+    {
+      "id": "nomex",
+      "nombre": "Nomex",
+      "loi": 30,
+      "toxicidad": "CO (bajo a medio)",
+      "notas": "Material de referencia en la ISS"
+    },
+    {
+      "id": "pbi",
+      "nombre": "PBI",
+      "loi": 40,
+      "toxicidad": "CO (bajo)",
+      "notas": "Mejor desempeño en atmósferas de alto oxígeno"
+    },
+    {
+      "id": "kapton",
+      "nombre": "Kapton",
+      "loi": 38,
+      "toxicidad": "HCN + CO (alto)",
+      "notas": "Alerta de toxicidad alta en volumen cerrado"
+    },
+    {
+      "id": "kevlar",
+      "nombre": "Kevlar",
+      "loi": 29,
+      "toxicidad": "CO (medio)",
+      "notas": "Comportamiento similar a Nomex"
+    },
+    {
+      "id": "ptfe",
+      "nombre": "PTFE",
+      "loi": 95,
+      "toxicidad": "HF (muy alto)",
+      "notas": "Casi no arde, pero genera fluoruro de hidrógeno extremadamente tóxico"
+    }
+  ],
+  "datos_psi159": {
+    "camaras": {
+      "intns": {
+        "frame_rate": 23.22,
+        "resolucion": "1040x1392",
+        "formato": "Mono16",
+        "exposure_manual": 32000,
+        "gain_manual": 143
+      },
+      "acme": {
+        "frame_rate": 30.0,
+        "resolucion": "1024x1360",
+        "formato": "BayerRG12"
+      }
+    },
+    "mfc": {
+      "archivo": "21277F2_mfcSetpoints.csv",
+      "mfca1_setpoint_max_v": 4.92,
+      "fecha_experimento": "2021-10-04"
+    },
+    "sensores": {
+      "archivo": "21256A4_data.csv",
+      "filas_aprox": 7750,
+      "estadisticas_muestra": {
+        "MFCA1StaticMixerFlow": {
+          "media": 0.002008,
+          "std": 0.001966,
+          "min": -0.003703,
+          "max": 0.008665
+        },
+        "MFCA3FuelFlow": {
+          "media": 0.003290,
+          "std": 0.001554,
+          "min": -0.000877,
+          "max": 0.014382
+        },
+        "IonCurrent": {
+          "media": -0.888546,
+          "std": 0.003387,
+          "min": -0.902599,
+          "max": -0.876735
+        },
+        "PMT1": {
+          "media": 4.422577,
+          "std": 0.001714,
+          "min": 4.415640,
+          "max": 4.427320
+        },
+        "TCA": {
+          "media": 0.000173,
+          "std": 0.000005,
+          "min": 0.000157,
+          "max": 0.000189
+        },
+        "TCBurner": {
+          "media": 0.000064,
+          "std": 0.000004,
+          "min": 0.000051,
+          "max": 0.000076
+        }
+      }
+    }
+  },
+  "constantes_codigo": {
+    "o2_iss": 21.0,
+    "o2_exploracion": 34.0,
+    "gravedad_orbital": 0.0,
+    "ventilacion_nominal": 0.2,
+    "temp_ambiente": 23.0,
+    "co2_normal": 0.4,
+    "frameRateINTNS": 23.22,
+    "resolucionINTNS": "1040x1392",
+    "mfcMaxVoltage": 4.92,
+    "pmt1_mean": 4.42,
+    "ionCurrent_mean": -0.8885,
+    "fuente": "NASA PSI-159 / Saffire / estándares ISS"
+  },
+  "rangos_sliders": {
+    "oxigeno": { "min": 16, "max": 38, "step": 0.5, "default": 21 },
+    "gravedad": { "min": 0, "max": 1, "step": 0.01, "default": 0 },
+    "ventilacion": [0.1, 0.2, 0.5]
+  },
+  "notas_implementacion": [
+    "Usar los valores de LOI y toxicidad directamente en el selector de materiales.",
+    "Calibrar la probabilidad de propagación usando los rangos de PMT e IonCurrent de PSI-159.",
+    "Mostrar en la interfaz la fuente de datos (NASA PSI-159).",
+    "El recomendador de materiales debe comparar LOI contra el nivel de oxígeno seleccionado."
+  ]
+}
