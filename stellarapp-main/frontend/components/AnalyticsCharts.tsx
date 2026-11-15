@@ -1,5 +1,4 @@
 "use client";
-import { useLanguage } from "../i18n/LanguageContext";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -82,7 +81,6 @@ interface ThermalTimelinePoint {
 }
 
 export default function AnalyticsCharts() {
-  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<"all" | "flame" | "radiation" | "soot" | "flammability" | "thermal" | "psi">("all");
   const [flameData, setFlameData] = useState<FlameSpreadPoint[]>([]);
   const [materialsData, setMaterialsData] = useState<MaterialRadiation[]>([]);
@@ -203,12 +201,14 @@ export default function AnalyticsCharts() {
         <div>
           <div className="flex items-center space-x-2 text-[11px] font-bold text-[#76b900] uppercase tracking-widest">
             <BarChart3 className="h-4 w-4" />
-            <span>{t("CENTRO DE TELEMETRÍA Y ANALÍTICA GRÁFICA NASA")}</span>
+            <span>CENTRO DE TELEMETRÍA Y ANALÍTICA GRÁFICA NASA</span>
           </div>
           <h2 className="text-2xl font-bold text-white mt-1">
-            {t("Visualización Comparativa de Combustión & Límites Térmicos\n          ")}</h2>
+            Visualización Comparativa de Combustión & Límites Térmicos
+          </h2>
           <p className="text-xs text-[#898989] mt-0.5">
-            {t("Modelos de regresión física y supervivencia estandarizados por NASA-STD-3001, NASA-STD-6001 y misiones Saffire.\n          ")}</p>
+            Modelos de regresión física y supervivencia estandarizados por NASA-STD-3001, NASA-STD-6001 y misiones Saffire.
+          </p>
         </div>
 
         {/* Tab Filters */}
@@ -219,7 +219,8 @@ export default function AnalyticsCharts() {
               activeTab === "all" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            {t("TODOS LOS GRÁFICOS\n          ")}</button>
+            TODOS LOS GRÁFICOS
+          </button>
           <button
             onClick={() => setActiveTab("thermal")}
             className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1.5 ${
@@ -227,7 +228,7 @@ export default function AnalyticsCharts() {
             }`}
           >
             <Thermometer className="h-3.5 w-3.5" />
-            <span>{t("LÍMITES TÉRMICOS (HUMANO / CASCO)")}</span>
+            <span>LÍMITES TÉRMICOS (HUMANO / CASCO)</span>
           </button>
           <button
             onClick={() => setActiveTab("flame")}
@@ -235,28 +236,32 @@ export default function AnalyticsCharts() {
               activeTab === "flame" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            {t("PROPAGACIÓN vs O₂\n          ")}</button>
+            PROPAGACIÓN vs O₂
+          </button>
           <button
             onClick={() => setActiveTab("radiation")}
             className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
               activeTab === "radiation" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            {t("FRP & RADIACIÓN\n          ")}</button>
+            FRP & RADIACIÓN
+          </button>
           <button
             onClick={() => setActiveTab("soot")}
             className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
               activeTab === "soot" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            {t("HOLLÍN SAME (ISS)\n          ")}</button>
+            HOLLÍN SAME (ISS)
+          </button>
           <button
             onClick={() => setActiveTab("flammability")}
             className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
               activeTab === "flammability" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            {t("MATRIZ NASA-STD-6001\n          ")}</button>
+            MATRIZ NASA-STD-6001
+          </button>
           <button
             onClick={() => setActiveTab("psi")}
             className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1.5 ${
@@ -264,7 +269,7 @@ export default function AnalyticsCharts() {
             }`}
           >
             <Database className="h-3.5 w-3.5" />
-            <span>{t("NASA PSI (14 ESTUDIOS)")}</span>
+            <span>NASA PSI (14 ESTUDIOS)</span>
           </button>
         </div>
       </div>
@@ -279,14 +284,17 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <Thermometer className="h-4 w-4 text-[#76b900]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  {t("Límites Térmicos Máximos: Tripulación vs. Nave (°C)\n                ")}</h3>
+                  Límites Térmicos Máximos: Tripulación vs. Nave (°C)
+                </h3>
               </div>
               <span className="text-[10px] font-mono text-[#76b900] bg-black px-2 py-0.5 border border-[#333333]">
-                {t("NASA-STD-3001 vs SP-20205001358\n              ")}</span>
+                NASA-STD-3001 vs SP-20205001358
+              </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              {t("Comparación de umbrales críticos de degradación térmica: la tripulación requiere evacuación obligatoria a +45°C, mientras que el casco de aleación Al-Li pierde 40% de rigidez a +150°C.\n            ")}</p>
+              Comparación de umbrales críticos de degradación térmica: la tripulación requiere evacuación obligatoria a +45°C, mientras que el casco de aleación Al-Li pierde 40% de rigidez a +150°C.
+            </p>
 
             <div className="h-[280px] w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -317,7 +325,7 @@ export default function AnalyticsCharts() {
                     strokeDasharray="4 4"
                     label={{ value: "FLUENCIA CASCO (+150°C)", fill: "#e040fb", fontSize: 9, position: "insideTopLeft" }}
                   />
-                  <Bar dataKey="max_temp_c" name={t("Temperatura Máxima (°C)")}>
+                  <Bar dataKey="max_temp_c" name="Temperatura Máxima (°C)">
                     {thermalBands.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
@@ -328,16 +336,16 @@ export default function AnalyticsCharts() {
 
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#76b900]/40">
-                <span className="text-[#76b900] block">{t("CONFORT NOMINAL:")}</span>
-                <strong className="text-white">{t("18.3°C - 26.7°C")}</strong>
+                <span className="text-[#76b900] block">CONFORT NOMINAL:</span>
+                <strong className="text-white">18.3°C - 26.7°C</strong>
               </div>
               <div className="bg-black p-2 border border-[#df6500]/40">
-                <span className="text-[#df6500] block">{t("EVACUACIÓN HUMANA:")}</span>
-                <strong className="text-[#df6500]">{t("+45.0°C (&lt;45 min)")}</strong>
+                <span className="text-[#df6500] block">EVACUACIÓN HUMANA:</span>
+                <strong className="text-[#df6500]">+45.0°C (&lt;45 min)</strong>
               </div>
               <div className="bg-black p-2 border border-[#e040fb]/40">
-                <span className="text-[#e040fb] block">{t("FLUENCIA CASCO AL-LI:")}</span>
-                <strong className="text-[#e040fb]">{t("+150.0°C (Crítico)")}</strong>
+                <span className="text-[#e040fb] block">FLUENCIA CASCO AL-LI:</span>
+                <strong className="text-[#e040fb]">+150.0°C (Crítico)</strong>
               </div>
             </div>
           </div>
@@ -351,14 +359,17 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <HeartPulse className="h-4 w-4 text-[#df6500]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  {t("Excursión Térmica en Cabina vs. Tiempo de Fuego (0 - 180s)\n                ")}</h3>
+                  Excursión Térmica en Cabina vs. Tiempo de Fuego (0 - 180s)
+                </h3>
               </div>
               <span className="text-[10px] font-mono text-[#df6500] bg-black px-2 py-0.5 border border-[#333333]">
-                {t("SIMULACIÓN DINÁMICA 0g\n              ")}</span>
+                SIMULACIÓN DINÁMICA 0g
+              </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              {t("Evolución de temperatura en hábitat lunar (280 m³) con ignición PMMA: el aire cruza el umbral de supervivencia a los 45 s y el casco a los 118 s.\n            ")}</p>
+              Evolución de temperatura en hábitat lunar (280 m³) con ignición PMMA: el aire cruza el umbral de supervivencia a los 45 s y el casco a los 118 s.
+            </p>
 
             <div className="h-[280px] w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -395,7 +406,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="cabin_air_c"
-                    name={t("Aire Interior Cabina (°C)")}
+                    name="Aire Interior Cabina (°C)"
                     stroke="#ff0055"
                     strokeWidth={2.5}
                     dot={{ fill: "#ff0055", r: 2.5 }}
@@ -403,7 +414,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="skin_absorbed_c"
-                    name={t("Piel / Traje Absorbido (°C)")}
+                    name="Piel / Traje Absorbido (°C)"
                     stroke="#df6500"
                     strokeWidth={2}
                     dot={{ fill: "#df6500", r: 2 }}
@@ -411,7 +422,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="hull_temp_c"
-                    name={t("Casco Interno Al-Li (°C)")}
+                    name="Casco Interno Al-Li (°C)"
                     stroke="#00b0ff"
                     strokeWidth={2}
                     dot={{ fill: "#00b0ff", r: 2 }}
@@ -422,12 +433,12 @@ export default function AnalyticsCharts() {
 
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#df6500]/40">
-                <span className="text-[#df6500] block">{t("TIEMPO LÍMITE DE EVACUACIÓN HUMANA:")}</span>
-                <strong className="text-white">{t("45 segundos (T aire &gt; 45°C)")}</strong>
+                <span className="text-[#df6500] block">TIEMPO LÍMITE DE EVACUACIÓN HUMANA:</span>
+                <strong className="text-white">45 segundos (T aire &gt; 45°C)</strong>
               </div>
               <div className="bg-black p-2 border border-[#e040fb]/40">
-                <span className="text-[#e040fb] block">{t("TIEMPO LÍMITE ROTURA DE CASCO:")}</span>
-                <strong className="text-white">{t("118 segundos (T casco &gt; 150°C)")}</strong>
+                <span className="text-[#e040fb] block">TIEMPO LÍMITE ROTURA DE CASCO:</span>
+                <strong className="text-white">118 segundos (T casco &gt; 150°C)</strong>
               </div>
             </div>
           </div>
@@ -441,14 +452,17 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <TrendingUp className="h-4 w-4 text-[#76b900]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  {t("Tasa de Propagación (mm/s) vs. Concentración de O₂ (%)\n                ")}</h3>
+                  Tasa de Propagación (mm/s) vs. Concentración de O₂ (%)
+                </h3>
               </div>
               <span className="text-[10px] font-mono text-[#76b900] bg-black px-2 py-0.5 border border-[#333333]">
-                {t("SAFFIRE MODEL\n              ")}</span>
+                SAFFIRE MODEL
+              </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              {t("En microgravedad con flujo forzado constante (15 cm/s), la llama quema más rápido que en 1g debido a la falta de turbulencia convectiva que enfría la zona de reacción.\n            ")}</p>
+              En microgravedad con flujo forzado constante (15 cm/s), la llama quema más rápido que en 1g debido a la falta de turbulencia convectiva que enfría la zona de reacción.
+            </p>
 
             <div className="h-[280px] w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -479,7 +493,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="microgravity_0g"
-                    name={t("Microgravedad 0g (Cygnus)")}
+                    name="Microgravedad 0g (Cygnus)"
                     stroke="#76b900"
                     strokeWidth={2.5}
                     dot={{ fill: "#76b900", r: 3 }}
@@ -487,7 +501,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="lunar_016g"
-                    name={t("Luna (0.16g)")}
+                    name="Luna (0.16g)"
                     stroke="#00b0ff"
                     strokeWidth={2}
                     dot={{ fill: "#00b0ff", r: 2.5 }}
@@ -495,7 +509,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="mars_038g"
-                    name={t("Marte (0.38g)")}
+                    name="Marte (0.38g)"
                     stroke="#e040fb"
                     strokeWidth={2}
                     dot={{ fill: "#e040fb", r: 2.5 }}
@@ -503,7 +517,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="earth_1g"
-                    name={t("Tierra 1g (Referencia)")}
+                    name="Tierra 1g (Referencia)"
                     stroke="#757575"
                     strokeWidth={1.5}
                     strokeDasharray="5 5"
@@ -515,16 +529,16 @@ export default function AnalyticsCharts() {
 
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">{t("EXP. 21% O₂ (ISS):")}</span>
-                <strong className="text-white">{t("0.91 mm/s")}</strong>
+                <span className="text-[#757575] block">EXP. 21% O₂ (ISS):</span>
+                <strong className="text-white">0.91 mm/s</strong>
               </div>
               <div className="bg-black p-2 border border-[#df6500]/40">
-                <span className="text-[#df6500] block">{t("ARTEMIS 26% O₂:")}</span>
-                <strong className="text-[#df6500]">{t("1.73 mm/s (+90%)")}</strong>
+                <span className="text-[#df6500] block">ARTEMIS 26% O₂:</span>
+                <strong className="text-[#df6500]">1.73 mm/s (+90%)</strong>
               </div>
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">{t("EXTINCIÓN LOI:")}</span>
-                <strong className="text-[#76b900]">{t("&lt; 15.5% O₂")}</strong>
+                <span className="text-[#757575] block">EXTINCIÓN LOI:</span>
+                <strong className="text-[#76b900]">&lt; 15.5% O₂</strong>
               </div>
             </div>
           </div>
@@ -538,14 +552,17 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <Flame className="h-4 w-4 text-[#df6500]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  {t("Potencia Radiativa de Fuego (FRP kW) & Flujo Térmico (kW/m²)\n                ")}</h3>
+                  Potencia Radiativa de Fuego (FRP kW) & Flujo Térmico (kW/m²)
+                </h3>
               </div>
               <span className="text-[10px] font-mono text-[#df6500] bg-black px-2 py-0.5 border border-[#333333]">
-                {t("NASA FIRMS & SAFFIRE\n              ")}</span>
+                NASA FIRMS & SAFFIRE
+              </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              {t("Calibración cruzada del sensor MODIS/VIIRS adaptado a cabinas espaciales: el acrílico PMMA emite 18.4 kW de energía radiativa sin disipación convectiva.\n            ")}</p>
+              Calibración cruzada del sensor MODIS/VIIRS adaptado a cabinas espaciales: el acrílico PMMA emite 18.4 kW de energía radiativa sin disipación convectiva.
+            </p>
 
             <div className="h-[280px] w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -568,7 +585,7 @@ export default function AnalyticsCharts() {
                     wrapperStyle={{ fontSize: 10, fontFamily: "monospace", paddingTop: 8 }}
                     formatter={(val) => <span className="text-[#cccccc]">{val}</span>}
                   />
-                  <Bar dataKey="frp_kw" name={t("FRP Radiativo (kW)")} fill="#df6500">
+                  <Bar dataKey="frp_kw" name="FRP Radiativo (kW)" fill="#df6500">
                     {materialsData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
@@ -576,23 +593,23 @@ export default function AnalyticsCharts() {
                       />
                     ))}
                   </Bar>
-                  <Bar dataKey="flux_kw_m2" name={t("Flujo Térmico (kW/m²)")} fill="#76b900" />
+                  <Bar dataKey="flux_kw_m2" name="Flujo Térmico (kW/m²)" fill="#76b900" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">{t("PMMA MÁXIMO FRP:")}</span>
-                <strong className="text-[#df6500]">{t("18.4 kW")}</strong>
+                <span className="text-[#757575] block">PMMA MÁXIMO FRP:</span>
+                <strong className="text-[#df6500]">18.4 kW</strong>
               </div>
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">{t("NOMEX AUTO-EXT.:")}</span>
-                <strong className="text-[#76b900]">{t("0.8 kW (Seguro)")}</strong>
+                <span className="text-[#757575] block">NOMEX AUTO-EXT.:</span>
+                <strong className="text-[#76b900]">0.8 kW (Seguro)</strong>
               </div>
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">{t("KAPTON ENERGÍA:")}</span>
-                <strong className="text-white">{t("2.6 kW")}</strong>
+                <span className="text-[#757575] block">KAPTON ENERGÍA:</span>
+                <strong className="text-white">2.6 kW</strong>
               </div>
             </div>
           </div>
@@ -606,14 +623,17 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <Layers className="h-4 w-4 text-[#00b0ff]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  {t("Hollín & Aerosoles: Aglomeración SAME (0g) vs. Tierra (1g)\n                ")}</h3>
+                  Hollín & Aerosoles: Aglomeración SAME (0g) vs. Tierra (1g)
+                </h3>
               </div>
               <span className="text-[10px] font-mono text-[#00b0ff] bg-black px-2 py-0.5 border border-[#333333]">
-                {t("EXP. SAME (ISS)\n              ")}</span>
+                EXP. SAME (ISS)
+              </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              {t("Los detectores de ionización terrestres fallan en la ISS porque en 0g las partículas de hollín no escapan y se aglomeran en tamaños gigantes (&gt;0.5 a 5.0 µm).\n            ")}</p>
+              Los detectores de ionización terrestres fallan en la ISS porque en 0g las partículas de hollín no escapan y se aglomeran en tamaños gigantes (&gt;0.5 a 5.0 µm).
+            </p>
 
             <div className="h-[280px] w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -635,20 +655,20 @@ export default function AnalyticsCharts() {
                     wrapperStyle={{ fontSize: 10, fontFamily: "monospace", paddingTop: 8 }}
                     formatter={(val) => <span className="text-[#cccccc]">{val}</span>}
                   />
-                  <Bar dataKey="microgravity_0g" name={t("Microgravedad ISS (SAME)")} fill="#00b0ff" />
-                  <Bar dataKey="earth_1g" name={t("Ambiente Terrestre 1g")} fill="#525252" />
+                  <Bar dataKey="microgravity_0g" name="Microgravedad ISS (SAME)" fill="#00b0ff" />
+                  <Bar dataKey="earth_1g" name="Ambiente Terrestre 1g" fill="#525252" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#00b0ff]/40">
-                <span className="text-[#00b0ff] block">{t("PICO EN MICROGRAVEDAD:")}</span>
-                <strong className="text-white">{t("0.50 µm (26.5% de masa)")}</strong>
+                <span className="text-[#00b0ff] block">PICO EN MICROGRAVEDAD:</span>
+                <strong className="text-white">0.50 µm (26.5% de masa)</strong>
               </div>
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">{t("PICO EN TIERRA (1g):")}</span>
-                <strong className="text-[#898989]">{t("0.05 µm (42.0% de masa)")}</strong>
+                <span className="text-[#757575] block">PICO EN TIERRA (1g):</span>
+                <strong className="text-[#898989]">0.05 µm (42.0% de masa)</strong>
               </div>
             </div>
           </div>
@@ -662,14 +682,17 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <ShieldAlert className="h-4 w-4 text-[#76b900]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  {t("Matriz de Inflamabilidad NASA-STD-6001 (LOI vs Quenching)\n                ")}</h3>
+                  Matriz de Inflamabilidad NASA-STD-6001 (LOI vs Quenching)
+                </h3>
               </div>
               <span className="text-[10px] font-mono text-[#76b900] bg-black px-2 py-0.5 border border-[#333333]">
-                {t("CERTIFICACIÓN JSC\n              ")}</span>
+                CERTIFICACIÓN JSC
+              </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              {t("Los materiales con Índice de Oxígeno Límite (LOI) &gt; 26% y Distancia de Quenching &gt; 10 mm son autorizados para cabina habitable de Artemis.\n            ")}</p>
+              Los materiales con Índice de Oxígeno Límite (LOI) &gt; 26% y Distancia de Quenching &gt; 10 mm son autorizados para cabina habitable de Artemis.
+            </p>
 
             <div className="h-[280px] w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -696,24 +719,24 @@ export default function AnalyticsCharts() {
                     strokeDasharray="4 4"
                     label={{ value: "UMBRAL CERTIFICACIÓN NASA (26% LOI)", fill: "#df6500", fontSize: 9 }}
                   />
-                  <Bar dataKey="loi" name={t("Índice Oxígeno Límite (LOI %)")} fill="#76b900">
+                  <Bar dataKey="loi" name="Índice Oxígeno Límite (LOI %)" fill="#76b900">
                     {flammabilityData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.safe ? "#76b900" : "#df6500"} />
                     ))}
                   </Bar>
-                  <Bar dataKey="quenching_mm" name={t("Distancia de Quenching (mm)")} fill="#00b0ff" />
+                  <Bar dataKey="quenching_mm" name="Distancia de Quenching (mm)" fill="#00b0ff" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#76b900]/40">
-                <span className="text-[#76b900] block">{t("MATERIALES CERTIFICADOS:")}</span>
-                <strong className="text-white">{t("Nomex (28.5%) &amp; Kapton (27.5%)")}</strong>
+                <span className="text-[#76b900] block">MATERIALES CERTIFICADOS:</span>
+                <strong className="text-white">Nomex (28.5%) &amp; Kapton (27.5%)</strong>
               </div>
               <div className="bg-black p-2 border border-[#df6500]/40">
-                <span className="text-[#df6500] block">{t("MATERIALES PROHIBIDOS EN ARTEMIS:")}</span>
-                <strong className="text-white">{t("PMMA (17.3%) &amp; Algodón (16.5%)")}</strong>
+                <span className="text-[#df6500] block">MATERIALES PROHIBIDOS EN ARTEMIS:</span>
+                <strong className="text-white">PMMA (17.3%) &amp; Algodón (16.5%)</strong>
               </div>
             </div>
           </div>
@@ -729,31 +752,33 @@ export default function AnalyticsCharts() {
               <div>
                 <div className="flex items-center space-x-2 text-[11px] font-bold text-[#76b900] uppercase tracking-widest">
                   <Database className="h-4 w-4" />
-                  <span>{t("NASA PHYSICAL SCIENCES INFORMATICS (PSI) DATABASE")}</span>
+                  <span>NASA PHYSICAL SCIENCES INFORMATICS (PSI) DATABASE</span>
                 </div>
                 <h3 className="text-lg font-bold text-white mt-1">
-                  {t("14 Estudios Experimentales de Microgravedad &amp; 32 Parámetros Validados\n                ")}</h3>
+                  14 Estudios Experimentales de Microgravedad &amp; 32 Parámetros Validados
+                </h3>
                 <p className="text-xs text-[#898989] mt-0.5">
-                  {t("Repositorio oficial de investigaciones en la Estación Espacial Internacional (ISS), Cygnus y vuelos parabólicos.\n                ")}</p>
+                  Repositorio oficial de investigaciones en la Estación Espacial Internacional (ISS), Cygnus y vuelos parabólicos.
+                </p>
               </div>
 
               {/* KPI Badges */}
               <div className="flex flex-wrap items-center gap-2">
                 <div className="px-3 py-1 bg-black border border-[#333333] text-center">
                   <span className="text-xs font-mono font-bold text-[#76b900]">14</span>
-                  <span className="text-[10px] text-[#898989] block uppercase">{t("Estudios")}</span>
+                  <span className="text-[10px] text-[#898989] block uppercase">Estudios</span>
                 </div>
                 <div className="px-3 py-1 bg-black border border-[#333333] text-center">
                   <span className="text-xs font-mono font-bold text-[#00b0ff]">32</span>
-                  <span className="text-[10px] text-[#898989] block uppercase">{t("Parámetros")}</span>
+                  <span className="text-[10px] text-[#898989] block uppercase">Parámetros</span>
                 </div>
                 <div className="px-3 py-1 bg-black border border-[#333333] text-center">
                   <span className="text-xs font-mono font-bold text-[#e040fb]">8</span>
-                  <span className="text-[10px] text-[#898989] block uppercase">{t("Docs NASA")}</span>
+                  <span className="text-[10px] text-[#898989] block uppercase">Docs NASA</span>
                 </div>
                 <div className="px-3 py-1 bg-black border border-[#76b900]/40 text-center">
-                  <span className="text-xs font-mono font-bold text-white">{t("ISS Flight")}</span>
-                  <span className="text-[10px] text-[#76b900] block uppercase">{t("Validado")}</span>
+                  <span className="text-xs font-mono font-bold text-white">ISS Flight</span>
+                  <span className="text-[10px] text-[#76b900] block uppercase">Validado</span>
                 </div>
               </div>
             </div>
@@ -764,7 +789,7 @@ export default function AnalyticsCharts() {
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#757575]" />
                 <input
                   type="text"
-                  placeholder={t("Buscar por ID (PSI-159, PSI-60), título, material o parámetro...")}
+                  placeholder="Buscar por ID (PSI-159, PSI-60), título, material o parámetro..."
                   value={psiSearch}
                   onChange={(e) => setPsiSearch(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 bg-black border border-[#333333] text-white text-xs placeholder-[#666666] focus:outline-none focus:border-[#76b900] font-mono"
@@ -851,7 +876,7 @@ export default function AnalyticsCharts() {
                     {study.parameters && study.parameters.length > 0 && (
                       <div className="space-y-1 pt-2 border-t border-[#262626]">
                         <span className="text-[9px] font-mono uppercase text-[#757575] block">
-                          {t("Parámetros Físicos (")}{study.parameters.length}):
+                          Parámetros Físicos ({study.parameters.length}):
                         </span>
                         <div className="flex flex-wrap gap-1">
                           {study.parameters.slice(0, 3).map((p, pIdx) => (
@@ -864,7 +889,8 @@ export default function AnalyticsCharts() {
                           ))}
                           {study.parameters.length > 3 && (
                             <span className="text-[10px] font-mono text-[#76b900] self-center">
-                              +{study.parameters.length - 3} {t("más\n                            ")}</span>
+                              +{study.parameters.length - 3} más
+                            </span>
                           )}
                         </div>
                       </div>
@@ -874,7 +900,7 @@ export default function AnalyticsCharts() {
                     <div className="flex items-center justify-between pt-2.5 mt-2 border-t border-[#262626] text-[10px] font-mono text-[#757575]">
                       <div className="flex items-center space-x-1">
                         <FileText className="h-3 w-3" />
-                        <span>{study.documents_count || (study.documents ? study.documents.length : 0)} {t("docs")}</span>
+                        <span>{study.documents_count || (study.documents ? study.documents.length : 0)} docs</span>
                       </div>
                       <span className="text-[#76b900] hover:underline">
                         {selectedStudy?.psi_id === study.psi_id ? "Cerrar Detalle ▲" : "Ver Detalle ▼"}
@@ -885,7 +911,7 @@ export default function AnalyticsCharts() {
                     {selectedStudy?.psi_id === study.psi_id && (
                       <div className="mt-3 pt-3 border-t border-[#76b900]/40 space-y-3 bg-[#111111] -mx-4 -mb-4 p-4 text-xs font-mono">
                         <div>
-                          <span className="text-[#76b900] font-bold block mb-1">{t("METODOLOGÍA &amp; ENFOQUE:")}</span>
+                          <span className="text-[#76b900] font-bold block mb-1">METODOLOGÍA &amp; ENFOQUE:</span>
                           <p className="text-[#cccccc] text-[11px] leading-relaxed">
                             {study.approach || "Ensayos experimentales con hardware CIR / BASS / FAMIS a bordo de la ISS."}
                           </p>
@@ -893,7 +919,7 @@ export default function AnalyticsCharts() {
 
                         {study.parameters && study.parameters.length > 0 && (
                           <div>
-                            <span className="text-[#00b0ff] font-bold block mb-1">{t("TODOS LOS PARÁMETROS CALIBRADOS:")}</span>
+                            <span className="text-[#00b0ff] font-bold block mb-1">TODOS LOS PARÁMETROS CALIBRADOS:</span>
                             <div className="space-y-1 max-h-40 overflow-y-auto pr-1">
                               {study.parameters.map((p, idx) => (
                                 <div key={idx} className="flex justify-between py-0.5 border-b border-[#222222] text-[11px]">
@@ -907,7 +933,7 @@ export default function AnalyticsCharts() {
 
                         {study.contacts && study.contacts.length > 0 && (
                           <div>
-                            <span className="text-[#e040fb] font-bold block mb-1">{t("EQUIPO DE INVESTIGACIÓN:")}</span>
+                            <span className="text-[#e040fb] font-bold block mb-1">EQUIPO DE INVESTIGACIÓN:</span>
                             <div className="space-y-1">
                               {study.contacts.map((c: any, cIdx: number) => (
                                 <div key={cIdx} className="text-[11px] text-[#cccccc]">

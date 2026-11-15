@@ -1,5 +1,4 @@
 "use client";
-import { useLanguage } from "../i18n/LanguageContext";
 
 import React from "react";
 import { MetricsData } from "../types";
@@ -10,7 +9,6 @@ interface MetricsCardsProps {
 }
 
 export default function MetricsCards({ metrics }: MetricsCardsProps) {
-  const { t } = useLanguage();
   if (!metrics) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">

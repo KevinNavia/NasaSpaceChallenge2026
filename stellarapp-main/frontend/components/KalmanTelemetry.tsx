@@ -1,8 +1,8 @@
 "use client";
-import { useLanguage } from "../i18n/LanguageContext";
 
 import React, { useState, useEffect } from "react";
-import { Activity, ShieldAlert, Cpu, AlertTriangle, ArrowRight, Gauge, Send, Radio, Thermometer, Zap } from "lucide-react";
+import { Activity, ShieldAlert, Cpu, AlertTriangle, ArrowRight, Gauge, Send, Radio, Thermometer, Zap, Monitor } from "lucide-react";
+import Esp32CockpitMirror from "./Esp32CockpitMirror";
 
 interface Scenario {
   id: string;
@@ -41,7 +41,6 @@ interface HardwareState {
 }
 
 export default function KalmanTelemetry() {
-  const { t } = useLanguage();
   const [scenarioId, setScenarioId] = useState("rover");
   const [o2Pct, setO2Pct] = useState(26.0);
   const [data, setData] = useState<TelemetryResult | null>(null);
@@ -52,6 +51,7 @@ export default function KalmanTelemetry() {
   // Hardware-in-the-loop state
   const [hardware, setHardware] = useState<HardwareState | null>(null);
   const [useHardwareSync, setUseHardwareSync] = useState(true);
+  const [viewMode, setViewMode] = useState<"dual" | "mirror" | "analytics">("dual");
 
   // Poll hardware telemetry every 1.2s
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function KalmanTelemetry() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: `Alerta Telemetría // ${data.scenario.name}`,
-          message: `Estado: ${t(data.alert_title)}\nDiagnóstico: ${t(data.diagnosis)}`,
+          message: `Estado: ${data.alert_title}\nDiagnóstico: ${data.diagnosis}`,
           severity: data.safety_level === "CRÍTICO" ? "CRITICAL" : "WARNING",
           details: {
             "Oxígeno O₂": `${data.o2_percentage}%`,
@@ -174,12 +174,14 @@ export default function KalmanTelemetry() {
         <div>
           <div className="flex items-center space-x-2 text-xs font-bold text-[#76b900] uppercase tracking-widest">
             <Activity className="h-4 w-4" />
-            <span>{t("ALGORITMO PREDICTIVO DE SEGURIDAD ECLSS")}</span>
+            <span>ALGORITMO PREDICTIVO DE SEGURIDAD ECLSS</span>
           </div>
           <h2 className="text-xl lg:text-2xl font-bold text-white mt-1">
-            {t("Filtro de Kalman: Monitoreo de Toxicidad por CO en Hábitats\n          ")}</h2>
+            Filtro de Kalman: Monitoreo de Toxicidad por CO en Hábitats
+          </h2>
           <p className="text-xs text-[#898989] mt-0.5">
-            {t("Filtrado estocástico de ruido IoT para calcular tiempos de evacuación crítica en volúmenes confinados.\n          ")}</p>
+            Filtrado estocástico de ruido IoT para calcular tiempos de evacuación crítica en volúmenes confinados.
+          </p>
         </div>
 
         {/* Habitat Selector Tabs */}
@@ -213,21 +215,49 @@ export default function KalmanTelemetry() {
           <span className={`h-2.5 w-2.5 rounded-full ${isLiveHardware ? "bg-[#76b900] animate-pulse" : "bg-[#555555]"}`} />
           <div className="text-xs">
             <span className="font-bold uppercase tracking-wider text-white">
-              {isLiveHardware ? t("Hardware-in-the-Loop Activo") : t("Modo Simulación Sintética")}
+              {isLiveHardware ? "Hardware-in-the-Loop Activo" : "Modo Simulación Sintética"}
             </span>
             <span className="text-[#888888] ml-2 font-mono">
               {isLiveHardware
-                ? `[${hardware?.device || "Raspberry Pi Pico W"} ${t("en USB COM6")}]`
-                : t("[Conecta el Pico W y ejecuta el puente para telemetría real]")}
+                ? `[${hardware?.device || "Raspberry Pi Pico W"} en USB COM6]`
+                : "[Conecta el Pico W y ejecuta el puente para telemetría real]"}
             </span>
           </div>
+        </div>
+
+        {/* View Mode Switcher */}
+        <div className="flex items-center space-x-1 bg-[#111111] p-1 border border-[#333333]">
+          <button
+            onClick={() => setViewMode("dual")}
+            className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
+              viewMode === "dual" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
+            }`}
+          >
+            ⚡ Vista Dual
+          </button>
+          <button
+            onClick={() => setViewMode("mirror")}
+            className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
+              viewMode === "mirror" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
+            }`}
+          >
+            🖥️ Pantalla ESP32
+          </button>
+          <button
+            onClick={() => setViewMode("analytics")}
+            className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
+              viewMode === "analytics" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
+            }`}
+          >
+            📊 Analítica Kalman
+          </button>
         </div>
 
         {isLiveHardware && (
           <div className="flex items-center gap-3">
             <div className="flex items-center space-x-1.5 bg-[#111111] px-2.5 py-1 border border-[#333333] text-xs font-mono">
               <Thermometer className="h-3.5 w-3.5 text-[#ff8800]" />
-              <span className="text-[#888888]">{t("Chip Sensor:")}</span>
+              <span className="text-[#888888]">Chip Sensor:</span>
               <span className={`font-bold ${hardware && hardware.chip_temp_c >= 40 ? "text-[#e52020]" : "text-[#76b900]"}`}>
                 {hardware?.chip_temp_c.toFixed(1)}°C
               </span>
@@ -241,25 +271,33 @@ export default function KalmanTelemetry() {
                   : "border-[#444444] text-[#888888] hover:text-white"
               }`}
             >
-              {useHardwareSync ? t("⚡ Sincronizado en Vivo") : t("Pausar Sincronía")}
+              {useHardwareSync ? "⚡ Sincronizado en Vivo" : "Pausar Sincronía"}
             </button>
           </div>
         )}
       </div>
 
+      {/* ESP32 Cockpit Digital Twin Mirror */}
+      {(viewMode === "dual" || viewMode === "mirror") && (
+        <div className="mt-6 mb-8">
+          <Esp32CockpitMirror hardwareData={hardware} onTriggerPurge={broadcastToAudience} />
+        </div>
+      )}
+
       {/* Main Grid */}
+      {(viewMode === "dual" || viewMode === "analytics") && (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
         {/* Controls */}
         <div className="lg:col-span-5 space-y-4">
           <div className="p-4 bg-black border border-[#333333]">
             <div className="flex justify-between items-center mb-2">
               <span className="text-xs font-bold text-white uppercase tracking-wider">
-                {t("Oxígeno Ambiental (")}{o2Pct}%)
+                Oxígeno Ambiental ({o2Pct}%)
               </span>
               <span className="text-xs font-mono text-[#76b900] font-bold">
                 {isLiveHardware && useHardwareSync
-                  ? t("📡 Controlado por Pico W")
-                  : o2Pct >= 26 ? t("Artemis EVA Habitat") : t("Estándar ISS")}
+                  ? "📡 Controlado por Pico W"
+                  : o2Pct >= 26 ? "Artemis EVA Habitat" : "Estándar ISS"}
               </span>
             </div>
             <input
@@ -277,9 +315,9 @@ export default function KalmanTelemetry() {
               className="w-full h-1 bg-[#1a1a1a] appearance-none cursor-pointer accent-[#76b900]"
             />
             <div className="flex justify-between text-[10px] text-[#757575] font-mono mt-1 uppercase">
-              <span>{t("18% (Sub-nominal)")}</span>
-              <span>{t("21% (Nominal)")}</span>
-              <span>{t("32% (Enriquecido)")}</span>
+              <span>18% (Sub-nominal)</span>
+              <span>21% (Nominal)</span>
+              <span>32% (Enriquecido)</span>
             </div>
           </div>
 
@@ -288,33 +326,33 @@ export default function KalmanTelemetry() {
             <div className="grid grid-cols-2 gap-3">
               <div className="p-4 bg-black border border-[#333333]">
                 <span className="text-[10px] font-bold uppercase text-[#757575] block">
-                  {isLiveHardware ? t("Sensor Crudo (RP2040)") : t("Sensor Bruto (Ruido IoT)")}
+                  {isLiveHardware ? "Sensor Crudo (RP2040)" : "Sensor Bruto (Ruido IoT)"}
                 </span>
                 <div className="text-xl font-mono font-bold text-white mt-1">
                   {isLiveHardware && hardware ? hardware.co_ppm.toFixed(1) : data.raw_co_ppm}{" "}
-                  <span className="text-xs text-[#757575]">{t("ppm")}</span>
+                  <span className="text-xs text-[#757575]">ppm</span>
                 </div>
                 <span className="text-[10px] text-[#df6500] font-mono mt-1 block">
-                  {isLiveHardware && hardware ? `${t("O₂ Bruto:")} ${hardware.o2_raw.toFixed(1)}%` : t("Oscilación ±3.5σ")}
+                  {isLiveHardware && hardware ? `O₂ Bruto: ${hardware.o2_raw.toFixed(1)}%` : "Oscilación ±3.5σ"}
                 </span>
               </div>
               <div className="p-4 bg-black border border-[#76b900]">
                 <span className="text-[10px] font-bold uppercase text-[#76b900] block">
-                  {t("Estimación Kalman")} ({isLiveHardware ? t("Hardware") : t("Real")})
+                  Estimación Kalman ({isLiveHardware ? "Hardware" : "Real"})
                 </span>
                 <div className="text-xl font-mono font-bold text-[#76b900] mt-1">
-                  {data.filtered_co_ppm} <span className="text-xs text-[#76b900]">{t("ppm")}</span>
+                  {data.filtered_co_ppm} <span className="text-xs text-[#76b900]">ppm</span>
                 </div>
                 <span className="text-[10px] text-[#898989] font-mono mt-1 block">
-                  {t("K-Gain: ")}{isLiveHardware && hardware ? hardware.k_gain : data.kalman_gain}
+                  K-Gain: {isLiveHardware && hardware ? hardware.k_gain : data.kalman_gain}
                 </span>
               </div>
             </div>
           )}
 
           <div className="p-3 bg-black border border-[#333333] text-xs text-[#a7a7a7]">
-            <span className="text-white font-bold block uppercase text-[11px] mb-1">{t("Volumen & Dinámica:")}</span>
-            <p className="text-xs leading-relaxed">{t(data?.scenario.description || "")}</p>
+            <span className="text-white font-bold block uppercase text-[11px] mb-1">Volumen & Dinámica:</span>
+            <p className="text-xs leading-relaxed">{data?.scenario.description}</p>
           </div>
         </div>
 
@@ -325,14 +363,16 @@ export default function KalmanTelemetry() {
               <div className="flex items-center justify-between pb-3 border-b border-[#333333]">
                 <div>
                   <span className="text-[10px] font-bold text-[#898989] uppercase tracking-wider block">
-                    {t("ESTADO DE CONTINGENCIA\n                  ")}</span>
+                    ESTADO DE CONTINGENCIA
+                  </span>
                   <h3 className="text-base font-bold uppercase mt-0.5" style={{ color: data.alert_color }}>
-                    {t(data.alert_title)}
+                    {data.alert_title}
                   </h3>
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] font-bold text-[#898989] uppercase tracking-wider block">
-                    {t("TIEMPO CRÍTICO\n                  ")}</span>
+                    TIEMPO CRÍTICO
+                  </span>
                   <span className="text-base font-mono font-bold text-white">
                     {data.critical_evac_time}
                   </span>
@@ -340,18 +380,19 @@ export default function KalmanTelemetry() {
               </div>
 
               <div>
-                <span className="text-[11px] font-bold uppercase text-white block mb-1">{t("Diagnóstico Físico:")}</span>
-                <p className="text-xs text-[#cccccc] leading-relaxed">{t(data.diagnosis)}</p>
+                <span className="text-[11px] font-bold uppercase text-white block mb-1">Diagnóstico Físico:</span>
+                <p className="text-xs text-[#cccccc] leading-relaxed">{data.diagnosis}</p>
               </div>
 
               <div>
                 <span className="text-[11px] font-bold uppercase text-[#76b900] block mb-2">
-                  {t("Protocolos Obligatorios para la Tripulación:\n                ")}</span>
+                  Protocolos Obligatorios para la Tripulación:
+                </span>
                 <ul className="space-y-1.5 text-xs text-[#a7a7a7]">
                   {data.required_actions.map((act, idx) => (
                     <li key={idx} className="flex items-center space-x-2">
                       <span className="h-1.5 w-1.5 bg-[#76b900] shrink-0" />
-                      <span>{t(act)}</span>
+                      <span>{act}</span>
                     </li>
                   ))}
                 </ul>
@@ -364,7 +405,7 @@ export default function KalmanTelemetry() {
                   <div className="bg-white p-1 shrink-0 border border-[#0088cc]">
                     <img
                       src="/images/telegram-bot-qr.png"
-                      alt={t("QR Telegram")}
+                      alt="QR Telegram"
                       className="w-12 h-12 object-contain"
                     />
                   </div>
@@ -372,10 +413,12 @@ export default function KalmanTelemetry() {
                     <div className="flex items-center space-x-1.5">
                       <span className="h-1.5 w-1.5 rounded-full bg-[#76b900] animate-pulse" />
                       <span className="text-[10px] font-bold uppercase tracking-wider text-[#0088cc]">
-                        {t("¿ESTÁS EN EL AUDITORIO O ERES JUEZ?\n                      ")}</span>
+                        ¿ESTÁS EN EL AUDITORIO O ERES JUEZ?
+                      </span>
                     </div>
                     <p className="text-[11px] text-[#cccccc] leading-tight">
-                      {t("Escanea este código con tu teléfono para vincularte a la cabina y recibir la alarma en vivo.\n                    ")}</p>
+                      Escanea este código con tu teléfono para vincularte a la cabina y recibir la alarma en vivo.
+                    </p>
                   </div>
                 </div>
 
@@ -395,7 +438,7 @@ export default function KalmanTelemetry() {
                     className="text-[10px] font-mono text-[#0088cc] hover:underline flex items-center space-x-1 justify-center sm:justify-start"
                   >
                     <Radio className="h-3 w-3" />
-                    <span>{t("Canal: @Stellar_App_bot")}</span>
+                    <span>Canal: @Stellar_App_bot</span>
                   </a>
                 </div>
                 {broadcastStatus && (
@@ -407,10 +450,12 @@ export default function KalmanTelemetry() {
             </div>
           ) : (
             <div className="h-40 flex items-center justify-center text-xs font-mono text-[#757575]">
-              {t("CALCULANDO FILTRADO ESTOCÁSTICO...\n            ")}</div>
+              CALCULANDO FILTRADO ESTOCÁSTICO...
+            </div>
           )}
         </div>
       </div>
+      )}
     </div>
   );
 }

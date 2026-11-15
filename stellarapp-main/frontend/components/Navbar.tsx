@@ -1,11 +1,11 @@
 "use client";
-import { useLanguage } from "../i18n/LanguageContext";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import LanguageSwitcher from "../i18n/LanguageSwitcher";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Flame, Compass, Sparkles, Presentation, Radio, Globe2, BarChart3, Send, X, QrCode, Menu } from "lucide-react";
+import { Link } from "../navigation";
+import LocaleSwitcher from "./LocaleSwitcher";
 
 interface NavbarProps {
   onOpenSimulator: () => void;
@@ -22,7 +22,7 @@ interface ISSTelemetry {
 }
 
 export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: NavbarProps) {
-  const { t } = useLanguage();
+  const t = useTranslations("nav");
   const [iss, setIss] = useState<ISSTelemetry | null>(null);
   const [showQRModal, setShowQRModal] = useState(false);
   const [subCount, setSubCount] = useState<number | null>(null);
@@ -57,10 +57,11 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
           </div>
           <div className="flex items-baseline space-x-2">
             <span className="font-bold text-base sm:text-lg tracking-wider text-white">
-              {t("STELLAR")}<span className="text-[#76b900]">{t("APP")}</span>
+              STELLAR<span className="text-[#76b900]">APP</span>
             </span>
             <span className="text-[10px] sm:text-[11px] font-bold tracking-widest text-[#898989] uppercase border-l border-[#333333] pl-2 hidden sm:inline">
-              {t("NASA SPACE APPS\n            ")}</span>
+              {t("brandSuffix")}
+            </span>
           </div>
         </Link>
 
@@ -68,24 +69,25 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
         <div className="hidden lg:flex items-center space-x-3 px-3 py-1.5 bg-[#1a1a1a] border border-[#333333] text-xs font-mono">
           <div className="flex items-center space-x-1.5 text-[#76b900]">
             <Radio className="h-3.5 w-3.5 animate-pulse" />
-            <span className="font-bold uppercase tracking-wider">{t("ISS LIVE:")}</span>
+            <span className="font-bold uppercase tracking-wider">{t("issLive")}</span>
           </div>
           {iss ? (
             <div className="flex items-center space-x-2 text-[#cccccc]">
-              <span>{t("ALT: ")}<strong className="text-white">{iss.altitude_km} {t("km")}</strong></span>
+              <span>{t("alt")}: <strong className="text-white">{iss.altitude_km} km</strong></span>
               <span className="text-[#333333]">|</span>
-              <span>{t("VEL: ")}<strong className="text-white">{iss.velocity_kmh} {t("km/h")}</strong></span>
+              <span>{t("vel")}: <strong className="text-white">{iss.velocity_kmh} km/h</strong></span>
               <span className="text-[#333333]">|</span>
-              <span className="text-[10px] text-[#76b900] font-bold">{t("[ORBITING]")}</span>
+              <span className="text-[10px] text-[#76b900] font-bold">{t("orbiting")}</span>
             </div>
           ) : (
-            <span className="text-[#757575]">{t("CONECTANDO TELEMETRÍA...")}</span>
+            <span className="text-[#757575]">{t("connecting")}</span>
           )}
         </div>
 
         {/* Desktop Actions */}
         <div className="hidden sm:flex items-center space-x-2 sm:space-x-3">
-          <LanguageSwitcher />
+          <LocaleSwitcher className="rounded-[2px]" />
+
           <button
             onClick={() => {
               setShowQRModal(true);
@@ -94,7 +96,7 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
             className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-[#0088cc] hover:bg-[#0077b5] text-white border border-[#0099e6] shadow-sm shadow-[#0088cc]/30 transition-colors"
           >
             <Send className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-            <span>{t("BOT EN VIVO")}</span>
+            <span>{t("telegramLive")}</span>
           </button>
 
           <Link
@@ -102,45 +104,44 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
             className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#76b900] border border-[#76b900] hover:bg-[#76b900] hover:text-black transition-colors"
           >
             <Presentation className="h-3.5 w-3.5" />
-            <span>{t("PITCH")}</span>
+            <span>{t("pitch")}</span>
           </Link>
 
           {onOpenAnalytics && (
             <button
               onClick={onOpenAnalytics}
-              className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white transition-colors"
+              className="hidden lg:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white transition-colors"
             >
               <BarChart3 className="h-3.5 w-3.5 text-[#76b900]" />
-              <span>{t("GRÁFICOS")}</span>
+              <span>{t("charts")}</span>
             </button>
           )}
 
           <button
             onClick={onOpenSimulator}
-            className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white transition-colors"
+            className="hidden lg:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white transition-colors"
           >
             <Compass className="h-3.5 w-3.5" />
-            <span>{t("SIMULADOR")}</span>
+            <span>{t("simulator")}</span>
           </button>
         </div>
 
         {/* Mobile Hamburger Button */}
         <div className="flex sm:hidden items-center space-x-2">
-          <LanguageSwitcher />
           <button
             onClick={() => {
               setShowQRModal(true);
               fetchSubscribers();
             }}
             className="p-1.5 bg-[#0088cc] text-white rounded-[2px] border border-[#0099e6]"
-            aria-label={t("Abrir QR Telegram")}
+            aria-label={t("openQr")}
           >
             <Send className="h-4 w-4" />
           </button>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="p-1.5 text-white hover:text-[#76b900] border border-[#333333] bg-[#111111] transition-colors rounded-[2px]"
-            aria-label={t("Abrir menú de navegación")}
+            aria-label={t("openMenu")}
           >
             {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -160,10 +161,10 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
           >
             <div className="flex items-center space-x-2">
               <Send className="h-4 w-4" />
-              <span>{t("CONECTAR BOT TELEGRAM")}</span>
+              <span>{t("connectBot")}</span>
             </div>
             <span className="text-[10px] font-mono bg-black/40 px-2 py-0.5 rounded">
-              {subCount !== null ? `${subCount} ${t("tripulantes")}` : t("EN VIVO")}
+              {subCount !== null ? t("crew", { count: subCount }) : t("live")}
             </span>
           </button>
 
@@ -173,7 +174,7 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
             className="w-full flex items-center space-x-2 px-3.5 py-2.5 border border-[#76b900] text-[#76b900] text-xs font-bold uppercase tracking-wider bg-black/60 rounded-[2px]"
           >
             <Presentation className="h-4 w-4" />
-            <span>{t("PITCH DECK NASA 2026")}</span>
+            <span>{t("pitchDeck")}</span>
           </Link>
 
           {onOpenAnalytics && (
@@ -185,7 +186,7 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
               className="w-full flex items-center space-x-2 px-3.5 py-2.5 border border-[#333333] text-white text-xs font-bold uppercase tracking-wider bg-black/60 hover:border-white transition-colors rounded-[2px]"
             >
               <BarChart3 className="h-4 w-4 text-[#76b900]" />
-              <span>{t("CENTRO DE GRÁFICOS & NASA PSI")}</span>
+              <span>{t("chartsCenter")}</span>
             </button>
           )}
 
@@ -197,15 +198,24 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
             className="w-full flex items-center space-x-2 px-3.5 py-2.5 border border-[#333333] text-white text-xs font-bold uppercase tracking-wider bg-black/60 hover:border-white transition-colors rounded-[2px]"
           >
             <Compass className="h-4 w-4 text-white" />
-            <span>{t("SIMULADOR DE COMBUSTIÓN 0G")}</span>
+            <span>{t("simulator0g")}</span>
           </button>
+
+          {/* Language toggle (mobile) */}
+          <div className="flex items-center justify-between px-1 pt-1">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#898989]">
+              {t("brandSuffix")}
+            </span>
+            <LocaleSwitcher className="rounded-[2px]" />
+          </div>
 
           {iss && (
             <div className="pt-2 border-t border-[#222222] flex items-center justify-between text-[10px] font-mono text-[#898989]">
               <span className="flex items-center text-[#76b900]">
                 <Radio className="h-3 w-3 mr-1 animate-pulse" />
-                {t("ISS ORBITAL\n              ")}</span>
-              <span>{t("ALT: ")}{iss.altitude_km} {t("km | VEL: ")}{iss.velocity_kmh} {t("km/h")}</span>
+                {t("issOrbital")}
+              </span>
+              <span>{t("alt")}: {iss.altitude_km} km | {t("vel")}: {iss.velocity_kmh} km/h</span>
             </div>
           )}
         </div>
@@ -225,9 +235,11 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
                 </div>
                 <div>
                   <h3 className="text-sm font-bold uppercase tracking-wider text-white">
-                    {t("CONEXIÓN EN VIVO // AUDITORIO Y JUECES\n                  ")}</h3>
+                    {t("qrTitle")}
+                  </h3>
                   <span className="text-[10px] font-mono text-[#0088cc]">
-                    {t("@Stellar_App_bot • TELEMETRÍA IOT\n                  ")}</span>
+                    {t("qrSubtitle")}
+                  </span>
                 </div>
               </div>
               <button
@@ -243,20 +255,21 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
               <div className="relative bg-white p-3 border-2 border-[#0088cc] shadow-lg shadow-[#0088cc]/20">
                 <Image
                   src="/images/telegram-bot-qr.png"
-                  alt={t("QR Telegram Bot")}
+                  alt="QR Telegram Bot"
                   width={220}
                   height={220}
                   className="object-contain"
                 />
                 <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#0088cc] text-white font-mono text-[9px] font-bold uppercase whitespace-nowrap">
-                  {t("ESCANEAR CON LA CÁMARA\n                ")}</div>
+                  {t("qrScan")}
+                </div>
               </div>
 
               {/* Status pill */}
               <div className="flex items-center space-x-2 px-3 py-1 bg-black border border-[#333333] text-[11px] font-mono">
                 <span className="h-2 w-2 rounded-full bg-[#76b900] animate-pulse" />
                 <span className="text-[#a7a7a7]">
-                  {subCount !== null ? `${subCount} tripulantes enlazados` : "Webhook activo"}
+                  {subCount !== null ? t("linked", { count: subCount }) : t("webhookActive")}
                 </span>
               </div>
             </div>
@@ -265,15 +278,15 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
             <div className="space-y-1.5 text-xs text-[#cccccc] bg-black/60 p-3 border border-[#333333]">
               <div className="flex items-start space-x-2">
                 <span className="text-[#0088cc] font-bold">1.</span>
-                <span>{t("Apunta la cámara de tu teléfono móvil al código QR.")}</span>
+                <span>{t("step1")}</span>
               </div>
               <div className="flex items-start space-x-2">
                 <span className="text-[#0088cc] font-bold">2.</span>
-                <span>{t("Presiona ")}<strong>{t("Iniciar (/start)")}</strong> {t("en Telegram.")}</span>
+                <span>{t.rich("step2", { b: (chunks) => <strong>{chunks}</strong> })}</span>
               </div>
               <div className="flex items-start space-x-2">
                 <span className="text-[#0088cc] font-bold">3.</span>
-                <span>{t("Tu teléfono recibirá las alarmas de cabina y telemetría al instante.")}</span>
+                <span>{t("step3")}</span>
               </div>
             </div>
 
@@ -286,13 +299,14 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
                 className="flex-1 inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-[#0088cc] hover:bg-[#0077b5] text-white text-xs font-bold uppercase tracking-wider transition-colors"
               >
                 <Send className="h-4 w-4" />
-                <span>{t("ABRIR DIRECTO EN TELEGRAM")}</span>
+                <span>{t("openTelegram")}</span>
               </a>
               <button
                 onClick={() => setShowQRModal(false)}
                 className="px-4 py-2.5 bg-black border border-[#333333] hover:border-white text-white text-xs font-bold uppercase tracking-wider transition-colors"
               >
-                {t("CERRAR\n              ")}</button>
+                {t("close")}
+              </button>
             </div>
           </div>
         </div>

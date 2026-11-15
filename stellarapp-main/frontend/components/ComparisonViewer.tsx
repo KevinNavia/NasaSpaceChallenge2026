@@ -1,11 +1,9 @@
 "use client";
-import { useLanguage } from "../i18n/LanguageContext";
 
 import React, { useState } from "react";
 import { Scale, Layers, Wind, Thermometer, ShieldAlert, Check } from "lucide-react";
 
 export default function ComparisonViewer() {
-  const { t } = useLanguage();
   const [selectedMaterial, setSelectedMaterial] = useState<"PMMA" | "Nomex" | "Cotton">("PMMA");
 
   const comparisonData = {
@@ -86,12 +84,14 @@ export default function ComparisonViewer() {
         <div>
           <div className="flex items-center space-x-2 text-xs font-bold text-[#76b900] uppercase tracking-widest">
             <Scale className="h-4 w-4" />
-            <span>{t("ESPECIFICACIÓN FÍSICA COMPARATIVA")}</span>
+            <span>ESPECIFICACIÓN FÍSICA COMPARATIVA</span>
           </div>
           <h2 className="text-xl lg:text-2xl font-bold text-white mt-1">
-            {t("Gravedad Terrestre (1.0g) vs. Microgravedad Espacial (0g)\n          ")}</h2>
+            Gravedad Terrestre (1.0g) vs. Microgravedad Espacial (0g)
+          </h2>
           <p className="text-xs text-[#898989] mt-0.5">
-            {t("Análisis diferencial de la transferencia de calor y masa en ausencia de flotabilidad convectiva.\n          ")}</p>
+            Análisis diferencial de la transferencia de calor y masa en ausencia de flotabilidad convectiva.
+          </p>
         </div>
 
         {/* NVIDIA-style Pill Tabs */}
@@ -115,11 +115,12 @@ export default function ComparisonViewer() {
       {/* Material Metadata Bar */}
       <div className="my-6 p-4 bg-black border border-[#333333] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
         <div className="flex items-center space-x-2">
-          <span className="text-xs font-bold text-[#76b900] uppercase">{t(current.name)}:</span>
-          <span className="text-xs text-[#cccccc]">{t(current.type)}</span>
+          <span className="text-xs font-bold text-[#76b900] uppercase">{current.name}:</span>
+          <span className="text-xs text-[#cccccc]">{current.type}</span>
         </div>
         <span className="text-[11px] font-mono text-[#898989] uppercase tracking-wider">
-          {t("DATA SOURCE: NASA PHYSICAL SCIENCES INFORMATICS\n        ")}</span>
+          DATA SOURCE: NASA PHYSICAL SCIENCES INFORMATICS
+        </span>
       </div>
 
       {/* Comparison Grid */}
@@ -128,28 +129,29 @@ export default function ComparisonViewer() {
         <div className="bg-black border border-[#333333] p-5">
           <div className="flex items-center justify-between pb-4 border-b border-[#333333] mb-4">
             <span className="text-xs font-bold text-white uppercase tracking-wider">
-              {t("CONDICIÓN TERRESTRE (1.0 G)\n            ")}</span>
-            <span className="text-[11px] font-mono text-[#898989]">{t("NASA Glenn Lab")}</span>
+              CONDICIÓN TERRESTRE (1.0 G)
+            </span>
+            <span className="text-[11px] font-mono text-[#898989]">NASA Glenn Lab</span>
           </div>
 
           <div className="space-y-4 text-xs">
             <div>
-              <span className="text-[11px] font-bold text-[#898989] uppercase block">{t("Geometría de Llama")}</span>
-              <p className="text-white font-bold mt-0.5">{t(current.earth.shape)}</p>
+              <span className="text-[11px] font-bold text-[#898989] uppercase block">Geometría de Llama</span>
+              <p className="text-white font-bold mt-0.5">{current.earth.shape}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#262626]">
               <div>
-                <span className="text-[11px] font-bold text-[#898989] uppercase block">{t("Tasa de Propagación")}</span>
+                <span className="text-[11px] font-bold text-[#898989] uppercase block">Tasa de Propagación</span>
                 <p className="text-white font-mono font-bold mt-0.5">{current.earth.spread}</p>
               </div>
               <div>
-                <span className="text-[11px] font-bold text-[#898989] uppercase block">{t("Temperatura Estimada")}</span>
+                <span className="text-[11px] font-bold text-[#898989] uppercase block">Temperatura Estimada</span>
                 <p className="text-white font-mono font-bold mt-0.5">{current.earth.temp}</p>
               </div>
             </div>
             <div className="pt-2 border-t border-[#262626]">
-              <span className="text-[11px] font-bold text-[#898989] uppercase block">{t("Mecanismo Convectivo")}</span>
-              <p className="text-[#a7a7a7] mt-1 leading-relaxed">{t(current.earth.mechanism)}</p>
+              <span className="text-[11px] font-bold text-[#898989] uppercase block">Mecanismo Convectivo</span>
+              <p className="text-[#a7a7a7] mt-1 leading-relaxed">{current.earth.mechanism}</p>
             </div>
           </div>
         </div>
@@ -158,29 +160,29 @@ export default function ComparisonViewer() {
         <div className="bg-black border border-[#76b900] p-5 relative">
           <div className="flex items-center justify-between pb-4 border-b border-[#333333] mb-4">
             <span className="text-xs font-bold text-[#76b900] uppercase tracking-wider flex items-center space-x-1.5">
-              <span>{t("MICROGRAVEDAD ORBITAL (0.0001 G)")}</span>
+              <span>MICROGRAVEDAD ORBITAL (0.0001 G)</span>
             </span>
-            <span className="text-[11px] font-mono text-[#76b900]">{t("Saffire & BASS-II")}</span>
+            <span className="text-[11px] font-mono text-[#76b900]">Saffire & BASS-II</span>
           </div>
 
           <div className="space-y-4 text-xs">
             <div>
-              <span className="text-[11px] font-bold text-[#898989] uppercase block">{t("Geometría de Llama")}</span>
-              <p className="text-white font-bold mt-0.5">{t(current.space.shape)}</p>
+              <span className="text-[11px] font-bold text-[#898989] uppercase block">Geometría de Llama</span>
+              <p className="text-white font-bold mt-0.5">{current.space.shape}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#262626]">
               <div>
-                <span className="text-[11px] font-bold text-[#898989] uppercase block">{t("Tasa de Propagación")}</span>
+                <span className="text-[11px] font-bold text-[#898989] uppercase block">Tasa de Propagación</span>
                 <p className="text-[#76b900] font-mono font-bold mt-0.5">{current.space.spread}</p>
               </div>
               <div>
-                <span className="text-[11px] font-bold text-[#898989] uppercase block">{t("Temperatura Estimada")}</span>
+                <span className="text-[11px] font-bold text-[#898989] uppercase block">Temperatura Estimada</span>
                 <p className="text-white font-mono font-bold mt-0.5">{current.space.temp}</p>
               </div>
             </div>
             <div className="pt-2 border-t border-[#262626]">
-              <span className="text-[11px] font-bold text-[#898989] uppercase block">{t("Física de Difusión Pura")}</span>
-              <p className="text-[#cccccc] mt-1 leading-relaxed">{t(current.space.mechanism)}</p>
+              <span className="text-[11px] font-bold text-[#898989] uppercase block">Física de Difusión Pura</span>
+              <p className="text-[#cccccc] mt-1 leading-relaxed">{current.space.mechanism}</p>
             </div>
           </div>
         </div>
@@ -191,9 +193,10 @@ export default function ComparisonViewer() {
         <ShieldAlert className="h-5 w-5 text-[#76b900] shrink-0 mt-0.5" />
         <div>
           <span className="text-xs font-bold text-white uppercase tracking-wider">
-            {t("PROTOCOLO OPERATIVO ECLSS RECOMENDADO\n          ")}</span>
+            PROTOCOLO OPERATIVO ECLSS RECOMENDADO
+          </span>
           <p className="text-xs text-[#cccccc] mt-1 leading-relaxed">
-            {t(current.suppression)}
+            {current.suppression}
           </p>
         </div>
       </div>

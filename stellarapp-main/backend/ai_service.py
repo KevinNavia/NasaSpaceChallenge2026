@@ -1,52 +1,13 @@
 import os
-import re
 import json
-import logging
 import httpx
 from typing import Dict, Any, List
-
-logger = logging.getLogger("stellarapp.ai")
-
-
-_EXACT_WORDS = {"same", "bass", "flex", "acme", "luna", "moon", "mars", "iss", "cir", "frp", "loi", "psi", "pbi"}
-
-
-def _term_regex(term: str) -> "re.Pattern[str]":
-    """Compila un término a regex por palabra.
-
-    - Términos cortos (<=3 caracteres) o ambiguos (p.ej. "iss", "co", "same", "o2"):
-      palabra completa, para evitar falsos positivos como "mission", "circo" o "sameness".
-    - Resto de términos / raíces (p.ej. "combusti", "burn", "fire"): coincide al INICIO de
-      palabra, de modo que "combustión", "burning" o "fires" sí cuentan.
-    """
-    t = re.escape(term.lower())
-    if len(term) <= 3 or term.lower() in _EXACT_WORDS:
-        return re.compile(rf"(?<!\w){t}(?!\w)")
-    return re.compile(rf"(?<!\w){t}")
-
-
-_REGEX_CACHE: dict = {}
-
-
-def has_any_term(text: str, terms) -> bool:
-    """True si `text` contiene alguno de los términos con límites de palabra."""
-    text = text.lower()
-    for term in terms:
-        rx = _REGEX_CACHE.get(term)
-        if rx is None:
-            rx = _REGEX_CACHE[term] = _term_regex(term)
-        if rx.search(text):
-            return True
-    return False
-
 
 class CombustionAIService:
     def __init__(self, dataset_path: str):
         self.api_key = os.getenv("GEMINI_API_KEY", "")
         self.ollama_host = os.getenv("OLLAMA_HOST", "http://host.docker.internal:11434")
         self.ollama_model = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
-        self.ollama_timeout = float(os.getenv("OLLAMA_TIMEOUT", "8"))
-        self.ollama_num_predict = int(os.getenv("OLLAMA_NUM_PREDICT", "300"))
         self.dataset_path = dataset_path
         self.dataset = self._load_dataset()
         self.psi_db = self._load_psi_db()
@@ -57,7 +18,7 @@ class CombustionAIService:
             with open(self.dataset_path, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception as e:
-            logger.error("Error loading NASA dataset: %s", e)
+            print(f"Error loading NASA dataset: {e}")
             return []
 
     def _load_psi_db(self) -> Dict[str, Any]:
@@ -71,7 +32,7 @@ class CombustionAIService:
                     with open(candidate, "r", encoding="utf-8") as f:
                         return json.load(f)
                 except Exception as e:
-                    logger.error("Error loading PSI database from %s: %s", candidate, e)
+                    print(f"Error loading PSI database from {candidate}: {e}")
         return {}
 
     def _load_psi_full_db(self) -> Dict[str, Any]:
@@ -85,7 +46,7 @@ class CombustionAIService:
                     with open(candidate, "r", encoding="utf-8") as f:
                         return json.load(f)
                 except Exception as e:
-                    logger.error("Error loading full PSI database from %s: %s", candidate, e)
+                    print(f"Error loading full PSI database from {candidate}: {e}")
         return {"metadata": {}, "tables": {}}
 
     def _is_query_in_domain(self, query: str) -> bool:
@@ -93,8 +54,9 @@ class CombustionAIService:
         Guardrail: Verifies that the query pertains strictly to NASA spaceflight,
         microgravity combustion, fire safety, or spacecraft ECLSS.
         """
+        import re
         domain_keywords = [
-            "fuego", "fire", "combusti", "burn", "ignition", "spread", "spacecraft", "astronaut", "space", "safety", "thermal", "temperature", "oxygen", "pressure", "airflow", "ventilation", "carbon monoxide", "carbon dioxide", "llama", "flame", "flames", "cool flame",
+            "fuego", "fire", "combusti", "llama", "flame", "flames", "cool flame",
             "microgravedad", "microgravity", "0g", "gravedad", "gravity", "convecci", "buoyancy",
             "saffire", "bass", "flex", "acme", "same", "cir", "firms", "frp",
             "artemis", "marte", "mars", "luna", "moon", "iss", "cygnus", "orion", "gateway",
@@ -106,29 +68,21 @@ class CombustionAIService:
             "kalman", "sensor", "monoxido", "monóxido", "ppm", "toxic", "eclss",
             "nasa", "std-6001", "astronauta", "tripulaci", "seguridad", "nave", "habitat", "hábitat", "casco"
         ]
-        # Coincidencia por palabra (no por subcadena): "mission" ya no activa "iss".
-        return has_any_term(query, domain_keywords + ["co", "lunar"])
+        q = query.lower()
+        if any(kw in q for kw in domain_keywords):
+            return True
+        # Check isolated word 'co'
+        if re.search(r'\bco\b', q):
+            return True
+        return False
 
-    async def ask_safety_assistant(self, query: str, language: str = "es") -> Dict[str, Any]:
+    async def ask_safety_assistant(self, query: str) -> Dict[str, Any]:
         """
         Uses NASA combustion data as grounding context to answer astronaut fire safety queries.
         Enforces strict domain guardrails.
         """
-        # Keep the same domain guardrails in either language.
-        language = "en" if language == "en" else "es"
+        # Guardrail check
         if not self._is_query_in_domain(query):
-            if language == "en":
-                return {
-                    "answer": (
-                        "This assistant is limited to microgravity combustion, NASA research "
-                        "and spacecraft fire safety. Ask about Saffire, BASS, FLEX, SAME, "
-                        "oxygen, ventilation, smoke, sensors or materials. "
-                        "Responses are for research and demonstration, not crew operations."
-                    ),
-                    "grounded": False,
-                    "model": "StellarApp-Domain-Guardrails",
-                    "sources": []
-                }
             return {
                 "answer": (
                     "⚠️ **CONTROL DE DOMINIO Y GUARDRAILS DE MISIÓN (NASA STELLARAPP):**\n\n"
@@ -150,7 +104,7 @@ class CombustionAIService:
             }
 
         # 1. High-Speed Sub-Second Knowledge Engine (< 50ms) for core StellarApp topics
-        instant_resp = self._get_instant_stellarapp_response(query) if language == "es" else None
+        instant_resp = self._get_instant_stellarapp_response(query)
         if instant_resp:
             return instant_resp
 
@@ -191,16 +145,6 @@ INSTRUCCIONES CLAVE:
 2. Detalla las implicaciones para la atmósfera de la nave y la recomendación operacional de supresión para la tripulación (ECLSS).
 3. Responde siempre en español formal, citando al menos un experimento ({', '.join(m.get('id', '') for m in matched)})."""
 
-        if language == "en":
-            prompt = f"""You are StellarApp, a scientific study assistant about microgravity combustion.
-Answer the user's question in clear English, in no more than two short paragraphs.
-Use only the contextual entries below as illustrative catalog information; do not claim
-NASA certification or experimental validation of software estimates. Explain when a value
-is a simulation. Avoid inventing emergency procedures, thresholds, or citations.
-Research catalog context: {context_summary}
-User question: {query}
-"""
-
         # 2. Try local Qwen model on Ollama with fast timeout (max 8s)
         if self.ollama_host:
             try:
@@ -211,10 +155,10 @@ User question: {query}
                     "stream": False,
                     "options": {
                         "temperature": 0.2,
-                        "num_predict": self.ollama_num_predict
+                        "num_predict": 120
                     }
                 }
-                async with httpx.AsyncClient(timeout=self.ollama_timeout) as client:
+                async with httpx.AsyncClient(timeout=8.0) as client:
                     resp = await client.post(ollama_url, json=payload)
                     if resp.status_code == 200:
                         data = resp.json()
@@ -227,19 +171,19 @@ User question: {query}
                                 "sources": [item["id"] for item in matched]
                             }
             except Exception as err:
-                logger.warning("Ollama fast query fallback: %s", err)
+                print(f"Ollama fast query fallback: {err}")
 
         # 3. Call Gemini API if key is present
         if self.api_key:
             try:
-                url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={self.api_key}"
                 payload = {
                     "contents": [{
                         "parts": [{"text": prompt}]
                     }]
                 }
                 async with httpx.AsyncClient(timeout=30.0) as client:
-                    resp = await client.post(url, json=payload, headers={"x-goog-api-key": self.api_key})
+                    resp = await client.post(url, json=payload)
                     if resp.status_code == 200:
                         data = resp.json()
                         text = data["candidates"][0]["content"]["parts"][0]["text"]
@@ -250,42 +194,10 @@ User question: {query}
                             "sources": [item["id"] for item in self.dataset[:4]]
                         }
             except Exception as err:
-                logger.warning("Gemini API error: %s", err)
+                print(f"Gemini API error: {err}")
 
         # 4. Fallback intelligent rule-based agent (Clean, zero API key disclaimers)
-        if language == "en":
-            return self._english_fallback(query)
         return self._generate_fallback_answer(query)
-
-    def _english_fallback(self, query: str) -> Dict[str, Any]:
-        """English-language demo response without calling a translation provider.
-        It is explicitly labeled as general guidance, not as a NASA-validated result.
-        """
-        q = query.lower()
-        if has_any_term(q, ["oxygen", "airflow", "ventilation", "material", "spread", "burn"]):
-            answer = (
-                "In microgravity, buoyancy-driven convection is greatly reduced. "
-                "Flame spread depends on material, oxygen concentration, pressure, geometry "
-                "and forced ventilation. Compare experiments only under comparable conditions. "
-                "StellarApp's risk and spread calculations are illustrative rules and have "
-                "not been validated as spacecraft safety predictions."
-            )
-        elif has_any_term(q, ["kalman", "carbon monoxide", "co", "sensor", "smoke"]):
-            answer = (
-                "StellarApp demonstrates a Kalman filter on artificially generated carbon "
-                "monoxide readings. Filtering reduces fluctuations in the illustrative signal; "
-                "it does not prove sensor accuracy or a health-exposure limit. "
-                "NASA's SAME study explored smoke particles in microgravity."
-            )
-        else:
-            answer = (
-                "StellarApp organizes combustion research such as BASS, FLEX and Saffire. "
-                "Its catalog and graphs help explore experimental conditions, but the "
-                "simulation values are illustrative and require source verification. "
-                "Ask about oxygen, ventilation, smoke or a NASA experiment for details."
-            )
-        return {"answer": answer, "grounded": False,
-                "model": "StellarApp-English-Demo-Fallback", "sources": []}
 
     def _get_instant_stellarapp_response(self, query: str) -> Any:
         """
@@ -295,7 +207,7 @@ User question: {query}
         q = query.lower()
 
         # 1. Llamas esféricas, color azul y ausencia de convección (0g)
-        if has_any_term(q, ["esferic", "esféric", "azul", "azules", "flotabilidad", "buoyancy", "convecci", "forma de la llama", "forma de las llamas"]):
+        if any(w in q for w in ["esferic", "esféric", "azul", "flotabilidad", "buoyancy", "convecci", "forma de la llama", "forma"]):
             return {
                 "answer": (
                     "🔥 **Morfología de Llama en Microgravedad (0g) • Misiones Saffire & BASS-II:**\n\n"
@@ -309,7 +221,7 @@ User question: {query}
             }
 
         # 2. Atmósfera Artemis (26% O2 a 56.5 kPa)
-        if has_any_term(q, ["artemis", "26%", "26", "presion reducida", "presión reducida", "56.5", "normox"]):
+        if any(w in q for w in ["artemis", "26%", "26", "presion reducida", "presión reducida", "56.5", "normox"]):
             return {
                 "answer": (
                     "⚠️ **Peligro Crítico en Atmósfera de Exploración Artemis (26% O₂ • 56.5 kPa):**\n\n"
@@ -323,7 +235,7 @@ User question: {query}
             }
 
         # 3. Llamas Frías ('Cool Flames') - FLEX-2
-        if has_any_term(q, ["cool flame", "fria", "fría", "frias", "frías", "flex", "flex-2", "heptan"]):
+        if any(w in q for w in ["cool flame", "fria", "fría", "flex", "flex-2", "heptan"]):
             return {
                 "answer": (
                     "❄️ **Fenómeno de 'Cool Flames' (Llamas Frías) • Misión FLEX-2 (ISS):**\n\n"
@@ -337,7 +249,7 @@ User question: {query}
             }
 
         # 4. Experimento SAME (Humo y Hollín en ISS)
-        if has_any_term(q, ["same", "humo", "smoke", "hollin", "hollín", "aerosol", "particula", "partícula"]):
+        if any(w in q for w in ["same", "humo", "smoke", "hollin", "hollín", "aerosol", "particula", "partícula"]):
             return {
                 "answer": (
                     "🌫️ **Aglomeración de Hollín y Falla de Detectores • Experimento SAME (ISS):**\n\n"
@@ -351,7 +263,7 @@ User question: {query}
             }
 
         # 5. Filtro de Kalman y Monóxido de Carbono (CO)
-        if has_any_term(q, ["kalman", "monoxido", "monóxido", "co", "ppm", "sensor co", "gas co", "ruido sensorial"]):
+        if any(w in q for w in ["kalman", "monoxido", "monóxido", " co ", " co,", "ppm", "sensor co", "gas co", "ruido sensorial"]):
             return {
                 "answer": (
                     "📈 **Filtro de Kalman para Telemetría de Monóxido de Carbono (CO) • StellarApp:**\n\n"
@@ -368,7 +280,7 @@ User question: {query}
             }
 
         # 6. Límites Térmicos (Tripulación vs. Casco de la Nave)
-        if has_any_term(q, ["termic", "térmic", "temperatura", "soporta", "casco", "supervivencia", "confort", "al-li", "fluencia", "sellos", "viton", "oring"]):
+        if any(w in q for w in ["termic", "térmic", "temperatura", "soporta", "casco", "supervivencia", "confort", "al-li", "fluencia", "sellos", "viton", "oring"]):
             return {
                 "answer": (
                     "🌡️ **Límites Térmicos Máximos: Tripulación vs. Casco de la Nave (NASA-STD-3001 & NASA-SP-20205001358):**\n\n"
@@ -388,7 +300,7 @@ User question: {query}
             }
 
         # 7. Materiales y Regla de Inflamabilidad (Nomex, PMMA, Kapton, Silicona, ETFE, Algodón)
-        if has_any_term(q, ["pmma", "nomex", "kapton", "silicon", "etfe", "algodon", "algodón", "material", "loi", "inflamab"]):
+        if any(w in q for w in ["pmma", "nomex", "kapton", "silicon", "etfe", "algodon", "algodón", "material", "loi", "inflamab"]):
             return {
                 "answer": (
                     "🧱 **Matriz de Inflamabilidad de Materiales Espaciales (NASA-STD-6001B):**\n\n"
@@ -404,7 +316,7 @@ User question: {query}
             }
 
         # 8. Puente NASA FIRMS (Tierra a Espacio)
-        if has_any_term(q, ["firms", "satelite", "satélite", "modis", "viirs", "tierra"]):
+        if any(w in q for w in ["firms", "satelite", "satélite", "modis", "viirs", "tierra"]):
             return {
                 "answer": (
                     "🌍🚀 **Puente Tierra-Espacio: NASA FIRMS a Saffire en Microgravedad:**\n\n"
@@ -418,7 +330,7 @@ User question: {query}
             }
 
         # 9. Repositorio Oficial NASA PSI (Physical Sciences Informatics)
-        if has_any_term(q, ["psi", "estudios", "investigacion", "investigación", "repositorio", "spice", "ansys", "fluent", "ebullicion", "ebullición", "bifasic", "bifásic"]):
+        if any(w in q for w in ["psi", "estudios", "investigacion", "investigación", "repositorio", "spice", "ansys", "fluent", "ebullicion", "ebullición", "bifasic", "bifásic"]):
             return {
                 "answer": (
                     "🔬 **Repositorio Oficial NASA Physical Sciences Informatics (PSI):**\n\n"

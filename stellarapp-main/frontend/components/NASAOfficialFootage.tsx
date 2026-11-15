@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { Film, Play, ZoomIn, ExternalLink, X } from "lucide-react";
-import { useLanguage } from "../i18n/LanguageContext";
 
 interface NasaPhoto {
   src: string;
@@ -15,7 +14,6 @@ interface NasaPhoto {
 }
 
 export default function NASAOfficialFootage() {
-  const { t } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<NasaPhoto | null>(null);
 
   useEffect(() => {
@@ -74,13 +72,13 @@ export default function NASAOfficialFootage() {
         <div>
           <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 bg-black border border-[#76b900] text-[#76b900] text-[10px] font-bold uppercase tracking-wider mb-2">
             <Film className="h-3 w-3" />
-            <span>{t("EVIDENCIA OFICIAL DE VUELO ESPACIAL (DOMINIO PÚBLICO NASA)")}</span>
+            <span>EVIDENCIA OFICIAL DE VUELO ESPACIAL (DOMINIO PÚBLICO NASA)</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-white">
-            {t("Metraje de Video y Fotografía de Combustión en Microgravedad")}
+            Metraje de Video y Fotografía de Combustión en Microgravedad
           </h2>
           <p className="text-xs text-[#a7a7a7] mt-1">
-            {t("Archivos oficiales obtenidos de ")}<strong>images.nasa.gov</strong>{t(" de las misiones de fuego real Saffire (carguero Cygnus) e ISS (BASS-II y SoFIE).")}
+            Archivos oficiales obtenidos de <strong>images.nasa.gov</strong> de las misiones de fuego real Saffire (carguero Cygnus) e ISS (BASS-II y SoFIE).
           </p>
         </div>
         <span className="text-[10px] font-mono text-[#898989] shrink-0">
@@ -97,11 +95,11 @@ export default function NASAOfficialFootage() {
             <div className="flex items-center space-x-2">
               <Play className="h-4 w-4 text-[#76b900]" />
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                {t("Experimento Saffire-V (Cygnus) // Fuego Real")}
+                Experimento Saffire-V (Cygnus) // Fuego Real
               </h3>
             </div>
             <span className="px-1.5 py-0.5 text-[9px] font-mono bg-black border border-[#76b900]/40 text-[#76b900]">
-              {t("VIDEO OFICIAL")}
+              VIDEO OFICIAL
             </span>
           </div>
           <div className="relative rounded overflow-hidden bg-black border border-[#222222]">
@@ -114,7 +112,7 @@ export default function NASAOfficialFootage() {
           </div>
           <div className="space-y-1 font-sans">
             <p className="text-[11px] text-[#cccccc] leading-relaxed">
-              {t("Combustión sobre una muestra de PMMA (plexiglás) con ventilación forzada en el interior del carguero Cygnus tras desacoplarse de la ISS. Muestra cómo el fuego se ancla y avanza sin corrientes ascendentes.")}
+              Combustión sobre una muestra de PMMA (plexiglás) con ventilación forzada en el interior del carguero Cygnus tras desacoplarse de la ISS. Muestra cómo el fuego se ancla y avanza sin corrientes ascendentes.
             </p>
             <div className="flex items-center justify-between text-[10px] font-mono text-[#757575] pt-1 border-t border-[#2a2a2a]">
               <span>ID: GRC-2021-CN-00008</span>
@@ -124,7 +122,7 @@ export default function NASAOfficialFootage() {
                 rel="noreferrer"
                 className="text-[#76b900] hover:underline"
               >
-                {t("Ver en NASA.gov ↗")}
+                Ver en NASA.gov ↗
               </a>
             </div>
           </div>
@@ -137,11 +135,11 @@ export default function NASAOfficialFootage() {
             <div className="flex items-center space-x-2">
               <Play className="h-4 w-4 text-[#00b0ff]" />
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                {t("Experimento SoFIE-GEL (ISS) // Llama Esférica")}
+                Experimento SoFIE-GEL (ISS) // Llama Esférica
               </h3>
             </div>
             <span className="px-1.5 py-0.5 text-[9px] font-mono bg-black border border-[#00b0ff]/40 text-[#00b0ff]">
-              {t("VIDEO OFICIAL")}
+              VIDEO OFICIAL
             </span>
           </div>
           <div className="relative rounded overflow-hidden bg-black border border-[#222222]">
@@ -154,7 +152,7 @@ export default function NASAOfficialFootage() {
           </div>
           <div className="space-y-1 font-sans">
             <p className="text-[11px] text-[#cccccc] leading-relaxed">
-              {t("Ignición y extinción de combustible sólido en microgravedad. Se observa la llama esférica girando sobre sí misma hasta alcanzar el límite crítico de autoextinción por asfixia radiativa.")}
+              Ignición y extinción de combustible sólido en microgravedad. Se observa la llama esférica girando sobre sí misma hasta alcanzar el límite crítico de autoextinción por asfixia radiativa.
             </p>
             <div className="flex items-center justify-between text-[10px] font-mono text-[#757575] pt-1 border-t border-[#2a2a2a]">
               <span>ID: SoFIE-GEL</span>
@@ -164,7 +162,7 @@ export default function NASAOfficialFootage() {
                 rel="noreferrer"
                 className="text-[#00b0ff] hover:underline"
               >
-                {t("Ver en NASA.gov ↗")}
+                Ver en NASA.gov ↗
               </a>
             </div>
           </div>
@@ -182,26 +180,26 @@ export default function NASAOfficialFootage() {
             <div className="relative aspect-video sm:aspect-square bg-black overflow-hidden border border-[#2a2a2a] group-hover:border-[#76b900]/60">
               <img
                 src={photo.src}
-                alt={t(photo.title)}
+                alt={photo.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
               {/* Hover Overlay with Zoom Indicator */}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                 <span className="px-2 py-1 bg-black/90 border border-[#76b900] text-[#76b900] text-[10px] font-mono font-bold flex items-center space-x-1 shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-transform">
                   <ZoomIn className="h-3.5 w-3.5" />
-                  <span>{t("AMPLIAR")}</span>
+                  <span>AMPLIAR</span>
                 </span>
               </div>
               <span className={`absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/85 text-[9px] font-mono border ${photo.badgeColor}`}>
-                {t(photo.badge)}
+                {photo.badge}
               </span>
             </div>
             <div>
               <h4 className="text-[11px] font-bold text-white group-hover:text-[#76b900] transition-colors uppercase leading-snug">
-                {t(photo.title)}
+                {photo.title}
               </h4>
               <p className="text-[10px] text-[#898989] leading-tight mt-0.5 line-clamp-2">
-                {t(photo.desc)}
+                {photo.desc}
               </p>
             </div>
           </div>
@@ -224,10 +222,10 @@ export default function NASAOfficialFootage() {
             <div className="p-3 sm:p-4 bg-[#1a1a1a] border-b border-[#333333] flex items-center justify-between select-none">
               <div className="flex items-center space-x-2.5 min-w-0">
                 <span className={`text-[10px] font-mono px-2 py-0.5 bg-black border shrink-0 ${selectedImage.badgeColor}`}>
-                  {t(selectedImage.badge)}
+                  {selectedImage.badge}
                 </span>
                 <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white truncate">
-                  {t(selectedImage.title)}
+                  {selectedImage.title}
                 </h3>
               </div>
               <div className="flex items-center space-x-2 shrink-0">
@@ -235,7 +233,7 @@ export default function NASAOfficialFootage() {
                   href={selectedImage.src}
                   target="_blank"
                   rel="noreferrer"
-                  title={t("Abrir imagen original")}
+                  title="Abrir imagen original"
                   className="p-1.5 text-[#898989] hover:text-[#76b900] hover:bg-black transition-colors border border-[#333333]"
                 >
                   <ExternalLink className="h-4 w-4" />
@@ -243,7 +241,7 @@ export default function NASAOfficialFootage() {
                 <button
                   onClick={() => setSelectedImage(null)}
                   className="p-1.5 text-[#898989] hover:text-white hover:bg-[#262626] transition-colors border border-[#333333]"
-                  title={t("Cerrar (Esc)")}
+                  title="Cerrar (Esc)"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -254,7 +252,7 @@ export default function NASAOfficialFootage() {
             <div className="flex-1 bg-black p-2 sm:p-4 flex items-center justify-center overflow-hidden min-h-[300px]">
               <img
                 src={selectedImage.src}
-                alt={t(selectedImage.title)}
+                alt={selectedImage.title}
                 className="max-h-[60vh] sm:max-h-[68vh] w-auto max-w-full object-contain border border-[#222222] shadow-2xl"
               />
             </div>
@@ -263,12 +261,12 @@ export default function NASAOfficialFootage() {
             <div className="p-3 sm:p-4 bg-[#141414] border-t border-[#333333] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
               <div className="space-y-1">
                 <p className="text-[#cccccc] text-[11px] sm:text-xs leading-relaxed max-w-2xl">
-                  {t(selectedImage.desc)}
+                  {selectedImage.desc}
                 </p>
                 <div className="flex items-center space-x-3 text-[10px] font-mono text-[#898989]">
                   <span>NASA ID: <strong className="text-[#76b900]">{selectedImage.nasaId}</strong></span>
                   <span>•</span>
-                  <span>{t("DOMINIO PÚBLICO OFICIAL")}</span>
+                  <span>DOMINIO PÚBLICO OFICIAL</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2 shrink-0 w-full sm:w-auto justify-end">
@@ -285,7 +283,7 @@ export default function NASAOfficialFootage() {
                   onClick={() => setSelectedImage(null)}
                   className="px-3.5 py-1.5 bg-[#76b900] hover:bg-[#5a8d00] text-black font-bold uppercase text-[11px] tracking-wider transition-colors"
                 >
-                  {t("CERRAR")}
+                  CERRAR
                 </button>
               </div>
             </div>

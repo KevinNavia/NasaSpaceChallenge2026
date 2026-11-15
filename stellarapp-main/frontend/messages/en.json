@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "title": "StellarApp | NASA Microgravity Fire Safety & AI Combustion Intelligence",
+    "description": "Interactive AI dashboard interpreting NASA microgravity flame experiments for Moon and Mars exploration."
+  },
+  "localeSwitcher": {
+    "label": "Language",
+    "es": "ES",
+    "en": "EN"
+  },
+  "nav": {
+    "brandSuffix": "NASA SPACE APPS",
+    "issLive": "ISS LIVE:",
+    "alt": "ALT",
+    "vel": "VEL",
+    "orbiting": "[ORBITING]",
+    "connecting": "CONNECTING TELEMETRY...",
+    "telegramLive": "LIVE BOT",
+    "pitch": "PITCH",
+    "charts": "CHARTS",
+    "simulator": "SIMULATOR",
+    "openQr": "Open Telegram QR",
+    "openMenu": "Open navigation menu",
+    "connectBot": "CONNECT TELEGRAM BOT",
+    "crew": "{count} crew",
+    "live": "LIVE",
+    "pitchDeck": "NASA 2026 PITCH DECK",
+    "chartsCenter": "CHARTS & NASA PSI HUB",
+    "simulator0g": "0G COMBUSTION SIMULATOR",
+    "issOrbital": "ISS ORBITAL",
+    "qrTitle": "LIVE CONNECTION // AUDIENCE & JUDGES",
+    "qrSubtitle": "@Stellar_App_bot • IOT TELEMETRY",
+    "qrScan": "SCAN WITH YOUR CAMERA",
+    "linked": "{count} crew linked",
+    "webhookActive": "Webhook active",
+    "step1": "Point your phone camera at the QR code.",
+    "step2": "Tap <b>Start (/start)</b> in Telegram.",
+    "step3": "Your phone will receive cabin alarms and telemetry instantly.",
+    "openTelegram": "OPEN DIRECTLY IN TELEGRAM",
+    "close": "CLOSE"
+  },
+  "hero": {
+    "eyebrow": "FIRE SAFETY INTELLIGENCE SYSTEM",
+    "title": "Microgravity Combustion: Prediction & Safety for Artemis & Mars",
+    "body": "NASA has gathered four decades of experimental data from the ISS and Cygnus spacecraft (Saffire, BASS, FLEX). <b>StellarApp</b> synthesizes, classifies and interprets this physics with AI to safeguard crews in pressurized lunar and Martian habitats.",
+    "ctaAI": "ASK THE NASA AI AGENT",
+    "ctaSimulator": "SIMULATION WORKBENCH",
+    "ctaCharts": "CHARTS DASHBOARD"
+  },
+  "catalog": {
+    "eyebrow": "OFFICIAL EXPERIMENT CATALOG",
+    "title": "Flight Data: Saffire, BASS-II & FLEX-2 ({count} records)",
+    "search": "Search material or mission...",
+    "allGravities": "All Gravities",
+    "microgravity": "Microgravity (0g)",
+    "partial": "Partial (Moon / Mars)",
+    "terrestrial": "Terrestrial (1g)",
+    "allRisks": "All Risks",
+    "extreme": "Extreme (Artemis 26% O₂)",
+    "critical": "Critical",
+    "moderate": "Moderate",
+    "low": "Low (Self-extinguishing)",
+    "empty": "No matching experiments found."
+  },
+  "footer": {
+    "credit": "NASA International Space Apps Challenge 2026.",
+    "standard": "STANDARD: NASA-STD-6001 | DATA: NASA PSI & NTRS"
+  }
+}

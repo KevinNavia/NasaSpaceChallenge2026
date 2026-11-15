@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "title": "StellarApp | Seguridad Contra Incendios y Combustión en Microgravedad",
+    "description": "Plataforma interactiva con IA que interpreta los experimentos de llama en microgravedad de la NASA para la exploración de la Luna y Marte."
+  },
+  "localeSwitcher": {
+    "label": "Idioma",
+    "es": "ES",
+    "en": "EN"
+  },
+  "nav": {
+    "brandSuffix": "NASA SPACE APPS",
+    "issLive": "ISS LIVE:",
+    "alt": "ALT",
+    "vel": "VEL",
+    "orbiting": "[EN ÓRBITA]",
+    "connecting": "CONECTANDO TELEMETRÍA...",
+    "telegramLive": "BOT EN VIVO",
+    "pitch": "PITCH",
+    "charts": "GRÁFICOS",
+    "simulator": "SIMULADOR",
+    "openQr": "Abrir QR de Telegram",
+    "openMenu": "Abrir menú de navegación",
+    "connectBot": "CONECTAR BOT TELEGRAM",
+    "crew": "{count} tripulantes",
+    "live": "EN VIVO",
+    "pitchDeck": "PITCH DECK NASA 2026",
+    "chartsCenter": "CENTRO DE GRÁFICOS & NASA PSI",
+    "simulator0g": "SIMULADOR DE COMBUSTIÓN 0G",
+    "issOrbital": "ISS ORBITAL",
+    "qrTitle": "CONEXIÓN EN VIVO // AUDITORIO Y JUECES",
+    "qrSubtitle": "@Stellar_App_bot • TELEMETRÍA IOT",
+    "qrScan": "ESCANEAR CON LA CÁMARA",
+    "linked": "{count} tripulantes enlazados",
+    "webhookActive": "Webhook activo",
+    "step1": "Apunta la cámara de tu teléfono móvil al código QR.",
+    "step2": "Presiona <b>Iniciar (/start)</b> en Telegram.",
+    "step3": "Tu teléfono recibirá las alarmas de cabina y telemetría al instante.",
+    "openTelegram": "ABRIR DIRECTO EN TELEGRAM",
+    "close": "CERRAR"
+  },
+  "hero": {
+    "eyebrow": "SISTEMA DE INTELIGENCIA DE SEGURIDAD CONTRA INCENDIOS",
+    "title": "Combustión en Microgravedad: Predicción y Seguridad para Artemis & Marte",
+    "body": "La NASA ha recopilado cuatro décadas de datos experimentales en la ISS y naves Cygnus (Saffire, BASS, FLEX). <b>StellarApp</b> sintetiza, clasifica e interpreta esta física con IA para salvaguardar a la tripulación en hábitats presurizados lunares y marcianos.",
+    "ctaAI": "CONSULTAR AGENTE IA NASA",
+    "ctaSimulator": "WORKBENCH DE SIMULACIÓN",
+    "ctaCharts": "DASHBOARD DE GRÁFICOS"
+  },
+  "catalog": {
+    "eyebrow": "CATÁLOGO DE EXPERIMENTOS OFICIALES",
+    "title": "Datos de Vuelo: Saffire, BASS-II & FLEX-2 ({count} registrados)",
+    "search": "Buscar material o misión...",
+    "allGravities": "Todas las Gravedades",
+    "microgravity": "Microgravedad (0g)",
+    "partial": "Parcial (Luna / Marte)",
+    "terrestrial": "Terrestre (1g)",
+    "allRisks": "Todos los Riesgos",
+    "extreme": "Extremo (Artemis 26% O₂)",
+    "critical": "Crítico",
+    "moderate": "Moderado",
+    "low": "Bajo (Auto-extinguible)",
+    "empty": "No se encontraron experimentos coincidentes."
+  },
+  "footer": {
+    "credit": "NASA International Space Apps Challenge 2026.",
+    "standard": "ESTÁNDAR: NASA-STD-6001 | DATOS: NASA PSI & NTRS"
+  }
+}

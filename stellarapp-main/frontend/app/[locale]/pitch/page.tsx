@@ -1,10 +1,10 @@
 "use client";
-import { useLanguage } from "../../i18n/LanguageContext";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import LanguageSwitcher from "../../i18n/LanguageSwitcher";
 import Image from "next/image";
+import KalmanTelemetry from "../../../components/KalmanTelemetry";
+import LocaleSwitcher from "../../../components/LocaleSwitcher";
 import { 
   Flame, 
   Database, 
@@ -31,7 +31,6 @@ import {
 } from "lucide-react";
 
 export default function PitchLanding() {
-  const { t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{
@@ -217,47 +216,57 @@ export default function PitchLanding() {
             </div>
             <div className="flex items-baseline space-x-2">
               <span className="font-bold text-base sm:text-lg tracking-wider text-white">
-                {t("STELLAR")}<span className="text-[#76b900]">{t("APP")}</span>
+                STELLAR<span className="text-[#76b900]">APP</span>
               </span>
               <span className="text-[10px] sm:text-[11px] font-bold tracking-widest text-[#898989] uppercase border-l border-[#333333] pl-2 hidden xs:inline">
-                {t("PITCH 2026\n              ")}</span>
+                PITCH 2026
+              </span>
             </div>
           </Link>
 
           {/* Desktop Actions */}
           <div className="hidden sm:flex items-center space-x-3">
-            <LanguageSwitcher />
+            <LocaleSwitcher className="rounded-[2px]" />
+
+            <a
+              href="#kalman"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-black hover:bg-[#111111] text-[#76b900] border border-[#76b900]/40 transition-colors"
+            >
+              <Activity className="h-3.5 w-3.5" />
+              <span>SONDA HARDWARE</span>
+            </a>
+
             <button
               onClick={() => setShowQRModal(true)}
               className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-[#0088cc] hover:bg-[#0077b5] text-white border border-[#0099e6] shadow-sm shadow-[#0088cc]/30 transition-colors"
             >
               <Send className="h-3.5 w-3.5" />
-              <span>{t("BOT EN VIVO")}</span>
+              <span>BOT EN VIVO</span>
             </button>
 
             <Link
               href="/"
               className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider bg-[#76b900] text-black hover:bg-[#5a8d00] transition-colors"
             >
-              <span>{t("WORKBENCH EN VIVO")}</span>
+              <span>WORKBENCH</span>
               <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
 
           {/* Mobile Hamburger & Actions */}
           <div className="flex sm:hidden items-center space-x-2">
-            <LanguageSwitcher />
+            <LocaleSwitcher className="rounded-[2px]" />
             <button
               onClick={() => setShowQRModal(true)}
               className="p-1.5 bg-[#0088cc] text-white rounded-[2px] border border-[#0099e6]"
-              aria-label={t("Abrir QR Telegram")}
+              aria-label="Abrir QR Telegram"
             >
               <Send className="h-4 w-4" />
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-1.5 text-white hover:text-[#76b900] border border-[#333333] bg-[#111111] transition-colors rounded-[2px]"
-              aria-label={t("Abrir menú de navegación")}
+              aria-label="Abrir menú de navegación"
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -267,6 +276,18 @@ export default function PitchLanding() {
         {/* Mobile Drawer */}
         {isMobileMenuOpen && (
           <div className="sm:hidden bg-[#0d0d0d] border-b border-[#333333] px-5 py-4 space-y-2.5 animate-in slide-in-from-top-2 duration-200">
+            <a
+              href="#kalman"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full flex items-center justify-between px-3.5 py-2.5 bg-black border border-[#76b900] text-[#76b900] text-xs font-bold uppercase tracking-wider hover:bg-[#111111] transition-colors rounded-[2px]"
+            >
+              <div className="flex items-center space-x-2">
+                <Activity className="h-4 w-4" />
+                <span>SONDA HARDWARE (COM6)</span>
+              </div>
+              <ChevronRight className="h-4 w-4" />
+            </a>
+
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -274,7 +295,7 @@ export default function PitchLanding() {
             >
               <div className="flex items-center space-x-2">
                 <Sparkles className="h-4 w-4 fill-black" />
-                <span>{t("ABRIR WORKBENCH EN VIVO")}</span>
+                <span>ABRIR WORKBENCH EN VIVO</span>
               </div>
               <ChevronRight className="h-4 w-4" />
             </Link>
@@ -288,7 +309,7 @@ export default function PitchLanding() {
             >
               <div className="flex items-center space-x-2">
                 <Send className="h-4 w-4" />
-                <span>{t("CONECTAR BOT TELEGRAM")}</span>
+                <span>CONECTAR BOT TELEGRAM</span>
               </div>
               <QrCode className="h-4 w-4" />
             </button>
@@ -299,7 +320,7 @@ export default function PitchLanding() {
               className="w-full flex items-center space-x-2 px-3.5 py-2.5 border border-[#333333] text-white text-xs font-bold uppercase tracking-wider bg-black/60 hover:border-white transition-colors rounded-[2px]"
             >
               <Radio className="h-4 w-4 text-[#76b900]" />
-              <span>{t("TELEMETRÍA FILTRO DE KALMAN")}</span>
+              <span>TELEMETRÍA FILTRO DE KALMAN</span>
             </Link>
           </div>
         )}
@@ -313,7 +334,7 @@ export default function PitchLanding() {
             <div className="flex items-center justify-between pb-2 border-b border-[#222222]">
               <div className="flex items-center space-x-2 text-[#0088cc]">
                 <Send className="h-4 w-4" />
-                <span className="text-xs font-bold uppercase tracking-wider text-white">{t("RED TELEMETRÍA TELEGRAM")}</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-white">RED TELEMETRÍA TELEGRAM</span>
               </div>
               <button
                 onClick={() => setShowQRModal(false)}
@@ -326,7 +347,7 @@ export default function PitchLanding() {
             <div className="p-3 bg-white border border-[#0088cc]/50 inline-block shadow-lg">
               <Image
                 src="/images/telegram-bot-qr.png"
-                alt={t("QR Bot Telegram @Stellar_App_bot")}
+                alt="QR Bot Telegram @Stellar_App_bot"
                 width={200}
                 height={200}
                 className="mx-auto"
@@ -335,9 +356,10 @@ export default function PitchLanding() {
             </div>
 
             <div className="space-y-1.5 font-mono">
-              <p className="text-xs text-white font-bold">{t("@Stellar_App_bot")}</p>
+              <p className="text-xs text-white font-bold">@Stellar_App_bot</p>
               <p className="text-[11px] text-[#aaaaaa] leading-relaxed">
-                {t("Escanea el código con tu celular para unirte a la red de alertas de vuelo del auditorio.\n              ")}</p>
+                Escanea el código con tu celular para unirte a la red de alertas de vuelo del auditorio.
+              </p>
             </div>
 
             <div className="pt-2 flex flex-col gap-2">
@@ -347,12 +369,14 @@ export default function PitchLanding() {
                 rel="noopener noreferrer"
                 className="w-full py-2 bg-[#0088cc] hover:bg-[#0077b5] text-white text-xs font-bold uppercase tracking-wider transition-colors inline-block text-center"
               >
-                {t("ABRIR EN TELEGRAM\n              ")}</a>
+                ABRIR EN TELEGRAM
+              </a>
               <button
                 onClick={() => setShowQRModal(false)}
                 className="w-full py-1.5 bg-black border border-[#333333] hover:border-white text-xs text-[#aaaaaa] uppercase tracking-wider transition-colors"
               >
-                {t("CERRAR\n              ")}</button>
+                CERRAR
+              </button>
             </div>
           </div>
         </div>
@@ -374,10 +398,10 @@ export default function PitchLanding() {
             <div className="p-3 sm:p-4 bg-[#1a1a1a] border-b border-[#333333] flex items-center justify-between select-none">
               <div className="flex items-center space-x-2.5 min-w-0">
                 <span className={`text-[10px] font-mono px-2 py-0.5 bg-black border shrink-0 ${selectedImage.badgeColor}`}>
-                  {t(selectedImage.badge)}
+                  {selectedImage.badge}
                 </span>
                 <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white truncate">
-                  {t(selectedImage.title)}
+                  {selectedImage.title}
                 </h3>
               </div>
               <div className="flex items-center space-x-2 shrink-0">
@@ -385,7 +409,7 @@ export default function PitchLanding() {
                   href={selectedImage.src}
                   target="_blank"
                   rel="noreferrer"
-                  title={t("Abrir imagen original")}
+                  title="Abrir imagen original"
                   className="p-1.5 text-[#898989] hover:text-[#76b900] hover:bg-black transition-colors border border-[#333333]"
                 >
                   <ExternalLink className="h-4 w-4" />
@@ -393,7 +417,7 @@ export default function PitchLanding() {
                 <button
                   onClick={() => setSelectedImage(null)}
                   className="p-1.5 text-[#898989] hover:text-white hover:bg-[#262626] transition-colors border border-[#333333]"
-                  title={t("Cerrar (Esc)")}
+                  title="Cerrar (Esc)"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -404,7 +428,7 @@ export default function PitchLanding() {
             <div className="flex-1 bg-black p-2 sm:p-4 flex items-center justify-center overflow-hidden min-h-[300px]">
               <img
                 src={selectedImage.src}
-                alt={t(selectedImage.title)}
+                alt={selectedImage.title}
                 className="max-h-[60vh] sm:max-h-[68vh] w-auto max-w-full object-contain border border-[#222222] shadow-2xl"
               />
             </div>
@@ -413,12 +437,12 @@ export default function PitchLanding() {
             <div className="p-3 sm:p-4 bg-[#141414] border-t border-[#333333] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
               <div className="space-y-1">
                 <p className="text-[#cccccc] text-[11px] sm:text-xs leading-relaxed max-w-2xl">
-                  {t(selectedImage.desc)}
+                  {selectedImage.desc}
                 </p>
                 <div className="flex items-center space-x-3 text-[10px] font-mono text-[#898989]">
                   <span>NASA ID: <strong className="text-[#76b900]">{selectedImage.nasaId}</strong></span>
                   <span>•</span>
-                  <span>{t("DOMINIO PÚBLICO OFICIAL")}</span>
+                  <span>DOMINIO PÚBLICO OFICIAL</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2 shrink-0 w-full sm:w-auto justify-end">
@@ -435,7 +459,7 @@ export default function PitchLanding() {
                   onClick={() => setSelectedImage(null)}
                   className="px-3.5 py-1.5 bg-[#76b900] hover:bg-[#5a8d00] text-black font-bold uppercase text-[11px] tracking-wider transition-colors"
                 >
-                  {t("CERRAR")}
+                  CERRAR
                 </button>
               </div>
             </div>
@@ -451,44 +475,49 @@ export default function PitchLanding() {
 
           <div className="inline-flex items-center space-x-2 px-3 py-1 bg-black border border-[#76b900] text-[#76b900] text-xs font-bold uppercase tracking-widest">
             <Award className="h-3.5 w-3.5" />
-            <span>{t("CHALLENGE: FLAME &amp; FIRE BEHAVIOR IN MICROGRAVITY")}</span>
+            <span>CHALLENGE: FLAME &amp; FIRE BEHAVIOR IN MICROGRAVITY</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
-            {t("Seguridad contra Incendios para la Exploración Humana en la Luna y Marte\n          ")}</h1>
+            Seguridad contra Incendios para la Exploración Humana en la Luna y Marte
+          </h1>
 
           <p className="text-sm sm:text-base text-[#a7a7a7] max-w-2xl mx-auto leading-relaxed">
-            {t("StellarApp es la primera plataforma de ")}<strong>{t("inteligencia de combustión espacial")}</strong> {t("que desbloquea, clasifica y modela con IA cuatro décadas de investigación de la NASA en microgravedad.\n          ")}</p>
+            StellarApp es la primera plataforma de <strong>inteligencia de combustión espacial</strong> que desbloquea, clasifica y modela con IA cuatro décadas de investigación de la NASA en microgravedad.
+          </p>
 
           {/* Mission Objective Callout */}
           <div className="bg-black/90 border border-[#76b900]/60 p-4 sm:p-5 text-left font-mono space-y-1.5 shadow-lg shadow-black">
             <div className="flex items-center justify-between">
               <span className="text-[10px] uppercase font-bold text-[#76b900] tracking-wider">
-                {t("// OBJETIVO PRIMORDIAL DE MISIÓN STELLARAPP\n              ")}</span>
+                // OBJETIVO PRIMORDIAL DE MISIÓN STELLARAPP
+              </span>
               <span className="text-[9px] px-2 py-0.5 bg-[#76b900]/10 border border-[#76b900]/40 text-[#76b900]">
-                {t("ARTEMIS &amp; MARS READY\n              ")}</span>
+                ARTEMIS &amp; MARS READY
+              </span>
             </div>
             <p className="text-xs text-white leading-relaxed">
-              {t("Proteger la vida de los astronautas y la integridad estructural de la nave en ")}<strong>{t("bases lunares y hábitats marcianos")}</strong>{t(", donde el fuego se comporta de forma radicalmente distinta a la Tierra, los extintores convencionales fallan y la evacuación es físicamente imposible.\n            ")}</p>
+              Proteger la vida de los astronautas y la integridad estructural de la nave en <strong>bases lunares y hábitats marcianos</strong>, donde el fuego se comporta de forma radicalmente distinta a la Tierra, los extintores convencionales fallan y la evacuación es físicamente imposible.
+            </p>
           </div>
 
           {/* KPI Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
             <div className="p-3 bg-black border border-[#333333] text-center">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-[#76b900]">{t("40 Años")}</div>
-              <div className="text-[10px] uppercase font-mono text-[#898989]">{t("Ciencia NASA")}</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono text-[#76b900]">40 Años</div>
+              <div className="text-[10px] uppercase font-mono text-[#898989]">Ciencia NASA</div>
             </div>
             <div className="p-3 bg-black border border-[#333333] text-center">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-[#00b0ff]">{t("14 Estudios")}</div>
-              <div className="text-[10px] uppercase font-mono text-[#898989]">{t("NASA PSI Repositorio")}</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono text-[#00b0ff]">14 Estudios</div>
+              <div className="text-[10px] uppercase font-mono text-[#898989]">NASA PSI Repositorio</div>
             </div>
             <div className="p-3 bg-black border border-[#333333] text-center">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-[#e040fb]">{t("&lt; 1 ms")}</div>
-              <div className="text-[10px] uppercase font-mono text-[#898989]">{t("Inferencia Air-Gapped")}</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono text-[#e040fb]">&lt; 1 ms</div>
+              <div className="text-[10px] uppercase font-mono text-[#898989]">Inferencia Air-Gapped</div>
             </div>
             <div className="p-3 bg-black border border-[#76b900]/40 text-center">
               <div className="text-xl sm:text-2xl font-bold font-mono text-white">35 / 35</div>
-              <div className="text-[10px] uppercase font-mono text-[#76b900]">{t("Tests Ralph Loop")}</div>
+              <div className="text-[10px] uppercase font-mono text-[#76b900]">Tests Ralph Loop</div>
             </div>
           </div>
 
@@ -498,13 +527,14 @@ export default function PitchLanding() {
               className="px-6 py-3 bg-[#76b900] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#5a8d00] transition-colors flex items-center space-x-2"
             >
               <Sparkles className="h-4 w-4 fill-black" />
-              <span>{t("PROBAR DASHBOARD EN VIVO")}</span>
+              <span>PROBAR DASHBOARD EN VIVO</span>
             </Link>
             <a
               href="#defensa"
               className="px-6 py-3 bg-black text-white border border-[#333333] hover:border-white font-bold text-xs uppercase tracking-wider transition-colors"
             >
-              {t("DEFENSA ANTE LOS JUECES\n            ")}</a>
+              DEFENSA ANTE LOS JUECES
+            </a>
           </div>
         </div>
 
@@ -512,9 +542,11 @@ export default function PitchLanding() {
         <section className="space-y-6">
           <div>
             <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-              {t("DIAGNÓSTICO DEL PROBLEMA\n            ")}</span>
+              DIAGNÓSTICO DEL PROBLEMA
+            </span>
             <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
-              {t("El Fuego en Microgravedad Desafía los Estándares Terrestres\n            ")}</h2>
+              El Fuego en Microgravedad Desafía los Estándares Terrestres
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -525,9 +557,9 @@ export default function PitchLanding() {
                   <div className="corner-square" />
                   <div className="flex items-center space-x-2 mb-3">
                     <Icon className="h-4 w-4 text-[#76b900]" />
-                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">{t(p.title)}</h3>
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">{p.title}</h3>
                   </div>
-                  <p className="text-xs text-[#a7a7a7] leading-relaxed">{t(p.desc)}</p>
+                  <p className="text-xs text-[#a7a7a7] leading-relaxed">{p.desc}</p>
                 </div>
               );
             })}
@@ -541,16 +573,19 @@ export default function PitchLanding() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
               <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-                {t("VALOR ESTRATÉGICO PARA LA NASA\n              ")}</span>
+                VALOR ESTRATÉGICO PARA LA NASA
+              </span>
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                {t("¿Por Qué StellarApp es Indispensable para Artemis?\n              ")}</h2>
+                ¿Por Qué StellarApp es Indispensable para Artemis?
+              </h2>
               <p className="text-xs sm:text-sm text-[#a7a7a7] leading-relaxed">
-                {t("En el espacio profundo la evacuación es imposible. La plataforma asiste directamente a la NASA en tres áreas prioritarias:\n              ")}</p>
+                En el espacio profundo la evacuación es imposible. La plataforma asiste directamente a la NASA en tres áreas prioritarias:
+              </p>
               <div className="space-y-3 pt-2">
                 {valueProps.map((vp, idx) => (
                   <div key={idx} className="p-4 bg-black border border-[#333333]">
-                    <h4 className="text-xs font-bold text-[#76b900] uppercase tracking-wider">{t(vp.title)}</h4>
-                    <p className="text-xs text-[#cccccc] mt-1 leading-relaxed">{t(vp.desc)}</p>
+                    <h4 className="text-xs font-bold text-[#76b900] uppercase tracking-wider">{vp.title}</h4>
+                    <p className="text-xs text-[#cccccc] mt-1 leading-relaxed">{vp.desc}</p>
                   </div>
                 ))}
               </div>
@@ -559,23 +594,23 @@ export default function PitchLanding() {
             <div className="lg:col-span-5 grid grid-cols-2 gap-4">
               <div className="p-5 bg-black border border-[#333333] text-center space-y-1">
                 <div className="text-3xl font-bold font-mono text-[#76b900]">95%</div>
-                <div className="text-[11px] font-bold uppercase text-white">{t("Aumento en Tasa")}</div>
-                <p className="text-[10px] text-[#757575]">{t("En 26% O₂ (Atmósfera Artemis).")}</p>
+                <div className="text-[11px] font-bold uppercase text-white">Aumento en Tasa</div>
+                <p className="text-[10px] text-[#757575]">En 26% O₂ (Atmósfera Artemis).</p>
               </div>
               <div className="p-5 bg-black border border-[#333333] text-center space-y-1">
-                <div className="text-3xl font-bold font-mono text-white">{t("0.0001g")}</div>
-                <div className="text-[11px] font-bold uppercase text-white">{t("Microgravedad Real")}</div>
-                <p className="text-[10px] text-[#757575]">{t("Datos de Cygnus Saffire.")}</p>
+                <div className="text-3xl font-bold font-mono text-white">0.0001g</div>
+                <div className="text-[11px] font-bold uppercase text-white">Microgravedad Real</div>
+                <p className="text-[10px] text-[#757575]">Datos de Cygnus Saffire.</p>
               </div>
               <div className="p-5 bg-black border border-[#333333] text-center space-y-1">
-                <div className="text-3xl font-bold font-mono text-[#76b900]">{t("&lt; 1.2 cm/s")}</div>
-                <div className="text-[11px] font-bold uppercase text-white">{t("Extinción Pasiva")}</div>
-                <p className="text-[10px] text-[#757575]">{t("Auto-asfixia al apagar flujo.")}</p>
+                <div className="text-3xl font-bold font-mono text-[#76b900]">&lt; 1.2 cm/s</div>
+                <div className="text-[11px] font-bold uppercase text-white">Extinción Pasiva</div>
+                <p className="text-[10px] text-[#757575]">Auto-asfixia al apagar flujo.</p>
               </div>
               <div className="p-5 bg-black border border-[#333333] text-center space-y-1">
-                <div className="text-3xl font-bold font-mono text-white">{t("STD-6001")}</div>
-                <div className="text-[11px] font-bold uppercase text-white">{t("Norma NASA")}</div>
-                <p className="text-[10px] text-[#757575]">{t("Ensayos de inflamabilidad.")}</p>
+                <div className="text-3xl font-bold font-mono text-white">STD-6001</div>
+                <div className="text-[11px] font-bold uppercase text-white">Norma NASA</div>
+                <p className="text-[10px] text-[#757575]">Ensayos de inflamabilidad.</p>
               </div>
             </div>
           </div>
@@ -586,13 +621,15 @@ export default function PitchLanding() {
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
               <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-                {t("INGENIERÍA DE ALTA RESILIENCIA\n              ")}</span>
+                INGENIERÍA DE ALTA RESILIENCIA
+              </span>
               <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
-                {t("Innovaciones Implementadas con el Ciclo Autónomo Ralph Loop\n              ")}</h2>
+                Innovaciones Implementadas con el Ciclo Autónomo Ralph Loop
+              </h2>
             </div>
             <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#1a1a1a] border border-[#333333] text-xs font-mono text-[#76b900]">
               <CheckCircle2 className="h-4 w-4" />
-              <span>{t("TEST SUITE: 35 / 35 PASANDO (100% VERIFICADO)")}</span>
+              <span>TEST SUITE: 35 / 35 PASANDO (100% VERIFICADO)</span>
             </div>
           </div>
 
@@ -607,15 +644,15 @@ export default function PitchLanding() {
                       <div className="flex items-center space-x-2">
                         <Icon className={`h-5 w-5 ${item.color}`} />
                         <span className="text-[10px] font-bold uppercase px-2 py-0.5 bg-black border border-[#333333] text-white">
-                          {t(item.badge)}
+                          {item.badge}
                         </span>
                       </div>
                       <span className={`text-sm font-mono font-bold ${item.color}`}>
-                        {t(item.metric)}
+                        {item.metric}
                       </span>
                     </div>
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">{t(item.title)}</h3>
-                    <p className="text-xs text-[#a7a7a7] leading-relaxed">{t(item.desc)}</p>
+                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">{item.title}</h3>
+                    <p className="text-xs text-[#a7a7a7] leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               );
@@ -630,34 +667,41 @@ export default function PitchLanding() {
                 <div className="relative w-28 h-28 sm:w-36 sm:h-36 bg-[#0a0a0a] border border-[#333333] p-2 flex items-center justify-center shadow-lg shadow-black/80">
                   <Image
                     src="/images/astronaut-agent.png"
-                    alt={t("Astronauta Asistente StellarApp")}
+                    alt="Astronauta Asistente StellarApp"
                     width={140}
                     height={140}
                     className="object-contain filter drop-shadow-[0_0_12px_rgba(118,185,0,0.3)]"
                   />
                   <div className="absolute -bottom-2 px-2 py-0.5 bg-[#76b900] text-black font-mono text-[9px] font-bold uppercase">
-                    {t("HUD FLOTANTE\n                  ")}</div>
+                    HUD FLOTANTE
+                  </div>
                 </div>
               </div>
 
               <div className="md:col-span-9 space-y-3">
                 <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 bg-black border border-[#76b900] text-[#76b900] text-[10px] font-bold uppercase tracking-wider">
                   <Sparkles className="h-3 w-3" />
-                  <span>{t("ASISTENTE VIRTUAL DE TRIPULACIÓN CON GROUNDING NASA")}</span>
+                  <span>ASISTENTE VIRTUAL DE TRIPULACIÓN CON GROUNDING NASA</span>
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold text-white">
-                  {t("Copiloto Táctico Siempre Accesible para Emergencias en Vuelo\n                ")}</h3>
+                  Copiloto Táctico Siempre Accesible para Emergencias en Vuelo
+                </h3>
                 <p className="text-xs text-[#cccccc] leading-relaxed">
-                  {t("A diferencia de interfaces estáticas, el asistente de StellarApp flota de manera no intrusiva sobre cualquier panel de la aplicación. Integra un motor dual: resuelve consultas prioritarias en ")}<strong>{t("&lt;0.02 ms")}</strong> {t("y ejecuta razonamiento RAG local con ")}<strong>{t("Qwen-2.5-3B")}</strong> {t("sin enviar telemetría a servidores externos.\n                ")}</p>
+                  A diferencia de interfaces estáticas, el asistente de StellarApp flota de manera no intrusiva sobre cualquier panel de la aplicación. Integra un motor dual: resuelve consultas prioritarias en <strong>&lt;0.02 ms</strong> y ejecuta razonamiento RAG local con <strong>Qwen-2.5-3B</strong> sin enviar telemetría a servidores externos.
+                </p>
                 <div className="flex flex-wrap gap-2 pt-1">
                   <span className="px-2 py-1 bg-black border border-[#333333] text-[11px] font-mono text-[#a7a7a7]">
-                    {t("• 100% Offline Air-Gapped\n                  ")}</span>
+                    • 100% Offline Air-Gapped
+                  </span>
                   <span className="px-2 py-1 bg-black border border-[#333333] text-[11px] font-mono text-[#a7a7a7]">
-                    {t("• Guardrails NASA-STD-6001B\n                  ")}</span>
+                    • Guardrails NASA-STD-6001B
+                  </span>
                   <span className="px-2 py-1 bg-black border border-[#333333] text-[11px] font-mono text-[#a7a7a7]">
-                    {t("• Límite Térmico Humano (45°C) & Casco Al-Li (150°C)\n                  ")}</span>
+                    • Límite Térmico Humano (45°C) & Casco Al-Li (150°C)
+                  </span>
                   <span className="px-2 py-1 bg-black border border-[#76b900]/40 text-[11px] font-mono text-[#76b900]">
-                    {t("• 14 Estudios & 32 Parámetros NASA PSI Validados\n                  ")}</span>
+                    • 14 Estudios & 32 Parámetros NASA PSI Validados
+                  </span>
                 </div>
               </div>
             </div>
@@ -672,13 +716,14 @@ export default function PitchLanding() {
                 <div className="relative bg-white p-3 border-2 border-[#0088cc] shadow-xl shadow-[#0088cc]/20">
                   <Image
                     src="/images/telegram-bot-qr.png"
-                    alt={t("QR Bot Telegram StellarApp")}
+                    alt="QR Bot Telegram StellarApp"
                     width={180}
                     height={180}
                     className="object-contain"
                   />
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#0088cc] text-white font-mono text-[9px] font-bold uppercase whitespace-nowrap">
-                    {t("ESCANEAR CON LA CÁMARA\n                  ")}</div>
+                    ESCANEAR CON LA CÁMARA
+                  </div>
                 </div>
                 <a
                   href="https://t.me/Stellar_App_bot"
@@ -687,7 +732,7 @@ export default function PitchLanding() {
                   className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-[#0088cc] hover:bg-[#0077b5] text-white text-xs font-bold uppercase tracking-wider transition-colors"
                 >
                   <Send className="h-3.5 w-3.5" />
-                  <span>{t("@Stellar_App_bot")}</span>
+                  <span>@Stellar_App_bot</span>
                 </a>
               </div>
 
@@ -695,48 +740,62 @@ export default function PitchLanding() {
               <div className="md:col-span-8 space-y-4">
                 <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 bg-black border border-[#0088cc] text-[#0088cc] text-[10px] font-bold uppercase tracking-wider">
                   <Radio className="h-3 w-3 animate-pulse" />
-                  <span>{t("DEMOSTRACIÓN INTERACTIVA EN VIVO CON EL AUDITORIO Y JUECES")}</span>
+                  <span>DEMOSTRACIÓN INTERACTIVA EN VIVO CON EL AUDITORIO Y JUECES</span>
                 </div>
 
                 <h3 className="text-lg sm:text-2xl font-bold text-white">
-                  {t("Conecta tu Teléfono a la Red de Alerta Temprana ECLSS\n                ")}</h3>
+                  Conecta tu Teléfono a la Red de Alerta Temprana ECLSS
+                </h3>
 
                 <p className="text-xs sm:text-sm text-[#cccccc] leading-relaxed">
-                  {t("Para que los evaluadores de la NASA y el público experimenten la velocidad de respuesta en primera persona, hemos habilitado un ")}<strong>{t("Webhook en tiempo real con Telegram")}</strong>{t(". Cualquier persona en la sala puede suscribirse en 5 segundos sin instalar ninguna aplicación adicional.\n                ")}</p>
+                  Para que los evaluadores de la NASA y el público experimenten la velocidad de respuesta en primera persona, hemos habilitado un <strong>Webhook en tiempo real con Telegram</strong>. Cualquier persona en la sala puede suscribirse en 5 segundos sin instalar ninguna aplicación adicional.
+                </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   <div className="p-3 bg-black/60 border border-[#333333] space-y-1">
                     <span className="text-[10px] font-bold text-[#0088cc] uppercase block">
-                      {t("1. ESCANEAR & SUSCRIBIRSE\n                    ")}</span>
+                      1. ESCANEAR & SUSCRIBIRSE
+                    </span>
                     <p className="text-[11px] text-[#a7a7a7]">
-                      {t("Apunta tu cámara al código QR y pulsa ")}<strong>{t("/start")}</strong> {t("en Telegram para autenticar tu credencial de tripulante.\n                    ")}</p>
+                      Apunta tu cámara al código QR y pulsa <strong>/start</strong> en Telegram para autenticar tu credencial de tripulante.
+                    </p>
                   </div>
 
                   <div className="p-3 bg-black/60 border border-[#333333] space-y-1">
                     <span className="text-[10px] font-bold text-[#76b900] uppercase block">
-                      {t("2. ALARMA SIMULTÁNEA DE CABINA\n                    ")}</span>
+                      2. ALARMA SIMULTÁNEA DE CABINA
+                    </span>
                     <p className="text-[11px] text-[#a7a7a7]">
-                      {t("Cuando simulamos una fuga crítica de CO o fuego difusivo en el escenario, ")}<strong>{t("todos los teléfonos vibran al mismo milisegundo")}</strong>.
+                      Cuando simulamos una fuga crítica de CO o fuego difusivo en el escenario, <strong>todos los teléfonos vibran al mismo milisegundo</strong>.
                     </p>
                   </div>
 
                   <div className="p-3 bg-black/60 border border-[#333333] space-y-1">
                     <span className="text-[10px] font-bold text-[#ffb703] uppercase block">
-                      {t("3. BOTONES DE TELEMETRÍA IOT\n                    ")}</span>
+                      3. BOTONES DE TELEMETRÍA IOT
+                    </span>
                     <p className="text-[11px] text-[#a7a7a7]">
-                      {t("Consulta el estado del Filtro de Kalman, la concentración de O₂ y el tiempo límite de evacuación directamente en el bot.\n                    ")}</p>
+                      Consulta el estado del Filtro de Kalman, la concentración de O₂ y el tiempo límite de evacuación directamente en el bot.
+                    </p>
                   </div>
 
                   <div className="p-3 bg-black/60 border border-[#333333] space-y-1">
                     <span className="text-[10px] font-bold text-[#ff0055] uppercase block">
-                      {t("4. SIMULADOR DE MATERIALES\n                    ")}</span>
+                      4. SIMULADOR DE MATERIALES
+                    </span>
                     <p className="text-[11px] text-[#a7a7a7]">
-                      {t("Envía ")}<code>{t("/simular nomex")}</code> {t("o pulsa el botón para ver cómo un material ignífugo en la Tierra se vuelve reactivo en Artemis.\n                    ")}</p>
+                      Envía <code>/simular nomex</code> o pulsa el botón para ver cómo un material ignífugo en la Tierra se vuelve reactivo en Artemis.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Hardware-in-the-Loop & Algoritmo Filtro de Kalman */}
+        <section id="kalman" className="space-y-4">
+          <KalmanTelemetry />
         </section>
 
         {/* Evidencia en Video y Fotografía Oficial NASA */}
@@ -745,13 +804,13 @@ export default function PitchLanding() {
             <div>
               <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 bg-black border border-[#76b900] text-[#76b900] text-[10px] font-bold uppercase tracking-wider mb-2">
                 <Film className="h-3 w-3" />
-                <span>{t("EVIDENCIA OFICIAL DE VUELO ESPACIAL (DOMINIO PÚBLICO NASA)")}</span>
+                <span>EVIDENCIA OFICIAL DE VUELO ESPACIAL (DOMINIO PÚBLICO NASA)</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-white">
-                {t("Metraje de Video y Fotografía de Combustión en Microgravedad")}
+                Metraje de Video y Fotografía de Combustión en Microgravedad
               </h2>
               <p className="text-xs text-[#a7a7a7] mt-1">
-                {t("Archivos oficiales obtenidos de ")}<strong>images.nasa.gov</strong>{t(" de las misiones de fuego real Saffire (carguero Cygnus) e ISS (BASS-II y SoFIE).")}
+                Archivos oficiales obtenidos de <strong>images.nasa.gov</strong> de las misiones de fuego real Saffire (carguero Cygnus) e ISS (BASS-II y SoFIE).
               </p>
             </div>
             <span className="text-[10px] font-mono text-[#898989] shrink-0">
@@ -768,11 +827,11 @@ export default function PitchLanding() {
                 <div className="flex items-center space-x-2">
                   <Play className="h-4 w-4 text-[#76b900]" />
                   <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                    {t("Experimento Saffire-V (Cygnus) // Fuego Real")}
+                    Experimento Saffire-V (Cygnus) // Fuego Real
                   </h3>
                 </div>
                 <span className="px-1.5 py-0.5 text-[9px] font-mono bg-black border border-[#76b900]/40 text-[#76b900]">
-                  {t("VIDEO OFICIAL")}
+                  VIDEO OFICIAL
                 </span>
               </div>
               <div className="relative rounded overflow-hidden bg-black border border-[#222222]">
@@ -785,7 +844,7 @@ export default function PitchLanding() {
               </div>
               <div className="space-y-1 font-sans">
                 <p className="text-[11px] text-[#cccccc] leading-relaxed">
-                  {t("Combustión sobre una muestra de PMMA (plexiglás) con ventilación forzada en el interior del carguero Cygnus tras desacoplarse de la ISS. Muestra cómo el fuego se ancla y avanza sin corrientes ascendentes.")}
+                  Combustión sobre una muestra de PMMA (plexiglás) con ventilación forzada en el interior del carguero Cygnus tras desacoplarse de la ISS. Muestra cómo el fuego se ancla y avanza sin corrientes ascendentes.
                 </p>
                 <div className="flex items-center justify-between text-[10px] font-mono text-[#757575] pt-1 border-t border-[#2a2a2a]">
                   <span>ID: GRC-2021-CN-00008</span>
@@ -795,7 +854,7 @@ export default function PitchLanding() {
                     rel="noreferrer"
                     className="text-[#76b900] hover:underline"
                   >
-                    {t("Ver en NASA.gov ↗")}
+                    Ver en NASA.gov ↗
                   </a>
                 </div>
               </div>
@@ -808,11 +867,11 @@ export default function PitchLanding() {
                 <div className="flex items-center space-x-2">
                   <Play className="h-4 w-4 text-[#00b0ff]" />
                   <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                    {t("Experimento SoFIE-GEL (ISS) // Llama Esférica")}
+                    Experimento SoFIE-GEL (ISS) // Llama Esférica
                   </h3>
                 </div>
                 <span className="px-1.5 py-0.5 text-[9px] font-mono bg-black border border-[#00b0ff]/40 text-[#00b0ff]">
-                  {t("VIDEO OFICIAL")}
+                  VIDEO OFICIAL
                 </span>
               </div>
               <div className="relative rounded overflow-hidden bg-black border border-[#222222]">
@@ -825,7 +884,7 @@ export default function PitchLanding() {
               </div>
               <div className="space-y-1 font-sans">
                 <p className="text-[11px] text-[#cccccc] leading-relaxed">
-                  {t("Ignición y extinción de combustible sólido en microgravedad. Se observa la llama esférica girando sobre sí misma hasta alcanzar el límite crítico de autoextinción por asfixia radiativa.")}
+                  Ignición y extinción de combustible sólido en microgravedad. Se observa la llama esférica girando sobre sí misma hasta alcanzar el límite crítico de autoextinción por asfixia radiativa.
                 </p>
                 <div className="flex items-center justify-between text-[10px] font-mono text-[#757575] pt-1 border-t border-[#2a2a2a]">
                   <span>ID: SoFIE-GEL</span>
@@ -835,7 +894,7 @@ export default function PitchLanding() {
                     rel="noreferrer"
                     className="text-[#00b0ff] hover:underline"
                   >
-                    {t("Ver en NASA.gov ↗")}
+                    Ver en NASA.gov ↗
                   </a>
                 </div>
               </div>
@@ -853,26 +912,26 @@ export default function PitchLanding() {
                 <div className="relative aspect-video sm:aspect-square bg-black overflow-hidden border border-[#2a2a2a] group-hover:border-[#76b900]/60">
                   <img
                     src={photo.src}
-                    alt={t(photo.title)}
+                    alt={photo.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   {/* Hover Overlay with Zoom Indicator */}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                     <span className="px-2 py-1 bg-black/90 border border-[#76b900] text-[#76b900] text-[10px] font-mono font-bold flex items-center space-x-1 shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-transform">
                       <ZoomIn className="h-3.5 w-3.5" />
-                      <span>{t("AMPLIAR")}</span>
+                      <span>AMPLIAR</span>
                     </span>
                   </div>
                   <span className={`absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/85 text-[9px] font-mono border ${photo.badgeColor}`}>
-                    {t(photo.badge)}
+                    {photo.badge}
                   </span>
                 </div>
                 <div>
                   <h4 className="text-[11px] font-bold text-white group-hover:text-[#76b900] transition-colors uppercase leading-snug">
-                    {t(photo.title)}
+                    {photo.title}
                   </h4>
                   <p className="text-[10px] text-[#898989] leading-tight mt-0.5 line-clamp-2">
-                    {t(photo.desc)}
+                    {photo.desc}
                   </p>
                 </div>
               </div>
@@ -884,9 +943,11 @@ export default function PitchLanding() {
         <section id="defensa" className="space-y-6">
           <div>
             <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-              {t("DEFENSA TÉCNICA DEL PROYECTO\n            ")}</span>
+              DEFENSA TÉCNICA DEL PROYECTO
+            </span>
             <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
-              {t("Preguntas Clave de los Evaluadores de la NASA\n            ")}</h2>
+              Preguntas Clave de los Evaluadores de la NASA
+            </h2>
           </div>
 
           <div className="space-y-4">
@@ -894,12 +955,12 @@ export default function PitchLanding() {
               <div key={idx} className="p-6 bg-[#1a1a1a] border border-[#333333] space-y-2">
                 <div className="flex items-center space-x-2">
                   <span className="px-2 py-0.5 bg-black border border-[#76b900] text-[#76b900] font-mono text-xs font-bold">
-                    {t("Q")}{idx + 1}
+                    Q{idx + 1}
                   </span>
-                  <h3 className="text-sm font-bold text-white uppercase">{t(item.q)}</h3>
+                  <h3 className="text-sm font-bold text-white uppercase">{item.q}</h3>
                 </div>
                 <p className="text-xs text-[#cccccc] pl-7 leading-relaxed">
-                  {t(item.a)}
+                  {item.a}
                 </p>
               </div>
             ))}
@@ -909,21 +970,22 @@ export default function PitchLanding() {
         {/* Bottom CTA */}
         <div className="p-8 bg-[#1a1a1a] border border-[#76b900] text-center space-y-4 relative">
           <div className="corner-square" />
-          <h3 className="text-xl font-bold text-white uppercase">{t("Acceso al Panel de Control de Vuelo")}</h3>
+          <h3 className="text-xl font-bold text-white uppercase">Acceso al Panel de Control de Vuelo</h3>
           <p className="text-xs text-[#a7a7a7] max-w-xl mx-auto">
-            {t("Explora el catálogo de experimentos, ejecuta la simulación predictiva de atmósferas y consulta al agente IA.\n          ")}</p>
+            Explora el catálogo de experimentos, ejecuta la simulación predictiva de atmósferas y consulta al agente IA.
+          </p>
           <Link
             href="/"
             className="inline-flex items-center space-x-2 px-6 py-3 bg-[#76b900] text-black font-bold uppercase tracking-wider text-xs hover:bg-[#5a8d00] transition-colors"
           >
-            <span>{t("LANZAR WORKBENCH STELLARAPP")}</span>
+            <span>LANZAR WORKBENCH STELLARAPP</span>
             <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
       </main>
 
       <footer className="border-t border-[#333333] bg-black py-8 text-center text-xs text-[#757575]">
-        <p>{t("Equipo StellarApp • NASA Space Apps Challenge 2026")}</p>
+        <p>Equipo StellarApp • NASA Space Apps Challenge 2026</p>
       </footer>
     </div>
   );

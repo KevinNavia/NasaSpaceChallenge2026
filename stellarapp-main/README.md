@@ -29,7 +29,7 @@ Plataforma interactiva con Inteligencia Artificial que resume, clasifica e inter
 ## 🛠️ Stack Tecnológico
 
 - **Frontend:** Next.js 14 / React / Tailwind CSS / Lucide Icons.
-- **Backend:** FastAPI (Python 3.11).
+- **Backend:** FastAPI (Python 3.14).
 - **Inteligencia Artificial:** Gemini API (`gemini-2.0-flash`) con sistema de grounding sobre el dataset de la NASA.
 - **Fuentes de Datos:** NASA Physical Sciences Informatics (PSI) & NASA Technical Reports Server (NTRS).
 
@@ -59,36 +59,23 @@ npm run dev
 ```
 *Panel interactivo disponible en:* `http://localhost:3000`
 
-
 ---
 
-## 🔐 Seguridad y configuración
+## 🌐 Internacionalización (ES / EN)
 
-Copia `backend/.env.example` a `backend/.env` y completa los valores. **Nunca subas `.env` ni tokens al repositorio.**
+La interfaz está disponible en español e inglés mediante [`next-intl`](https://next-intl.dev) con rutas por idioma.
 
-| Variable | Para qué sirve |
-|---|---|
-| `TELEGRAM_BOT_TOKEN` | Token del bot (de @BotFather). Solo por entorno. |
-| `TELEGRAM_WEBHOOK_SECRET` | Secreto que Telegram envía en cada webhook; el backend lo valida. |
-| `STELLAR_API_KEY` | Header `X-API-Key` exigido en `POST /api/telemetry/hardware` y `POST /api/telegram/set-webhook`. |
-| `ALLOWED_ORIGINS` | Orígenes CORS permitidos (separados por coma). |
-| `TRUST_PROXY_HEADERS` | `1` detrás de Nginx/Cloudflare para limitar por IP real. |
+| Ruta | Idioma |
+| --- | --- |
+| `/` | Redirige según el navegador (cookie `NEXT_LOCALE`) |
+| `/es`, `/es/pitch` | Español (idioma por defecto) |
+| `/en`, `/en/pitch` | Inglés |
 
-- Límites por IP: 20 consultas de IA/min y 5 emisiones a Telegram/min.
-- `GET /api/telegram/status` ya no expone la lista de suscriptores, solo el conteo.
-- Si necesitas rotar el token: `/revoke` en @BotFather, actualiza `.env` y llama a `set-webhook` con tu `X-API-Key`.
-- Puente del Pico W: `STELLAR_API_KEY=... python scripts/bridge_pico.py --port COM6`.
+- El selector **ES / EN** está en el navbar (escritorio y menú móvil) y en la cabecera del pitch.
+- La detección inicial usa `Accept-Language`; la elección manual se guarda un año en la cookie `NEXT_LOCALE`.
+- Los textos viven en `frontend/messages/es.json` y `frontend/messages/en.json`, organizados por namespace (`nav`, `hero`, `catalog`, `footer`, `metadata`, `localeSwitcher`).
+- Configuración: `frontend/locales.ts`, `frontend/i18n.ts`, `frontend/middleware.ts` y `frontend/navigation.ts` (helpers `Link`/`useRouter` con prefijo de idioma).
 
-### Tests
+Para añadir un texto nuevo, agrega la misma clave en **ambos** archivos JSON; `next build` falla si una clave falta en el idioma que se renderiza.
 
-```bash
-cd backend
-pip install -r requirements-dev.txt
-python -m pytest -q
-```
-
----
-
-## 🌐 Idiomas (ES / EN)
-
-La interfaz y el asistente de IA funcionan en español e inglés. El selector está arriba a la derecha y se recuerda en `localStorage`. Para añadir textos nuevos, usa `t("Texto en español")` y agrega la pareja en `frontend/i18n/en.json`. Detalles en `GUIA_BILINGUE_ES_EN.md`.
+> Estado: Fase 0 completada (infraestructura, navbar, hero, catálogo, footer y metadata). Los componentes internos de la home, el contenido del pitch y las respuestas del agente IA siguen en español (fases 1–3).

@@ -1,5 +1,4 @@
 "use client";
-import { useLanguage } from "../i18n/LanguageContext";
 
 import React, { useState } from "react";
 import { X, Send, Sparkles, Terminal, BookOpen } from "lucide-react";
@@ -17,7 +16,6 @@ interface ChatMessage {
 }
 
 export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalProps) {
-  const { t, language } = useLanguage();
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
@@ -29,12 +27,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const sampleQuestions = language === "en" ? [
-    "Why can flames become spherical in microgravity?",
-    "How does oxygen concentration affect flame propagation?",
-    "What changes in smoke transport without buoyancy?",
-    "What did FLEX discover about cool flames?",
-  ] : [
+  const sampleQuestions = [
     "¿Por qué las llamas son esféricas en microgravedad?",
     "¿Qué peligro representa el 26% de O2 en Artemis?",
     "¿Cómo actúa el protocolo de extinción en la ISS si no hay convección?",
@@ -56,7 +49,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
       const resp = await fetch("/api/ai/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: q, language }),
+        body: JSON.stringify({ query: q }),
       });
 
       if (resp.ok) {
@@ -102,8 +95,9 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
             <Terminal className="h-5 w-5 text-[#76b900]" />
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                {t("AGENTE DE INTELIGENCIA DE COMBUSTIÓN NASA\n              ")}</h3>
-              <p className="text-[10px] text-[#898989] font-mono">{t("GROUNDING EN PAPERS SAFFIRE & BASS")}</p>
+                AGENTE DE INTELIGENCIA DE COMBUSTIÓN NASA
+              </h3>
+              <p className="text-[10px] text-[#898989] font-mono">GROUNDING EN PAPERS SAFFIRE & BASS</p>
             </div>
           </div>
           <button onClick={onClose} className="p-1 text-[#898989] hover:text-white transition-colors">
@@ -126,14 +120,14 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
                 }`}
               >
                 {m.role === "assistant" ? (
-                  <MarkdownRenderer content={idx === 0 && m.role === "assistant" && language === "en" ? "StellarApp mission assistant: ask about microgravity combustion, NASA experiments, oxygen, ventilation, smoke and spacecraft safety. This is a research demo, not a certified crew system." : m.content} />
+                  <MarkdownRenderer content={m.content} />
                 ) : (
                   m.content
                 )}
                 {m.sources && m.sources.length > 0 && (
                   <div className="mt-3 pt-2 border-t border-[#333333] flex items-center space-x-1.5 text-[10px] text-[#76b900] font-mono">
                     <BookOpen className="h-3 w-3" />
-                    <span>{t("REF: ")}{m.sources.join(", ")}</span>
+                    <span>REF: {m.sources.join(", ")}</span>
                   </div>
                 )}
               </div>
@@ -142,14 +136,14 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
 
           {loading && (
             <div className="flex items-center space-x-2 text-[#76b900] text-xs font-mono py-2">
-              <span className="animate-pulse">{t("PROCESANDO CONSULTA CON MOTOR GEMINI...")}</span>
+              <span className="animate-pulse">PROCESANDO CONSULTA CON MOTOR GEMINI...</span>
             </div>
           )}
         </div>
 
         {/* Suggestion Pills */}
         <div className="px-4 py-2 bg-[#1a1a1a] border-t border-[#333333] flex items-center gap-2 overflow-x-auto text-[11px]">
-          <span className="text-[10px] font-bold text-[#898989] uppercase tracking-wider shrink-0">{t("PROMPTS:")}</span>
+          <span className="text-[10px] font-bold text-[#898989] uppercase tracking-wider shrink-0">PROMPTS:</span>
           {sampleQuestions.map((q, idx) => (
             <button
               key={idx}
@@ -168,7 +162,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder={t("Introduce tu consulta técnica sobre fuego en microgravedad...")}
+            placeholder="Introduce tu consulta técnica sobre fuego en microgravedad..."
             className="flex-1 bg-[#1a1a1a] border border-[#333333] px-4 py-2.5 text-xs text-white placeholder-[#757575] focus:outline-none focus:border-[#76b900]"
           />
           <button

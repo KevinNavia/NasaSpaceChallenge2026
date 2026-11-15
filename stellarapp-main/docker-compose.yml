@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build:
@@ -13,20 +15,6 @@ services:
       - OLLAMA_HOST=http://host.docker.internal:11434
       - OLLAMA_MODEL=qwen2.5:3b
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
-      - TELEGRAM_WEBHOOK_SECRET=${TELEGRAM_WEBHOOK_SECRET:-}
-      - STELLAR_API_KEY=${STELLAR_API_KEY:-}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://stellarapp.nerosystem.solutions,http://localhost:3000}
-      - TRUST_PROXY_HEADERS=${TRUST_PROXY_HEADERS:-1}
-    volumes:
-      # Persiste los suscriptores de Telegram entre reconstrucciones del contenedor
-      - stellar_data:/app/runtime
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status == 200 else 1)"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 15s
     restart: unless-stopped
     networks:
       - stellarapp_net
@@ -41,14 +29,10 @@ services:
     environment:
       - INTERNAL_BACKEND_URL=http://backend:8000
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     restart: unless-stopped
     networks:
       - stellarapp_net
-
-volumes:
-  stellar_data:
 
 networks:
   stellarapp_net:

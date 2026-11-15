@@ -9,6 +9,7 @@ env/
 out/
 build/
 dist/
+*.tsbuildinfo
 
 # Python cache
 __pycache__/
@@ -35,6 +36,5 @@ deploy.tar.gz
 .DS_Store
 Thumbs.db
 
-# Datos de runtime (suscriptores de Telegram)
-backend/runtime/
-backend/data/telegram_subscribers.json
+hardware/esp32_cockpit/.pio/
+hardware/**/.pio/

@@ -1,23 +1,23 @@
 "use client";
-import { useLanguage } from "../i18n/LanguageContext";
 
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import MetricsCards from "../components/MetricsCards";
-import ComparisonViewer from "../components/ComparisonViewer";
-import NASAOfficialFootage from "../components/NASAOfficialFootage";
-import AISimulator from "../components/AISimulator";
-import KalmanTelemetry from "../components/KalmanTelemetry";
-import EarthSpaceBridge from "../components/EarthSpaceBridge";
-import ExperimentCard from "../components/ExperimentCard";
-import AIAssistantModal from "../components/AIAssistantModal";
-import AnalyticsCharts from "../components/AnalyticsCharts";
-import FloatingAIAgent from "../components/FloatingAIAgent";
-import { Experiment, MetricsData } from "../types";
+import Navbar from "../../components/Navbar";
+import MetricsCards from "../../components/MetricsCards";
+import ComparisonViewer from "../../components/ComparisonViewer";
+import NASAOfficialFootage from "../../components/NASAOfficialFootage";
+import AISimulator from "../../components/AISimulator";
+import KalmanTelemetry from "../../components/KalmanTelemetry";
+import EarthSpaceBridge from "../../components/EarthSpaceBridge";
+import ExperimentCard from "../../components/ExperimentCard";
+import AIAssistantModal from "../../components/AIAssistantModal";
+import AnalyticsCharts from "../../components/AnalyticsCharts";
+import FloatingAIAgent from "../../components/FloatingAIAgent";
+import { Experiment, MetricsData } from "../../types";
+import { useTranslations } from "next-intl";
 import { Search, Sparkles, Terminal, ChevronRight, AlertTriangle } from "lucide-react";
 
 export default function Home() {
-  const { t } = useLanguage();
+  const t = useTranslations();
   const [metrics, setMetrics] = useState<MetricsData | null>(null);
   const [experiments, setExperiments] = useState<Experiment[]>([]);
   const [search, setSearch] = useState("");
@@ -100,14 +100,18 @@ export default function Home() {
           <div className="max-w-3xl space-y-5">
             <div className="flex items-center space-x-2 text-xs font-bold text-[#76b900] uppercase tracking-widest">
               <Terminal className="h-4 w-4" />
-              <span>{t("SISTEMA DE INTELIGENCIA DE SEGURIDAD CONTRA INCENDIOS")}</span>
+              <span>{t("hero.eyebrow")}</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
-              {t("Combustión en Microgravedad: Predicción y Seguridad para Artemis & Marte\n            ")}</h1>
+              {t("hero.title")}
+            </h1>
 
             <p className="text-sm sm:text-base text-[#a7a7a7] leading-relaxed">
-              {t("La NASA ha recopilado cuatro décadas de datos experimentales en la ISS y naves Cygnus (Saffire, BASS, FLEX). \n              ")}<strong> {t("StellarApp")}</strong> {t("sintetiza, clasifica e interpreta esta física con IA para salvaguardar a la tripulación en hábitats presurizados lunares y marcianos.\n            ")}</p>
+              {t.rich("hero.body", {
+                b: (chunks) => <strong>{chunks}</strong>,
+              })}
+            </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <button
@@ -115,20 +119,22 @@ export default function Home() {
                 className="px-6 py-3 bg-[#76b900] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#5a8d00] transition-colors flex items-center space-x-2"
               >
                 <Sparkles className="h-4 w-4 fill-black" />
-                <span>{t("CONSULTAR AGENTE IA NASA")}</span>
+                <span>{t("hero.ctaAI")}</span>
               </button>
 
               <button
                 onClick={scrollToSimulator}
                 className="px-6 py-3 bg-black text-white border border-[#333333] hover:border-white font-bold text-xs uppercase tracking-wider transition-colors"
               >
-                {t("WORKBENCH DE SIMULACIÓN\n              ")}</button>
+                {t("hero.ctaSimulator")}
+              </button>
 
               <button
                 onClick={scrollToAnalytics}
                 className="px-6 py-3 bg-black text-[#76b900] border border-[#76b900] hover:bg-[#76b900] hover:text-black font-bold text-xs uppercase tracking-wider transition-colors"
               >
-                {t("DASHBOARD DE GRÁFICOS\n              ")}</button>
+                {t("hero.ctaCharts")}
+              </button>
             </div>
           </div>
         </section>
@@ -171,9 +177,11 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#333333]">
             <div>
               <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-                {t("CATÁLOGO DE EXPERIMENTOS OFICIALES\n              ")}</span>
+                {t("catalog.eyebrow")}
+              </span>
               <h2 className="text-xl font-bold text-white mt-0.5">
-                {t("Datos de Vuelo: Saffire, BASS-II & FLEX-2 (")}{filteredExperiments.length} {t("registrados)\n              ")}</h2>
+                {t("catalog.title", { count: filteredExperiments.length })}
+              </h2>
             </div>
 
             {/* Filter Bar */}
@@ -184,7 +192,7 @@ export default function Home() {
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder={t("Buscar material o misión...")}
+                  placeholder={t("catalog.search")}
                   className="bg-black border border-[#333333] pl-9 pr-3 py-2 text-xs text-white placeholder-[#757575] focus:outline-none focus:border-[#76b900] w-52 sm:w-64"
                 />
               </div>
@@ -194,10 +202,10 @@ export default function Home() {
                 onChange={(e) => setSelectedEnv(e.target.value)}
                 className="bg-black border border-[#333333] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#76b900]"
               >
-                <option value="all">{t("Todas las Gravedades")}</option>
-                <option value="0g">{t("Microgravedad (0g)")}</option>
-                <option value="partial">{t("Parcial (Luna / Marte)")}</option>
-                <option value="1g">{t("Terrestre (1g)")}</option>
+                <option value="all">{t("catalog.allGravities")}</option>
+                <option value="0g">{t("catalog.microgravity")}</option>
+                <option value="partial">{t("catalog.partial")}</option>
+                <option value="1g">{t("catalog.terrestrial")}</option>
               </select>
 
               <select
@@ -205,11 +213,11 @@ export default function Home() {
                 onChange={(e) => setSelectedRisk(e.target.value)}
                 className="bg-black border border-[#333333] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#76b900]"
               >
-                <option value="all">{t("Todos los Riesgos")}</option>
-                <option value="extreme">{t("Extremo (Artemis 26% O₂)")}</option>
-                <option value="critical">{t("Crítico")}</option>
-                <option value="moderate">{t("Moderado")}</option>
-                <option value="low">{t("Bajo (Auto-extinguible)")}</option>
+                <option value="all">{t("catalog.allRisks")}</option>
+                <option value="extreme">{t("catalog.extreme")}</option>
+                <option value="critical">{t("catalog.critical")}</option>
+                <option value="moderate">{t("catalog.moderate")}</option>
+                <option value="low">{t("catalog.low")}</option>
               </select>
             </div>
           </div>
@@ -224,7 +232,7 @@ export default function Home() {
           ) : (
             <div className="p-12 text-center bg-[#1a1a1a] border border-[#333333] text-[#757575] space-y-2">
               <AlertTriangle className="h-8 w-8 mx-auto text-[#df6500]" />
-              <p className="text-xs uppercase tracking-wider font-mono">{t("No se encontraron experimentos coincidentes.")}</p>
+              <p className="text-xs uppercase tracking-wider font-mono">{t("catalog.empty")}</p>
             </div>
           )}
         </section>
@@ -234,9 +242,11 @@ export default function Home() {
       <footer className="border-t border-[#333333] bg-black py-8 text-xs text-[#757575] mt-16">
         <div className="max-w-[1280px] mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>
-            <strong>{t("StellarApp")}</strong> {t("• NASA International Space Apps Challenge 2026.\n          ")}</p>
+            <strong>StellarApp</strong> • {t("footer.credit")}
+          </p>
           <p className="text-[11px] font-mono">
-            {t("ESTÁNDAR: NASA-STD-6001 | DATOS: NASA PSI & NTRS\n          ")}</p>
+            {t("footer.standard")}
+          </p>
         </div>
       </footer>
 

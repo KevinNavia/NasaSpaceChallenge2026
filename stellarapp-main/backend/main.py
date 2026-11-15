@@ -1,11 +1,10 @@
 import os
 import json
-import logging
 import time
 import httpx
 from pathlib import Path
 from typing import Optional, List, Dict, Any
-from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
@@ -14,12 +13,8 @@ from ai_service import CombustionAIService
 from physics_engine import engine, SCENARIOS
 from firms_service import firms_bridge
 import telegram_service
-from security import RateLimiter, get_allowed_origins, require_api_key
 
 load_dotenv()
-
-logger = logging.getLogger("stellarapp.api")
-logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
 app = FastAPI(
     title="NASA StellarApp - Microgravity Fire Safety & Combustion Intelligence API",
@@ -30,10 +25,10 @@ app = FastAPI(
 # CORS configuration for Frontend (Next.js)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=get_allowed_origins(),
-    allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "X-API-Key"],
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 DATA_PATH = Path(__file__).parent / "data" / "nasa_combustion_data.json"
@@ -47,10 +42,6 @@ if not PSI_FULL_DB_PATH.exists():
 
 ai_service = CombustionAIService(str(DATA_PATH))
 
-# Límites por IP (ventana deslizante en memoria)
-ai_limiter = RateLimiter(max_calls=20, per_seconds=60, scope="ai")
-broadcast_limiter = RateLimiter(max_calls=5, per_seconds=60, scope="broadcast")
-
 def load_data() -> List[Dict[str, Any]]:
     with open(DATA_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -60,7 +51,7 @@ def load_psi_database() -> Dict[str, Any]:
         with open(PSI_DB_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        logger.error("Error cargando base de datos PSI-159: %s", e)
+        print(f"Error cargando base de datos PSI-159: {e}")
         return {}
 
 def load_psi_full_database() -> Dict[str, Any]:
@@ -68,12 +59,11 @@ def load_psi_full_database() -> Dict[str, Any]:
         with open(PSI_FULL_DB_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        logger.error("Error cargando base de datos completa NASA PSI: %s", e)
+        print(f"Error cargando base de datos completa NASA PSI: {e}")
         return {"metadata": {}, "tables": {}}
 
 class QueryRequest(BaseModel):
     query: str = Field(..., min_length=1, max_length=2000, description="Consulta del astronauta o ingeniero")
-    language: str = Field(default="es", pattern="^(es|en)$", description="Idioma solicitado: es o en")
 
 class SimulationRequest(BaseModel):
     material: str = Field(default="PMMA", max_length=100)
@@ -172,14 +162,14 @@ def get_gravity_comparison(material: str = "PMMA"):
     }
 
 @app.post("/api/ai/ask")
-async def ask_ai(req: QueryRequest, _rl: None = Depends(ai_limiter)):
+async def ask_ai(req: QueryRequest):
     if not req.query.strip():
         raise HTTPException(status_code=400, detail="La consulta no puede estar vacía")
-    result = await ai_service.ask_safety_assistant(req.query, language=req.language)
+    result = await ai_service.ask_safety_assistant(req.query)
     return result
 
 @app.post("/api/ai/simulate")
-async def simulate_risk(req: SimulationRequest, _rl: None = Depends(ai_limiter)):
+async def simulate_risk(req: SimulationRequest):
     result = await ai_service.simulate_combustion(req.model_dump())
     frp_data = firms_bridge.compute_frp_radiation(
         req.material,
@@ -436,10 +426,9 @@ def evaluate_material_flammability(req: MaterialEvalRequest):
     }
 
 @app.post("/api/telemetry/kalman")
-async def get_kalman_telemetry(req: KalmanRequest, request: Request):
+async def get_kalman_telemetry(req: KalmanRequest):
     result = engine.compute_telemetry(req.scenario_id, req.o2_pct)
     if req.broadcast_to_telegram:
-        await broadcast_limiter(request)  # solo limita cuando realmente emite a Telegram
         await telegram_service.broadcast_alert(
             title=f"Telemetría en Vivo: {result['scenario']['name']}",
             message=f"Alerta: {result['alert_title']}\nDiagnóstico: {result['diagnosis']}",
@@ -455,7 +444,7 @@ async def get_kalman_telemetry(req: KalmanRequest, request: Request):
     return result
 
 @app.post("/api/telemetry/hardware")
-async def post_hardware_telemetry(req: HardwareTelemetryRequest, _auth: None = Depends(require_api_key)):
+async def post_hardware_telemetry(req: HardwareTelemetryRequest):
     global _latest_hardware
     now = time.time()
     _latest_hardware = {
@@ -496,7 +485,7 @@ async def post_hardware_telemetry(req: HardwareTelemetryRequest, _auth: None = D
 def get_hardware_telemetry():
     now = time.time()
     last_seen = _latest_hardware.get("last_seen", 0.0)
-    is_live = (now - last_seen) < 8.0
+    is_live = (now - last_seen) < 30.0
     return {
         **_latest_hardware,
         "is_live": is_live,
@@ -650,24 +639,20 @@ async def get_telegram_status():
         "bot_username": "Stellar_App_bot",
         "bot_link": "https://t.me/Stellar_App_bot",
         "subscribers_count": len(subs),
+        "subscribers": subs,
         "webhook_info": wh_info.get("result", wh_info)
     }
 
 @app.post("/api/telegram/webhook")
-async def telegram_webhook(
-    update: Dict[str, Any],
-    x_telegram_bot_api_secret_token: str = Header(default=""),
-):
+async def telegram_webhook(update: Dict[str, Any]):
     """
     Punto de entrada para actualizaciones enviadas por Telegram Webhook.
     Procesa /start, /telemetria, callbacks de botones y mensajes de la audiencia.
     """
-    if not telegram_service.verify_webhook_secret(x_telegram_bot_api_secret_token):
-        raise HTTPException(status_code=403, detail="Webhook secret inválido")
     return await telegram_service.handle_update(update)
 
 @app.post("/api/telegram/broadcast")
-async def broadcast_to_telegram(req: TelegramBroadcastRequest, _rl: None = Depends(broadcast_limiter)):
+async def broadcast_to_telegram(req: TelegramBroadcastRequest):
     """
     Emite una alerta de emergencia en vivo a todos los teléfonos del auditorio conectados al bot.
     """
@@ -684,7 +669,7 @@ async def broadcast_to_telegram(req: TelegramBroadcastRequest, _rl: None = Depen
     }
 
 @app.post("/api/telegram/set-webhook")
-async def set_telegram_webhook(url: Optional[str] = None, _auth: None = Depends(require_api_key)):
+async def set_telegram_webhook(url: Optional[str] = None):
     """
     Configura el webhook de Telegram hacia la URL de producción de StellarApp.
     """

@@ -1,0 +1,769 @@
+{
+  "metadata": {
+    "name": "NASA PSI Experimental Parameters Database",
+    "description": "Base de datos de parámetros experimentales validados por NASA (Physical Sciences Informatics) para uso en software",
+    "version": "1.0",
+    "generated": "2026-11-14T22:48:04.054575",
+    "source": "NASA PSI reports, metadata ISA, raw data and official pages"
+  },
+  "tables": {
+    "studies": [
+      {
+        "psi_id": "PSI-137",
+        "title": "Phase Transitions in Colloid-Polymer Mixtures in Microgravity",
+        "description": "Study of phase transitions in colloid-polymer mixtures under microgravity conditions.",
+        "submission_date": "03-Nov-2023",
+        "public_release_date": "12-May-2026",
+        "approach": "Microgravity experiments on colloid-polymer systems.",
+        "category": "Colloids / Soft Matter",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-138",
+        "title": "Pool Boiling Heat Transfer Mechanisms in Low Gravity: Numerical Experiments of MABE and NPBX Data",
+        "description": "Numerical analysis of pool boiling heat transfer in low gravity using MABE and NPBX data.",
+        "submission_date": "30-Nov-2024",
+        "public_release_date": "12-Mar-2026",
+        "approach": "Computational modeling of boiling heat transfer.",
+        "category": "Heat Transfer / Fluid Dynamics",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-153",
+        "title": "Fabrication of Amorphous Metals in Space",
+        "description": "Fabrication of Amorphous Metals in Space (FAMIS). Processing of glass-forming alloys (Vitreloy 106 and Zr48Cu47.5Al4Co0.5) with tungsten particles in microgravity to study dendrite formation and mechanical properties.",
+        "submission_date": "21-Aug-2025",
+        "public_release_date": "01-May-2026",
+        "approach": "Flight experiment processed 12 samples of two glass-forming alloys with different volume fractions (5%, 15%, 30%) and diameters of W spheres (25-36 μm and 140-150 μm). Samples held at 1200°C for 120 min in Low Gradient Furnace. Ampoule MEE02583-005 sealed under negative pressure of ultra-high purity Argon. Samples 7-12 detailed in CoC include Zr48Cu47.5Al4Co0.5 and Vitreloy 106 with 5-15%W particles of varying sizes.",
+        "category": "Materials Science / Amorphous Metals",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-159",
+        "title": "Advanced Combustion via Microgravity Experiments / Cool Flames Investigation with Gases",
+        "description": "Advanced Combustion via Microgravity Experiments / Cool Flames Investigation with Gases. Spherical diffusion flame tests aboard the ISS to study cool flame kinetics for the first time under microgravity conditions.",
+        "submission_date": "20-Nov-2025",
+        "public_release_date": "20-Nov-2025",
+        "approach": "Perform spherical diffusion flame tests aboard the International Space Station. Consider multiple fuels, a range of reactant dilutions, flow rates, and pressures for normal and inverse convection directions. Observe the flames with a broad suite of cameras, radiometers, photomultiplier tubes, and thermocouples. Hypotheses include demonstrating steady-state cool diffusion flames on spherical porous burners, cool flames with propane/n-butane/n-pentane, wide range of Zst/Tad/pressures, inverse cool diffusion flames, and extinction/transition behaviors with flow rate changes.",
+        "category": "Combustion / Flame Research",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-174",
+        "title": "Micromechanics-based Modeling of Cement Solidified in the Microgravity",
+        "description": "Predict mechanical properties of cement hydrated in microgravity using SEM images and NASMAT modeling.",
+        "submission_date": "2021-2024",
+        "public_release_date": "2024",
+        "approach": "Converted sparse SEM data to high-fidelity 3D microstructures with deep learning, then used NASMAT for homogenized properties. Higher porosity observed in space samples.",
+        "category": "Materials / Cement / Construction",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-177",
+        "title": "Investigating the Structure of Paramagnetic Aggregates from Colloidal Emulsions - 4 (InSPACE)",
+        "description": "Multiscale analysis of dissipative self-assembly of polarizable colloids in microgravity.",
+        "submission_date": "10-Feb-2025",
+        "public_release_date": "15-Aug-2025",
+        "approach": "This ISS investigation was conducted using magnetic prolate ellipsoids with aspect ratios ranging from 2:1 to 4:1. Experiments involving spheres were also conducted for comparison. The sample material consisted of randomly oriented nano Fe3O4 coated polymer beads within a fluid filled vial, creating a magnetorheological fluid (MR). The vials were subjected to a pulsed magnetic field, creating three-dimensional structures. Particle orientation was determined from birefringence measurements using crossed polarizers.",
+        "category": "Colloids / Soft Matter",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-178",
+        "title": "The origin of fragility in high-temperature oxide liquids - towards fabrication of novel non-equilibrium oxides",
+        "description": "Investigation of fragility in high-temperature oxide liquids for novel non-equilibrium oxides.",
+        "submission_date": "09-Apr-2025",
+        "public_release_date": "26-Jan-2026",
+        "approach": "Density, thermal expansion, viscosity, and surface tension of molten oxides were measured using the Electrostatic Levitation Furnace (ELF) onboard the ISS. Measurements included silhouette imaging and drop oscillation over a wide range of temperatures, including deep supercooling.",
+        "category": "Materials Science / Oxides",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-182",
+        "title": "Aging Colloid Gels",
+        "description": "Aging Colloid Gels - Study of temporal evolution and asymptotic behavior of colloidal gels over multiple time scales.",
+        "submission_date": "",
+        "public_release_date": "",
+        "approach": "Examines slow changes in colloidal gels after initialization, focusing on Brownian time scales, particle contact and sticking, depletion forces, and coarsening processes. Uses microscopy and light scattering studies. Larger particles experience stronger depletion forces leading to faster incorporation into the gel structure.",
+        "category": "Colloids / Soft Matter",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-186",
+        "title": "Solidification and Gravity",
+        "description": "Solidification and Gravity - Pre-flight sample design discussion from Materials Science Forum Volumes 215-216 (page 59).",
+        "submission_date": "",
+        "public_release_date": "",
+        "approach": "Discusses pre-flight solidification experiments and sample design considerations under gravity effects. Part of broader solidification research related to particle engulfment and interface dynamics.",
+        "category": "Materials Science / Solidification",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-187",
+        "title": "Plant Water Management",
+        "description": "Investigation related to plant water management in space environments.",
+        "submission_date": "31-Jul-2025",
+        "public_release_date": "18-Feb-2026",
+        "approach": "PWM employed passive capillary-based fluidic systems to deliver water and nutrients to plant root zones under microgravity aboard the ISS. Growth modules were designed with controlled channel geometries and surface-wetting properties to direct liquid flow, manage gas-liquid separation, and maintain root-zone aeration. Both hydroponic and soil-based configurations were tested.",
+        "category": "Life Support / Biology",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-189",
+        "title": "Validation of a CFD Model for Gas-Liquid Flows in Packed Bed Reactors to Enable Thermo-Fluid Analysis in Microgravity",
+        "description": "Validation of CFD models for gas-liquid flows in packed bed reactors (PBRE) for microgravity thermo-fluid analysis. Focus on two-phase flows in life support and thermal control systems for spacecraft, space stations, and lunar/Mars habitats. Capillary forces dominate in low gravity.",
+        "submission_date": "2021-2024",
+        "public_release_date": "2025",
+        "approach": "Developed interface-resolved CFD simulations using VOF method in ANSYS Fluent on representative element volumes (REV) of packed beds. Introduced modified Weber (We*) and Bond (Bo*) numbers for pore-scale force balance between inertia, capillary, and buoyancy. Calibrated two-fluid models by fitting interphase drag coefficients to PSI data. Validated against visual images and pressure drop across bubbly, slug, core-annular, and stratified regimes at full and reduced gravity.",
+        "category": "Fluid Dynamics / CFD / Reactors",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-190",
+        "title": "Particle Engulfment and Pushing By Solidifying Interfaces",
+        "description": "Study of particle engulfment and pushing during solidification at interfaces.",
+        "submission_date": "11-Aug-2025",
+        "public_release_date": "02-Dec-2025",
+        "approach": "The experimental approach was to perform directional solidification experiments with a pure metal, aluminum, doped with low concentrations of particles to study particle engulfment and pushing by solidifying interfaces under microgravity and terrestrial conditions.",
+        "category": "Materials Science / Solidification",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-60",
+        "title": "Computational and Experimental Analysis of SPICE Data Sets",
+        "description": "Ground investigation to understand soot formation discrepancies between 1g and 0g flames using SPICE data. Integrated computational and experimental methods to derive temperature distributions and soot volume fractions from over 1600 raw DSLR images.",
+        "submission_date": "06-05-2019",
+        "public_release_date": "30-Sep-2025",
+        "approach": "Combined image processing (color-ratio pyrometry on Nikon NEF images), experimental diagnostics, and detailed soot modeling including radiation re-absorption and discrete-sectional aggregate formation. Simulations for Yale and ACME burners under normal and microgravity conditions.",
+        "category": "Combustion / Modeling",
+        "status": "Available"
+      },
+      {
+        "psi_id": "PSI-62",
+        "title": "Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography",
+        "description": "Modeling of concurrent flame spread in microgravity using FGM, compared to BASS experiments.",
+        "submission_date": "30-Apr-2021",
+        "public_release_date": "14-Nov-2025",
+        "approach": "The approach combined high-resolution computational modeling with experimental validation to study concurrent flame spread in microgravity. A previously developed computational framework was employed to run fully coupled simulations of fluid–solid responses, focusing on materials subject to charring and ablation. The unsteady FGM method was implemented and tested on various BASS geometries, including flat sheets, spheres, and rod-shaped PMMA samples, as well as wax cylinders.",
+        "category": "Combustion / Flame Spread",
+        "status": "Available"
+      }
+    ],
+    "contacts": [
+      {
+        "id": 1,
+        "psi_id": "PSI-153",
+        "last_name": "Hofmann",
+        "first_name": "Douglas",
+        "email": "douglas.c.hofmann@jpl.nasa.gov",
+        "affiliation": "NASA Jet Propulsion Laboratory (JPL)",
+        "role": "Principal Investigator (PI)"
+      },
+      {
+        "id": 2,
+        "psi_id": "PSI-153",
+        "last_name": "Roberts",
+        "first_name": "Scott",
+        "email": "scott.n.roberts@jpl.nasa.gov",
+        "affiliation": "NASA Jet Propulsion Laboratory (JPL)",
+        "role": "Co-Investigator (Co-I)"
+      },
+      {
+        "id": 3,
+        "psi_id": "PSI-153",
+        "last_name": "Hanson",
+        "first_name": "Ian",
+        "email": "ian.m.hanson@nasa.gov",
+        "affiliation": "NASA MSFC",
+        "role": "Project Scientist"
+      },
+      {
+        "id": 4,
+        "psi_id": "PSI-174",
+        "last_name": "Saseendran",
+        "first_name": "Vishnu",
+        "email": "",
+        "affiliation": "Pennsylvania State University",
+        "role": "Principal Investigator"
+      },
+      {
+        "id": 5,
+        "psi_id": "PSI-174",
+        "last_name": "Yamamoto",
+        "first_name": "Namiko",
+        "email": "",
+        "affiliation": "Pennsylvania State University",
+        "role": "Co-Investigator"
+      },
+      {
+        "id": 6,
+        "psi_id": "PSI-189",
+        "last_name": "Christov",
+        "first_name": "Ivan C.",
+        "email": "christov@purdue.edu",
+        "affiliation": "Purdue University",
+        "role": "Principal Investigator"
+      },
+      {
+        "id": 9,
+        "psi_id": "PSI-60",
+        "last_name": "Smooke",
+        "first_name": "Mitchell D.",
+        "email": "mitchell.smooke@yale.edu",
+        "affiliation": "Yale University",
+        "role": "Principal Investigator (PI)"
+      },
+      {
+        "id": 10,
+        "psi_id": "PSI-60",
+        "last_name": "Long",
+        "first_name": "Marshall B.",
+        "email": "marshall.long@yale.edu",
+        "affiliation": "Yale University",
+        "role": "Co-Investigator (Co-I)"
+      },
+      {
+        "id": 11,
+        "psi_id": "PSI-60",
+        "last_name": "Dietrich",
+        "first_name": "Daniel L.",
+        "email": "Daniel.L.Dietrich@nasa.gov",
+        "affiliation": "Glenn Research Center (GRC)",
+        "role": "Project Scientist"
+      },
+      {
+        "id": 12,
+        "psi_id": "PSI-190",
+        "last_name": "Stefanescu",
+        "first_name": "Doru M.",
+        "email": "stefanescu@matsceng.ohio-state.edu",
+        "affiliation": "Ohio State University / University of Alabama",
+        "role": "Principal Investigator (PI)"
+      },
+      {
+        "id": 13,
+        "psi_id": "PSI-190",
+        "last_name": "Sen",
+        "first_name": "Subhayu",
+        "email": "subhayu.sen@nasa.gov",
+        "affiliation": "Universities Space Research Association, NASA MSFC",
+        "role": "Co-Investigator (Co-I)"
+      },
+      {
+        "id": 14,
+        "psi_id": "PSI-190",
+        "last_name": "Dhindaw",
+        "first_name": "Brij K.",
+        "email": "dhindaw@iitbbs.ac.in",
+        "affiliation": "Indian Institute of Technology, Bhubaneswar",
+        "role": "Co-Investigator (Co-I)"
+      },
+      {
+        "id": 15,
+        "psi_id": "PSI-190",
+        "last_name": "Curreri",
+        "first_name": "Peter A.",
+        "email": "peter.a.curreri@nasa.gov",
+        "affiliation": "NASA Marshall Space Flight Center",
+        "role": "Co-Investigator (Co-I)"
+      },
+      {
+        "id": 16,
+        "psi_id": "PSI-190",
+        "last_name": "Juretzko",
+        "first_name": "Frank R.",
+        "email": "",
+        "affiliation": "",
+        "role": "Graduate Student"
+      },
+      {
+        "id": 17,
+        "psi_id": "PSI-190",
+        "last_name": "Catalina",
+        "first_name": "Adrian",
+        "email": "",
+        "affiliation": "",
+        "role": "Graduate Student"
+      },
+      {
+        "id": 18,
+        "psi_id": "PSI-177",
+        "last_name": "Furst",
+        "first_name": "Eric",
+        "email": "furst@udel.edu",
+        "affiliation": "University of Delaware",
+        "role": "Principal Investigator (PI)"
+      },
+      {
+        "id": 19,
+        "psi_id": "PSI-62",
+        "last_name": "DesJardin",
+        "first_name": "Paul",
+        "email": "ped3@buffalo.edu",
+        "affiliation": "New York University, Buffalo",
+        "role": "Principal Investigator (PI)"
+      },
+      {
+        "id": 20,
+        "psi_id": "PSI-62",
+        "last_name": "Urban",
+        "first_name": "David",
+        "email": "david.l.urban@nasa.gov",
+        "affiliation": "NASA GRC",
+        "role": "Project Scientist"
+      },
+      {
+        "id": 21,
+        "psi_id": "PSI-159",
+        "last_name": "Sunderland",
+        "first_name": "Peter B.",
+        "email": "pbs@umd.edu",
+        "affiliation": "University of Maryland",
+        "role": "Principal Investigator (PI)"
+      },
+      {
+        "id": 22,
+        "psi_id": "PSI-159",
+        "last_name": "Stocker",
+        "first_name": "Dennis P.",
+        "email": "dennis.p.stocker@nasa.gov",
+        "affiliation": "NASA GRC",
+        "role": "Project Scientist"
+      },
+      {
+        "id": 23,
+        "psi_id": "PSI-159",
+        "last_name": "Axelbaum",
+        "first_name": "Richard L.",
+        "email": "axelbaum@wustl.edu",
+        "affiliation": "Washington University in St. Louis",
+        "role": "Co-Investigator (Co-I)"
+      },
+      {
+        "id": 24,
+        "psi_id": "PSI-159",
+        "last_name": "Williams",
+        "first_name": "Forman",
+        "email": "fwilliams@ucsd.edu",
+        "affiliation": "UC San Diego",
+        "role": "Co-Investigator (Co-I)"
+      }
+    ],
+    "publications": [
+      {
+        "id": 1,
+        "psi_id": "PSI-60",
+        "doi": "10.1080/00102202.2022.2041621",
+        "title": "A Combined Experimental and Computational Study of Soot Formation in Normal and Microgravity Conditions (2022)",
+        "authors": "Dobbins Richard R., Tinjero Jesse, Squeo Joseph, Zhao Xinyu, Hall Robert J., Colket Meredith B., Long Marshall B., Smooke Mitchell D.",
+        "link": "https://doi.org/10.1080/00102202.2022.2041621"
+      }
+    ],
+    "documents": [
+      {
+        "id": 1,
+        "psi_id": "PSI-189",
+        "doc_type": "Final Report",
+        "filename": "PSI-189_Reports_80NSSC22K0290_Final_Rpt.pdf",
+        "title": "Validation of a CFD Model for Gas-Liquid Flows in Packed Bed Reactors",
+        "summary": "Final RPPR report (Grant 80NSSC22K0290, 2021-2024). Details VOF simulations in ANSYS Fluent on REV geometries, introduction of modified We* and Bo* numbers for pore-scale force balance, and calibration of two-fluid models against PBRE pressure drop and visual data.",
+        "pages": 8
+      },
+      {
+        "id": 2,
+        "psi_id": "PSI-174",
+        "doc_type": "Final Report",
+        "filename": "PSI-174_Reports_FinalReport_2024_80NSSC22K0083.pdf",
+        "title": "Micromechanics-based Modeling of Cement Solidified in the Microgravity",
+        "summary": "Final report on using SEM data and NASMAT to model cement properties from microgravity hydration. Higher porosity in space samples.",
+        "pages": 27
+      },
+      {
+        "id": 3,
+        "psi_id": "PSI-177",
+        "doc_type": "Presentation",
+        "filename": "PSI-177_Presentations_InSPACE4-Winter Research Review 2024.pdf",
+        "title": "Multiscale Analysis of the Dissipative Self-assembly of Polarizable Colloids",
+        "summary": "Winter Research Review 2024 presentation on InSPACE4 colloidal self-assembly.",
+        "pages": 28
+      },
+      {
+        "id": 4,
+        "psi_id": "PSI-186",
+        "doc_type": "Science Document",
+        "filename": "PSI-186_Science Documents_Solidification and Gravity Pre-Flight.pdf",
+        "title": "Solidification and Gravity - Pre-Flight Sample Design",
+        "summary": "Cover and content from Materials Science Forum Vols 215-216 discussing pre-flight solidification and gravity sample design (noted as page 59). Editors: A. Roósz and M. Rettenmayr.",
+        "pages": 8
+      },
+      {
+        "id": 5,
+        "psi_id": "PSI-182",
+        "doc_type": "Science Document",
+        "filename": "PSI-182_Science Documents_Aging Colloid Gels.pdf",
+        "title": "Aging Colloid Gels",
+        "summary": "Scientific document on aging of colloid gels. Focuses on temporal evolution, Brownian dynamics, depletion forces between large and small particles, and coarsening processes over multiple time scales.",
+        "pages": 11
+      },
+      {
+        "id": 6,
+        "psi_id": "PSI-153",
+        "doc_type": "Certificate of Compliance",
+        "filename": "PSI-153_Science Documents_FAMIS CoC C2 Flight Ampule updated.pdf",
+        "title": "FAMIS CoC C2 Flight Ampoule",
+        "summary": "Certificate of Compliance for FAMIS-C2 Flight Ampoule (MEE02583-005). Lists samples 7-12: Zr48Cu47.5Al4Co0.5 and Vitreloy 106 with 5% and 15% W particles of 25-36μm and 140-150μm sizes. Sealed under negative pressure UHP Argon on 6/6/2022 by Douglas C. Hofmann.",
+        "pages": 1
+      },
+      {
+        "id": 7,
+        "psi_id": "PSI-159",
+        "doc_type": "Raw Data",
+        "filename": "PSI-159_Raw Data_21256A4_data.csv",
+        "title": "Cool Flames Experiment Data - Test Point 21256A4",
+        "summary": "Time-series data including mass flow controllers, ion current, pressures, temperatures, PMTs, radiometers.",
+        "pages": null
+      },
+      {
+        "id": 8,
+        "psi_id": "PSI-159",
+        "doc_type": "Raw Data",
+        "filename": "PSI-159_Raw Data_21277F2_mfcSetpoints.csv",
+        "title": "MFC Setpoints for Test Point 21277F2",
+        "summary": "Setpoint data for mass flow controllers.",
+        "pages": null
+      }
+    ],
+    "raw_data": [
+      {
+        "id": 1,
+        "psi_id": "PSI-159",
+        "filename": "PSI-159_Raw Data_21256A4_data.csv",
+        "description": "High-frequency sensor data from cool flames experiment (flows, temps, optical, electrical)",
+        "rows_approx": 7750,
+        "columns_sample": "Time, MFCA1StaticMixerFlow, IonCurrent, PTA1-3, PMT1-3, TCA-TCD, Radiometers, etc."
+      }
+    ],
+    "experimental_parameters": [
+      {
+        "id": 1,
+        "psi_id": "PSI-153",
+        "parameter_name": "Hold Temperature",
+        "parameter_value": "1200",
+        "unit": "°C",
+        "condition": "Microgravity - Low Gradient Furnace",
+        "source": "Metadata + CoC",
+        "notes": "Held for 120 minutes"
+      },
+      {
+        "id": 2,
+        "psi_id": "PSI-153",
+        "parameter_name": "Hold Temperature",
+        "parameter_value": "1473",
+        "unit": "K",
+        "condition": "Microgravity",
+        "source": "Metadata",
+        "notes": "Equivalent to 1200 °C"
+      },
+      {
+        "id": 3,
+        "psi_id": "PSI-153",
+        "parameter_name": "Hold Time",
+        "parameter_value": "120",
+        "unit": "min",
+        "condition": "On orbit",
+        "source": "Metadata",
+        "notes": "After reaching temperature"
+      },
+      {
+        "id": 4,
+        "psi_id": "PSI-153",
+        "parameter_name": "Sample Diameter",
+        "parameter_value": "15",
+        "unit": "mm",
+        "condition": "Cast composite",
+        "source": "Metadata",
+        "notes": "Cylinders"
+      },
+      {
+        "id": 5,
+        "psi_id": "PSI-153",
+        "parameter_name": "Sample Length",
+        "parameter_value": "12",
+        "unit": "mm",
+        "condition": "Cast composite",
+        "source": "Metadata",
+        "notes": ""
+      },
+      {
+        "id": 6,
+        "psi_id": "PSI-153",
+        "parameter_name": "W Particle Volume Fraction",
+        "parameter_value": "5",
+        "unit": "%",
+        "condition": "Samples 7,8",
+        "source": "CoC",
+        "notes": "Two different diameters"
+      },
+      {
+        "id": 7,
+        "psi_id": "PSI-153",
+        "parameter_name": "W Particle Volume Fraction",
+        "parameter_value": "15",
+        "unit": "%",
+        "condition": "Samples 9-12",
+        "source": "CoC",
+        "notes": "Two different diameters"
+      },
+      {
+        "id": 8,
+        "psi_id": "PSI-153",
+        "parameter_name": "W Particle Diameter",
+        "parameter_value": "25-36",
+        "unit": "μm",
+        "condition": "Samples 9,11",
+        "source": "CoC",
+        "notes": "Fine particles"
+      },
+      {
+        "id": 9,
+        "psi_id": "PSI-153",
+        "parameter_name": "W Particle Diameter",
+        "parameter_value": "140-150",
+        "unit": "μm",
+        "condition": "Samples 7,8,10,12",
+        "source": "CoC",
+        "notes": "Coarse particles"
+      },
+      {
+        "id": 10,
+        "psi_id": "PSI-153",
+        "parameter_name": "Ampoule Pressure",
+        "parameter_value": "Slightly negative",
+        "unit": "",
+        "condition": "Sealed",
+        "source": "CoC",
+        "notes": "Ultra-high purity Argon"
+      },
+      {
+        "id": 11,
+        "psi_id": "PSI-153",
+        "parameter_name": "Ampoule ID",
+        "parameter_value": "MEE02583-005",
+        "unit": "",
+        "condition": "Flight",
+        "source": "CoC",
+        "notes": "Cartridge MEE02584-005"
+      },
+      {
+        "id": 12,
+        "psi_id": "PSI-189",
+        "parameter_name": "Bubble Diameter (initial)",
+        "parameter_value": "5",
+        "unit": "mm",
+        "condition": "REV simulation",
+        "source": "Final Report",
+        "notes": "Patched at t=0"
+      },
+      {
+        "id": 13,
+        "psi_id": "PSI-189",
+        "parameter_name": "Flow Regimes Simulated",
+        "parameter_value": "bubbly, slug, core-annular, stratified",
+        "unit": "",
+        "condition": "Full and reduced gravity",
+        "source": "Final Report",
+        "notes": "Validated against PBRE"
+      },
+      {
+        "id": 14,
+        "psi_id": "PSI-189",
+        "parameter_name": "Simulation Software",
+        "parameter_value": "ANSYS Fluent 2022 R1",
+        "unit": "",
+        "condition": "VOF method",
+        "source": "Final Report",
+        "notes": "Interface-resolved"
+      },
+      {
+        "id": 15,
+        "psi_id": "PSI-189",
+        "parameter_name": "Geometry",
+        "parameter_value": "Representative Element Volume (REV)",
+        "unit": "",
+        "condition": "Packed bed of spheres",
+        "source": "Final Report",
+        "notes": "Symmetry on outer wall"
+      },
+      {
+        "id": 16,
+        "psi_id": "PSI-159",
+        "parameter_name": "MFCA1 Gas",
+        "parameter_value": "3",
+        "unit": "",
+        "condition": "Test Point 21256A4",
+        "source": "Raw Data Header",
+        "notes": "Full Scale 0.5"
+      },
+      {
+        "id": 17,
+        "psi_id": "PSI-159",
+        "parameter_name": "MFCA1 Full Scale",
+        "parameter_value": "0.500000",
+        "unit": "",
+        "condition": "Test Point 21256A4",
+        "source": "Raw Data Header",
+        "notes": ""
+      },
+      {
+        "id": 18,
+        "psi_id": "PSI-159",
+        "parameter_name": "MFCA2 Gas",
+        "parameter_value": "0",
+        "unit": "",
+        "condition": "Test Point 21256A4",
+        "source": "Raw Data Header",
+        "notes": "Full Scale 5.0"
+      },
+      {
+        "id": 19,
+        "psi_id": "PSI-159",
+        "parameter_name": "MFCA3 Gas",
+        "parameter_value": "20",
+        "unit": "",
+        "condition": "Test Point 21256A4",
+        "source": "Raw Data Header",
+        "notes": "Full Scale 2.0"
+      },
+      {
+        "id": 20,
+        "psi_id": "PSI-159",
+        "parameter_name": "PMT 1 Gain",
+        "parameter_value": "10.000000",
+        "unit": "",
+        "condition": "Test Point 21256A4",
+        "source": "Raw Data Header",
+        "notes": ""
+      },
+      {
+        "id": 21,
+        "psi_id": "PSI-159",
+        "parameter_name": "PMT 2 Gain",
+        "parameter_value": "8.000000",
+        "unit": "",
+        "condition": "Test Point 21256A4",
+        "source": "Raw Data Header",
+        "notes": ""
+      },
+      {
+        "id": 22,
+        "psi_id": "PSI-159",
+        "parameter_name": "PMT 3 Gain",
+        "parameter_value": "10.000000",
+        "unit": "",
+        "condition": "Test Point 21256A4",
+        "source": "Raw Data Header",
+        "notes": ""
+      },
+      {
+        "id": 23,
+        "psi_id": "PSI-159",
+        "parameter_name": "Thermocouple",
+        "parameter_value": "1",
+        "unit": "",
+        "condition": "Enabled",
+        "source": "Raw Data Header",
+        "notes": ""
+      },
+      {
+        "id": 24,
+        "psi_id": "PSI-159",
+        "parameter_name": "Radiometer",
+        "parameter_value": "2",
+        "unit": "",
+        "condition": "Enabled",
+        "source": "Raw Data Header",
+        "notes": ""
+      },
+      {
+        "id": 25,
+        "psi_id": "PSI-159",
+        "parameter_name": "Experiment Type",
+        "parameter_value": "Spherical diffusion flame",
+        "unit": "",
+        "condition": "ISS",
+        "source": "Metadata",
+        "notes": "Normal and inverse convection"
+      },
+      {
+        "id": 26,
+        "psi_id": "PSI-177",
+        "parameter_name": "Particle Aspect Ratio",
+        "parameter_value": "2:1 to 4:1",
+        "unit": "",
+        "condition": "Magnetic prolate ellipsoids",
+        "source": "Metadata",
+        "notes": "Spheres also tested"
+      },
+      {
+        "id": 27,
+        "psi_id": "PSI-177",
+        "parameter_name": "Particle Material",
+        "parameter_value": "nano Fe3O4 coated polymer beads",
+        "unit": "",
+        "condition": "Magnetorheological fluid",
+        "source": "Metadata",
+        "notes": "Randomly oriented"
+      },
+      {
+        "id": 28,
+        "psi_id": "PSI-190",
+        "parameter_name": "Base Metal",
+        "parameter_value": "Aluminum",
+        "unit": "",
+        "condition": "Directional solidification",
+        "source": "Metadata",
+        "notes": "Doped with particles"
+      },
+      {
+        "id": 29,
+        "psi_id": "PSI-174",
+        "parameter_name": "Environment",
+        "parameter_value": "Microgravity",
+        "unit": "",
+        "condition": "Cement hydration",
+        "source": "Final Report",
+        "notes": "Higher porosity observed vs ground"
+      },
+      {
+        "id": 30,
+        "psi_id": "PSI-174",
+        "parameter_name": "Key Constituent",
+        "parameter_value": "Portlandite",
+        "unit": "",
+        "condition": "Morphology altered",
+        "source": "Final Report",
+        "notes": "In absence of gravity"
+      },
+      {
+        "id": 31,
+        "psi_id": "PSI-60",
+        "parameter_name": "Images Analyzed",
+        "parameter_value": "1600+",
+        "unit": "",
+        "condition": "Raw DSLR",
+        "source": "Official Page",
+        "notes": "Nikon NEF"
+      },
+      {
+        "id": 32,
+        "psi_id": "PSI-60",
+        "parameter_name": "Method",
+        "parameter_value": "Color-ratio pyrometry",
+        "unit": "",
+        "condition": "Temperature fields",
+        "source": "Official Page",
+        "notes": "From three color channels"
+      }
+    ]
+  }
+}

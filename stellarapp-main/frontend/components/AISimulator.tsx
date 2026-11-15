@@ -1,12 +1,10 @@
 "use client";
-import { useLanguage } from "../i18n/LanguageContext";
 
 import React, { useState } from "react";
 import { SimulationResult } from "../types";
 import { Cpu, Play, Flame, ShieldAlert, AlertCircle } from "lucide-react";
 
 export default function AISimulator() {
-  const { t } = useLanguage();
   const [material, setMaterial] = useState("PMMA");
   const [gravity, setGravity] = useState(0.0001);
   const [o2, setO2] = useState(21.0);
@@ -96,11 +94,14 @@ export default function AISimulator() {
         <Cpu className="h-5 w-5 text-[#76b900]" />
         <div>
           <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-            {t("WORKBENCH DE PREDICCIÓN CON IA\n          ")}</span>
+            WORKBENCH DE PREDICCIÓN CON IA
+          </span>
           <h2 className="text-xl lg:text-2xl font-bold text-white mt-0.5">
-            {t("Simulador de Combustión para Atmósferas de Exploración\n          ")}</h2>
+            Simulador de Combustión para Atmósferas de Exploración
+          </h2>
           <p className="text-xs text-[#898989]">
-            {t("Predicción en tiempo real para hábitats lunares (Artemis), tránsitos a Marte y naves orbitales.\n          ")}</p>
+            Predicción en tiempo real para hábitats lunares (Artemis), tránsitos a Marte y naves orbitales.
+          </p>
         </div>
       </div>
 
@@ -110,36 +111,38 @@ export default function AISimulator() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-bold uppercase tracking-wider text-[#a7a7a7] mb-2">
-                {t("Material de Ensayo\n              ")}</label>
+                Material de Ensayo
+              </label>
               <select
                 value={material}
                 onChange={(e) => setMaterial(e.target.value)}
                 className="w-full bg-black border border-[#333333] text-xs font-bold text-white px-3 py-2.5 focus:border-[#76b900] focus:outline-none"
               >
-                <option value="Nomex">{t("Nomex (LOI 30% - Trajes ISS / NASA Reference)")}</option>
-                <option value="PBI">{t("PBI (LOI 40% - Óptimo Alto Oxígeno Artemis)")}</option>
-                <option value="Kapton">{t("Kapton (LOI 38% - Aislamiento / Alerta HCN)")}</option>
-                <option value="Kevlar">{t("Kevlar (LOI 29% - Textil de protección)")}</option>
-                <option value="PTFE">{t("PTFE (LOI 95% - Alta inercia / Alerta HF)")}</option>
-                <option value="PMMA">{t("PMMA (LOI 17.3% - Acrílico estructural)")}</option>
-                <option value="Cotton">{t("Algodón (LOI 16.5% - NASA Standard Test 1)")}</option>
-                <option value="ETFE">{t("ETFE (LOI 25% - Cableado aeroespacial)")}</option>
-                <option value="Heptane">{t("n-Heptano (LOI 14% - Combustión de gotas)")}</option>
+                <option value="Nomex">Nomex (LOI 30% - Trajes ISS / NASA Reference)</option>
+                <option value="PBI">PBI (LOI 40% - Óptimo Alto Oxígeno Artemis)</option>
+                <option value="Kapton">Kapton (LOI 38% - Aislamiento / Alerta HCN)</option>
+                <option value="Kevlar">Kevlar (LOI 29% - Textil de protección)</option>
+                <option value="PTFE">PTFE (LOI 95% - Alta inercia / Alerta HF)</option>
+                <option value="PMMA">PMMA (LOI 17.3% - Acrílico estructural)</option>
+                <option value="Cotton">Algodón (LOI 16.5% - NASA Standard Test 1)</option>
+                <option value="ETFE">ETFE (LOI 25% - Cableado aeroespacial)</option>
+                <option value="Heptane">n-Heptano (LOI 14% - Combustión de gotas)</option>
               </select>
             </div>
 
             <div>
               <label className="block text-[11px] font-bold uppercase tracking-wider text-[#a7a7a7] mb-2">
-                {t("Régimen Gravitatorio\n              ")}</label>
+                Régimen Gravitatorio
+              </label>
               <select
                 value={gravity}
                 onChange={(e) => setGravity(parseFloat(e.target.value))}
                 className="w-full bg-black border border-[#333333] text-xs font-bold text-white px-3 py-2.5 focus:border-[#76b900] focus:outline-none"
               >
-                <option value={0.0001}>{t("Microgravedad Orbital (0g - ISS / Cygnus)")}</option>
-                <option value={0.166}>{t("Gravedad Lunar (0.166g - Artemis Base)")}</option>
-                <option value={0.38}>{t("Gravedad Marciana (0.38g - Mars Habitat)")}</option>
-                <option value={1.0}>{t("Gravedad Terrestre (1.0g - Tierra)")}</option>
+                <option value={0.0001}>Microgravedad Orbital (0g - ISS / Cygnus)</option>
+                <option value={0.166}>Gravedad Lunar (0.166g - Artemis Base)</option>
+                <option value={0.38}>Gravedad Marciana (0.38g - Mars Habitat)</option>
+                <option value={1.0}>Gravedad Terrestre (1.0g - Tierra)</option>
               </select>
             </div>
           </div>
@@ -148,7 +151,7 @@ export default function AISimulator() {
           <div className="space-y-4 pt-2">
             <div>
               <div className="flex justify-between text-xs mb-1 font-bold">
-                <span className="text-[#cccccc]">{t("Concentración de Oxígeno (% O₂)")}</span>
+                <span className="text-[#cccccc]">Concentración de Oxígeno (% O₂)</span>
                 <span className="font-mono text-[#76b900]">{o2}%</span>
               </div>
               <input
@@ -161,16 +164,16 @@ export default function AISimulator() {
                 className="w-full h-1 bg-black appearance-none cursor-pointer accent-[#76b900]"
               />
               <div className="flex justify-between text-[10px] text-[#757575] mt-1 font-mono uppercase">
-                <span>{t("16% (Límite hipóxico)")}</span>
-                <span>{t("21% (ISS Estándar)")}</span>
-                <span>{t("30%-37% (Artemis / Exploración)")}</span>
+                <span>16% (Límite hipóxico)</span>
+                <span>21% (ISS Estándar)</span>
+                <span>30%-37% (Artemis / Exploración)</span>
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-xs mb-1 font-bold">
-                <span className="text-[#cccccc]">{t("Presión de Cabina (kPa)")}</span>
-                <span className="font-mono text-[#76b900]">{pressure} {t("kPa")}</span>
+                <span className="text-[#cccccc]">Presión de Cabina (kPa)</span>
+                <span className="font-mono text-[#76b900]">{pressure} kPa</span>
               </div>
               <input
                 type="range"
@@ -182,15 +185,15 @@ export default function AISimulator() {
                 className="w-full h-1 bg-black appearance-none cursor-pointer accent-[#76b900]"
               />
               <div className="flex justify-between text-[10px] text-[#757575] mt-1 font-mono uppercase">
-                <span>{t("56 kPa (Exploration Atmosphere)")}</span>
-                <span>{t("101.3 kPa (Nivel del mar)")}</span>
+                <span>56 kPa (Exploration Atmosphere)</span>
+                <span>101.3 kPa (Nivel del mar)</span>
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-xs mb-1 font-bold">
-                <span className="text-[#cccccc]">{t("Flujo de Ventilación (cm/s)")}</span>
-                <span className="font-mono text-[#76b900]">{airFlow} {t("cm/s")}</span>
+                <span className="text-[#cccccc]">Flujo de Ventilación (cm/s)</span>
+                <span className="font-mono text-[#76b900]">{airFlow} cm/s</span>
               </div>
               <input
                 type="range"
@@ -202,9 +205,9 @@ export default function AISimulator() {
                 className="w-full h-1 bg-black appearance-none cursor-pointer accent-[#76b900]"
               />
               <div className="flex justify-between text-[10px] text-[#757575] mt-1 font-mono uppercase">
-                <span>{t("0 cm/s (Auto-asfixia)")}</span>
-                <span>{t("10 cm/s (Flujo normal ECLSS)")}</span>
-                <span>{t("30 cm/s (Conducto activo)")}</span>
+                <span>0 cm/s (Auto-asfixia)</span>
+                <span>10 cm/s (Flujo normal ECLSS)</span>
+                <span>30 cm/s (Conducto activo)</span>
               </div>
             </div>
           </div>
@@ -224,7 +227,8 @@ export default function AISimulator() {
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-[#333333]">
               <span className="text-[11px] font-bold text-[#898989] uppercase tracking-wider">
-                {t("DIAGNÓSTICO TÉCNICO\n              ")}</span>
+                DIAGNÓSTICO TÉCNICO
+              </span>
               {result && (
                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 border ${
                   result.predicted_risk_level === "Extreme" 
@@ -233,7 +237,7 @@ export default function AISimulator() {
                     ? "border-[#df6500] text-[#df6500]" 
                     : "border-[#76b900] text-[#76b900]"
                 }`}>
-                  {t("RIESGO: ")}{result.predicted_risk_level}
+                  RIESGO: {result.predicted_risk_level}
                 </span>
               )}
             </div>
@@ -242,13 +246,14 @@ export default function AISimulator() {
               <div className="mt-4 space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="p-3 bg-[#1a1a1a] border border-[#333333]">
-                    <span className="text-[10px] font-bold uppercase text-[#898989] block">{t("Índice de Riesgo")}</span>
+                    <span className="text-[10px] font-bold uppercase text-[#898989] block">Índice de Riesgo</span>
                     <div className="text-xl font-bold font-mono text-white mt-0.5">{result.risk_score} / 3.0</div>
                   </div>
                   <div className="p-3 bg-[#1a1a1a] border border-[#333333]">
-                    <span className="text-[10px] font-bold uppercase text-[#898989] block">{t("Tasa Estimada")}</span>
+                    <span className="text-[10px] font-bold uppercase text-[#898989] block">Tasa Estimada</span>
                     <div className="text-xl font-bold font-mono text-[#76b900] mt-0.5">
-                      {result.estimated_flame_spread_mms} {t("mm/s\n                    ")}</div>
+                      {result.estimated_flame_spread_mms} mm/s
+                    </div>
                   </div>
                 </div>
 
@@ -256,7 +261,8 @@ export default function AISimulator() {
                   <div className="p-3 bg-black border-l-2 border-[#df6500] border-t border-r border-b border-[#333333] flex items-start space-x-2">
                     <Flame className="h-4 w-4 text-[#df6500] shrink-0 mt-0.5" />
                     <p className="text-[11px] text-[#df6500] leading-relaxed">
-                      <strong>{t("ALERTA DE FUEGO FRÍO:")}</strong> {t("Con flujo de aire &lt; 3 cm/s, la combustión continúa sin emisión de luz ni calor convencional detectable por sensores estándar.\n                    ")}</p>
+                      <strong>ALERTA DE FUEGO FRÍO:</strong> Con flujo de aire &lt; 3 cm/s, la combustión continúa sin emisión de luz ni calor convencional detectable por sensores estándar.
+                    </p>
                   </div>
                 )}
 
@@ -268,7 +274,8 @@ export default function AISimulator() {
                   }`}>
                     <div className="flex items-center justify-between pb-1 mb-1.5 border-b border-[#333333]">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-[#a7a7a7]">
-                        {t("CALIBRACIÓN NASA PSI-159 // LOI vs O₂\n                      ")}</span>
+                        CALIBRACIÓN NASA PSI-159 // LOI vs O₂
+                      </span>
                       <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 ${
                         result.loi_exceeded ? "bg-[#e52020] text-white" : "bg-[#76b900] text-black"
                       }`}>
@@ -277,15 +284,15 @@ export default function AISimulator() {
                     </div>
                     <div className="grid grid-cols-3 gap-2 text-[11px] font-mono text-center my-1.5">
                       <div className="bg-[#141414] p-1.5 border border-[#2b2b2b]">
-                        <span className="text-[9px] text-[#898989] block">{t("LOI LÍMITE")}</span>
+                        <span className="text-[9px] text-[#898989] block">LOI LÍMITE</span>
                         <strong className="text-white">{result.material_loi}%</strong>
                       </div>
                       <div className="bg-[#141414] p-1.5 border border-[#2b2b2b]">
-                        <span className="text-[9px] text-[#898989] block">{t("O₂ AMBIENTE")}</span>
+                        <span className="text-[9px] text-[#898989] block">O₂ AMBIENTE</span>
                         <strong className="text-[#76b900]">{o2}%</strong>
                       </div>
                       <div className="bg-[#141414] p-1.5 border border-[#2b2b2b]">
-                        <span className="text-[9px] text-[#898989] block">{t("MARGEN")}</span>
+                        <span className="text-[9px] text-[#898989] block">MARGEN</span>
                         <strong className={result.loi_exceeded ? "text-[#e52020]" : "text-[#76b900]"}>
                           {(result.material_loi - o2) > 0 ? `+${(result.material_loi - o2).toFixed(1)}%` : `${(result.material_loi - o2).toFixed(1)}%`}
                         </strong>
@@ -294,14 +301,14 @@ export default function AISimulator() {
                     {result.toxic_hazard && (
                       <div className="mt-2 text-[10px] text-[#cccccc] flex items-center space-x-1.5">
                         <AlertCircle className="h-3.5 w-3.5 text-[#df6500] shrink-0" />
-                        <span>{t("Gas de Descomposición: ")}<strong className="text-white">{result.toxic_hazard}</strong></span>
+                        <span>Gas de Descomposición: <strong className="text-white">{result.toxic_hazard}</strong></span>
                       </div>
                     )}
                   </div>
                 )}
 
                 <div className="p-3 bg-[#1a1a1a] border border-[#333333] text-xs">
-                  <span className="text-[10px] font-bold uppercase text-[#898989] block">{t("Estrategia ECLSS")}</span>
+                  <span className="text-[10px] font-bold uppercase text-[#898989] block">Estrategia ECLSS</span>
                   <p className="text-[#ffffff] font-bold mt-1 leading-relaxed">{result.extinction_strategy}</p>
                 </div>
 
@@ -310,7 +317,7 @@ export default function AISimulator() {
             ) : (
               <div className="h-48 flex flex-col items-center justify-center text-center text-[#757575] space-y-2">
                 <Cpu className="h-8 w-8 text-[#333333]" />
-                <p className="text-xs uppercase font-mono tracking-wider">{t("Ajusta los parámetros y presiona Ejecutar.")}</p>
+                <p className="text-xs uppercase font-mono tracking-wider">Ajusta los parámetros y presiona Ejecutar.</p>
               </div>
             )}
           </div>

@@ -1,7 +1,5 @@
 import os
 import json
-import hmac
-import html
 import asyncio
 import logging
 from typing import Dict, List, Any, Optional
@@ -9,24 +7,9 @@ import httpx
 
 logger = logging.getLogger("stellarapp.telegram")
 
-# El token SIEMPRE viene del entorno. Nunca lo escribas en el código ni en .env.example.
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "9155806687:AAFMc9UodGJAjHStGSwbQkP5_mVWE8aZt4A")
 TELEGRAM_API_BASE = f"https://api.telegram.org/bot{BOT_TOKEN}"
-WEBHOOK_SECRET = os.getenv("TELEGRAM_WEBHOOK_SECRET", "").strip()
-
-if not BOT_TOKEN:
-    logger.warning("TELEGRAM_BOT_TOKEN no configurado: las funciones de Telegram quedan deshabilitadas.")
-
-
-def verify_webhook_secret(received: str) -> bool:
-    """Valida el header X-Telegram-Bot-Api-Secret-Token si hay un secreto configurado."""
-    if not WEBHOOK_SECRET:
-        return True
-    return hmac.compare_digest(received or "", WEBHOOK_SECRET)
-SUBSCRIBERS_FILE = os.getenv(
-    "SUBSCRIBERS_FILE",
-    os.path.join(os.path.dirname(__file__), "runtime", "telegram_subscribers.json"),
-)
+SUBSCRIBERS_FILE = os.path.join(os.path.dirname(__file__), "data", "telegram_subscribers.json")
 
 def _load_subscribers() -> List[Dict[str, Any]]:
     if not os.path.exists(SUBSCRIBERS_FILE):
@@ -70,8 +53,6 @@ async def send_telegram_message(
     reply_markup: Optional[Dict[str, Any]] = None,
     parse_mode: str = "HTML"
 ) -> bool:
-    if not BOT_TOKEN:
-        return False
     payload: Dict[str, Any] = {
         "chat_id": chat_id,
         "text": text,
@@ -110,13 +91,9 @@ async def broadcast_alert(
     details: Optional[Dict[str, Any]] = None
 ) -> int:
     subs = _load_subscribers()
-    if not subs or not BOT_TOKEN:
+    if not subs:
         return 0
 
-    # El contenido puede venir de la red: se escapa para evitar inyección de HTML en Telegram.
-    severity = html.escape(str(severity))
-    title = html.escape(str(title))
-    message = html.escape(str(message))
     icon = "🚨" if severity == "CRITICAL" else "⚠️" if severity == "WARNING" else "ℹ️"
     alert_text = (
         f"{icon} <b>ALERTA DE SEGURIDAD // STELLARAPP ECLSS</b>\n"
@@ -127,7 +104,7 @@ async def broadcast_alert(
     if details:
         alert_text += "<b>Parámetros de Telemetría:</b>\n"
         for k, v in details.items():
-            alert_text += f"• <code>{html.escape(str(k))}</code>: {html.escape(str(v))}\n"
+            alert_text += f"• <code>{k}</code>: {v}\n"
         alert_text += "\n"
 
     alert_text += (
@@ -304,11 +281,7 @@ async def set_webhook(webhook_url: str) -> Dict[str, Any]:
         async with httpx.AsyncClient(timeout=10.0) as client:
             resp = await client.post(
                 f"{TELEGRAM_API_BASE}/setWebhook",
-                json={
-                    "url": webhook_url,
-                    "drop_pending_updates": True,
-                    **({"secret_token": WEBHOOK_SECRET} if WEBHOOK_SECRET else {}),
-                }
+                json={"url": webhook_url, "drop_pending_updates": True}
             )
             return resp.json()
     except Exception as e:
