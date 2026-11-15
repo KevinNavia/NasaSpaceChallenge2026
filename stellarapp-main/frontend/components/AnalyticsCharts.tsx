@@ -32,6 +32,26 @@ import {
   FileText,
 } from "lucide-react";
 import { PsiStudy } from "@/types";
+import { useTranslations } from "next-intl";
+
+// Backend chart series use Spanish labels; map the known ones to message keys.
+const DATA_LABEL_KEYS: Record<string, string> = {
+  "PMMA (Acrílico)": "pmmaAcrylic",
+  "SIBL Algodón/Vidrio": "siblCottonGlass",
+  "Silicona RTV": "siliconeRtv",
+  "ETFE Cableado": "etfeWiring",
+  "Kapton Película": "kaptonFilm",
+  "Nomex Textil": "nomexTextile",
+  "Confort Tripulante": "crewComfort",
+  "Supervivencia Humana": "humanSurvival",
+  "Dolor Cutáneo / Quemadura": "skinPain",
+  "Aviónica Cold Plates": "avionicsColdPlates",
+  "Casco Al-Li (Fluencia)": "hullCreep",
+  "Sellos Viton O-Ring": "vitonSeals",
+  "Fuego Saffire (0g Pico)": "saffirePeak",
+  "SIBL (Algodón)": "siblCotton",
+  "Silicona": "silicone",
+};
 
 interface FlameSpreadPoint {
   o2_pct: number;
@@ -81,6 +101,11 @@ interface ThermalTimelinePoint {
 }
 
 export default function AnalyticsCharts() {
+  const t = useTranslations("analytics");
+  const dn = (value: string) => {
+    const key = DATA_LABEL_KEYS[value];
+    return key ? t(`data.${key}`) : value;
+  };
   const [activeTab, setActiveTab] = useState<"all" | "flame" | "radiation" | "soot" | "flammability" | "thermal" | "psi">("all");
   const [flameData, setFlameData] = useState<FlameSpreadPoint[]>([]);
   const [materialsData, setMaterialsData] = useState<MaterialRadiation[]>([]);
@@ -120,12 +145,12 @@ export default function AnalyticsCharts() {
           { o2_pct: 36, microgravity_0g: 3.38, lunar_016g: 2.9, mars_038g: 2.54, earth_1g: 2.09, artemis_baseline: 26 },
         ]);
         setMaterialsData([
-          { material: "PMMA (Acrílico)", frp_kw: 18.4, flux_kw_m2: 24.2, loi_pct: 17.3, risk: "Extremo" },
-          { material: "SIBL Algodón/Vidrio", frp_kw: 12.8, flux_kw_m2: 16.5, loi_pct: 16.5, risk: "Crítico" },
-          { material: "Silicona RTV", frp_kw: 7.2, flux_kw_m2: 9.4, loi_pct: 22.0, risk: "Moderado" },
-          { material: "ETFE Cableado", frp_kw: 4.1, flux_kw_m2: 5.8, loi_pct: 25.0, risk: "Moderado" },
-          { material: "Kapton Película", frp_kw: 2.6, flux_kw_m2: 3.7, loi_pct: 27.5, risk: "Bajo" },
-          { material: "Nomex Textil", frp_kw: 0.8, flux_kw_m2: 1.2, loi_pct: 28.5, risk: "Auto-extinguible" },
+          { material: t("data.pmmaAcrylic"), frp_kw: 18.4, flux_kw_m2: 24.2, loi_pct: 17.3, risk: "Extremo" },
+          { material: t("data.siblCottonGlass"), frp_kw: 12.8, flux_kw_m2: 16.5, loi_pct: 16.5, risk: "Crítico" },
+          { material: t("data.siliconeRtv"), frp_kw: 7.2, flux_kw_m2: 9.4, loi_pct: 22.0, risk: "Moderado" },
+          { material: t("data.etfeWiring"), frp_kw: 4.1, flux_kw_m2: 5.8, loi_pct: 25.0, risk: "Moderado" },
+          { material: t("data.kaptonFilm"), frp_kw: 2.6, flux_kw_m2: 3.7, loi_pct: 27.5, risk: "Bajo" },
+          { material: t("data.nomexTextile"), frp_kw: 0.8, flux_kw_m2: 1.2, loi_pct: 28.5, risk: "Auto-extinguible" },
         ]);
         setSootData([
           { size_um: "0.05", earth_1g: 42.0, microgravity_0g: 4.5 },
@@ -137,21 +162,21 @@ export default function AnalyticsCharts() {
           { size_um: "5.00+", earth_1g: 0.3, microgravity_0g: 6.6 },
         ]);
         setFlammabilityData([
-          { name: "SIBL (Algodón)", loi: 16.5, quenching_mm: 6.8, safe: false },
+          { name: t("data.siblCotton"), loi: 16.5, quenching_mm: 6.8, safe: false },
           { name: "PMMA", loi: 17.3, quenching_mm: 5.2, safe: false },
-          { name: "Silicona", loi: 22.0, quenching_mm: 8.5, safe: false },
+          { name: t("data.silicone"), loi: 22.0, quenching_mm: 8.5, safe: false },
           { name: "ETFE", loi: 25.0, quenching_mm: 9.8, safe: false },
           { name: "Kapton", loi: 27.5, quenching_mm: 11.2, safe: true },
           { name: "Nomex", loi: 28.5, quenching_mm: 12.4, safe: true },
         ]);
         setThermalBands([
-          { entity: "Confort Tripulante", max_temp_c: 26.7, ref_threshold: "NASA-STD-3001 Nom.", category: "Humano", color: "#76b900" },
-          { entity: "Supervivencia Humana", max_temp_c: 45.0, ref_threshold: "Evacuación Obligatoria", category: "Humano", color: "#df6500" },
-          { entity: "Dolor Cutáneo / Quemadura", max_temp_c: 50.0, ref_threshold: "Daño Tisular", category: "Humano", color: "#ef4444" },
-          { entity: "Aviónica Cold Plates", max_temp_c: 55.0, ref_threshold: "Límite Enfriamiento", category: "Nave", color: "#00b0ff" },
-          { entity: "Casco Al-Li (Fluencia)", max_temp_c: 150.0, ref_threshold: "-40% Resistencia Tracción", category: "Nave", color: "#e040fb" },
-          { entity: "Sellos Viton O-Ring", max_temp_c: 180.0, ref_threshold: "Despresurización", category: "Nave", color: "#f59e0b" },
-          { entity: "Fuego Saffire (0g Pico)", max_temp_c: 1147.0, ref_threshold: "Llama Cygnus 1420K", category: "Fuego", color: "#ff0055" },
+          { entity: t("data.crewComfort"), max_temp_c: 26.7, ref_threshold: "NASA-STD-3001 Nom.", category: "Humano", color: "#76b900" },
+          { entity: t("data.humanSurvival"), max_temp_c: 45.0, ref_threshold: "Evacuación Obligatoria", category: "Humano", color: "#df6500" },
+          { entity: t("data.skinPain"), max_temp_c: 50.0, ref_threshold: "Daño Tisular", category: "Humano", color: "#ef4444" },
+          { entity: t("data.avionicsColdPlates"), max_temp_c: 55.0, ref_threshold: "Límite Enfriamiento", category: "Nave", color: "#00b0ff" },
+          { entity: t("data.hullCreep"), max_temp_c: 150.0, ref_threshold: "-40% Resistencia Tracción", category: "Nave", color: "#e040fb" },
+          { entity: t("data.vitonSeals"), max_temp_c: 180.0, ref_threshold: "Despresurización", category: "Nave", color: "#f59e0b" },
+          { entity: t("data.saffirePeak"), max_temp_c: 1147.0, ref_threshold: "Llama Cygnus 1420K", category: "Fuego", color: "#ff0055" },
         ]);
         setThermalTimeline([
           { time_s: 0, cabin_air_c: 21.0, skin_absorbed_c: 34.0, hull_temp_c: 20.0, limit_human: 45.0, limit_hull: 150.0 },
@@ -181,7 +206,7 @@ export default function AnalyticsCharts() {
     if (active && payload && payload.length) {
       return (
         <div className="bg-[#1a1a1a] border border-[#76b900] p-2.5 text-xs font-mono shadow-xl rounded-[2px]">
-          <p className="text-white font-bold mb-1 border-b border-[#333333] pb-1">{label}</p>
+          <p className="text-white font-bold mb-1 border-b border-[#333333] pb-1">{dn(label)}</p>
           {payload.map((entry: any, index: number) => (
             <p key={`item-${index}`} style={{ color: entry.color }} className="flex justify-between gap-4">
               <span>{entry.name}:</span>
@@ -201,13 +226,13 @@ export default function AnalyticsCharts() {
         <div>
           <div className="flex items-center space-x-2 text-[11px] font-bold text-[#76b900] uppercase tracking-widest">
             <BarChart3 className="h-4 w-4" />
-            <span>CENTRO DE TELEMETRÍA Y ANALÍTICA GRÁFICA NASA</span>
+            <span>{t("eyebrow")}</span>
           </div>
           <h2 className="text-2xl font-bold text-white mt-1">
-            Visualización Comparativa de Combustión & Límites Térmicos
+            {t("title")}
           </h2>
           <p className="text-xs text-[#898989] mt-0.5">
-            Modelos de regresión física y supervivencia estandarizados por NASA-STD-3001, NASA-STD-6001 y misiones Saffire.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -219,7 +244,7 @@ export default function AnalyticsCharts() {
               activeTab === "all" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            TODOS LOS GRÁFICOS
+            {t("tabs.all")}
           </button>
           <button
             onClick={() => setActiveTab("thermal")}
@@ -228,7 +253,7 @@ export default function AnalyticsCharts() {
             }`}
           >
             <Thermometer className="h-3.5 w-3.5" />
-            <span>LÍMITES TÉRMICOS (HUMANO / CASCO)</span>
+            <span>{t("tabs.thermal")}</span>
           </button>
           <button
             onClick={() => setActiveTab("flame")}
@@ -236,7 +261,7 @@ export default function AnalyticsCharts() {
               activeTab === "flame" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            PROPAGACIÓN vs O₂
+            {t("tabs.flame")}
           </button>
           <button
             onClick={() => setActiveTab("radiation")}
@@ -244,7 +269,7 @@ export default function AnalyticsCharts() {
               activeTab === "radiation" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            FRP & RADIACIÓN
+            {t("tabs.radiation")}
           </button>
           <button
             onClick={() => setActiveTab("soot")}
@@ -252,7 +277,7 @@ export default function AnalyticsCharts() {
               activeTab === "soot" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            HOLLÍN SAME (ISS)
+            {t("tabs.soot")}
           </button>
           <button
             onClick={() => setActiveTab("flammability")}
@@ -260,7 +285,7 @@ export default function AnalyticsCharts() {
               activeTab === "flammability" ? "bg-[#76b900] text-black" : "text-[#cccccc] hover:text-white"
             }`}
           >
-            MATRIZ NASA-STD-6001
+            {t("tabs.flammability")}
           </button>
           <button
             onClick={() => setActiveTab("psi")}
@@ -269,7 +294,7 @@ export default function AnalyticsCharts() {
             }`}
           >
             <Database className="h-3.5 w-3.5" />
-            <span>NASA PSI (14 ESTUDIOS)</span>
+            <span>{t("tabs.psi")}</span>
           </button>
         </div>
       </div>
@@ -284,16 +309,16 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <Thermometer className="h-4 w-4 text-[#76b900]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Límites Térmicos Máximos: Tripulación vs. Nave (°C)
+                  {t("thermalBands.title")}
                 </h3>
               </div>
               <span className="text-[10px] font-mono text-[#76b900] bg-black px-2 py-0.5 border border-[#333333]">
-                NASA-STD-3001 vs SP-20205001358
+                {t("thermalBands.badge")}
               </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              Comparación de umbrales críticos de degradación térmica: la tripulación requiere evacuación obligatoria a +45°C, mientras que el casco de aleación Al-Li pierde 40% de rigidez a +150°C.
+              {t("thermalBands.desc")}
             </p>
 
             <div className="h-[280px] w-full pt-2">
@@ -306,26 +331,27 @@ export default function AnalyticsCharts() {
                     tick={{ fill: "#898989", fontSize: 9, fontFamily: "monospace" }}
                     angle={-25}
                     textAnchor="end"
+                    tickFormatter={dn}
                   />
                   <YAxis
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "Temp. Máxima (°C)", angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("thermalBands.axisY"), angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <ReferenceLine
                     y={45}
                     stroke="#df6500"
                     strokeDasharray="4 4"
-                    label={{ value: "EVACUACIÓN TRIPULACIÓN (+45°C)", fill: "#df6500", fontSize: 9, position: "insideTopLeft" }}
+                    label={{ value: t("thermalBands.refEvac"), fill: "#df6500", fontSize: 9, position: "insideTopLeft" }}
                   />
                   <ReferenceLine
                     y={150}
                     stroke="#e040fb"
                     strokeDasharray="4 4"
-                    label={{ value: "FLUENCIA CASCO (+150°C)", fill: "#e040fb", fontSize: 9, position: "insideTopLeft" }}
+                    label={{ value: t("thermalBands.refCreep"), fill: "#e040fb", fontSize: 9, position: "insideTopLeft" }}
                   />
-                  <Bar dataKey="max_temp_c" name="Temperatura Máxima (°C)">
+                  <Bar dataKey="max_temp_c" name={t("thermalBands.series")}>
                     {thermalBands.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
@@ -336,16 +362,16 @@ export default function AnalyticsCharts() {
 
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#76b900]/40">
-                <span className="text-[#76b900] block">CONFORT NOMINAL:</span>
+                <span className="text-[#76b900] block">{t("thermalBands.footerNominal")}</span>
                 <strong className="text-white">18.3°C - 26.7°C</strong>
               </div>
               <div className="bg-black p-2 border border-[#df6500]/40">
-                <span className="text-[#df6500] block">EVACUACIÓN HUMANA:</span>
+                <span className="text-[#df6500] block">{t("thermalBands.footerEvac")}</span>
                 <strong className="text-[#df6500]">+45.0°C (&lt;45 min)</strong>
               </div>
               <div className="bg-black p-2 border border-[#e040fb]/40">
-                <span className="text-[#e040fb] block">FLUENCIA CASCO AL-LI:</span>
-                <strong className="text-[#e040fb]">+150.0°C (Crítico)</strong>
+                <span className="text-[#e040fb] block">{t("thermalBands.footerCreep")}</span>
+                <strong className="text-[#e040fb]">{t("thermalBands.footerCreepValue")}</strong>
               </div>
             </div>
           </div>
@@ -359,16 +385,16 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <HeartPulse className="h-4 w-4 text-[#df6500]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Excursión Térmica en Cabina vs. Tiempo de Fuego (0 - 180s)
+                  {t("thermalTimeline.title")}
                 </h3>
               </div>
               <span className="text-[10px] font-mono text-[#df6500] bg-black px-2 py-0.5 border border-[#333333]">
-                SIMULACIÓN DINÁMICA 0g
+                {t("thermalTimeline.badge")}
               </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              Evolución de temperatura en hábitat lunar (280 m³) con ignición PMMA: el aire cruza el umbral de supervivencia a los 45 s y el casco a los 118 s.
+              {t("thermalTimeline.desc")}
             </p>
 
             <div className="h-[280px] w-full pt-2">
@@ -379,12 +405,12 @@ export default function AnalyticsCharts() {
                     dataKey="time_s"
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "Tiempo tras Ignición (segundos)", position: "insideBottom", offset: -5, fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("thermalTimeline.axisX"), position: "insideBottom", offset: -5, fill: "#757575", fontSize: 10 }}
                   />
                   <YAxis
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "Temperatura (°C)", angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("thermalTimeline.axisY"), angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
@@ -395,18 +421,18 @@ export default function AnalyticsCharts() {
                     y={45}
                     stroke="#df6500"
                     strokeDasharray="4 4"
-                    label={{ value: "COLAPSO HUMANO (+45°C)", fill: "#df6500", fontSize: 9 }}
+                    label={{ value: t("thermalTimeline.refHuman"), fill: "#df6500", fontSize: 9 }}
                   />
                   <ReferenceLine
                     y={150}
                     stroke="#e040fb"
                     strokeDasharray="4 4"
-                    label={{ value: "FALLA CASCO (+150°C)", fill: "#e040fb", fontSize: 9 }}
+                    label={{ value: t("thermalTimeline.refHull"), fill: "#e040fb", fontSize: 9 }}
                   />
                   <Line
                     type="monotone"
                     dataKey="cabin_air_c"
-                    name="Aire Interior Cabina (°C)"
+                    name={t("thermalTimeline.seriesCabin")}
                     stroke="#ff0055"
                     strokeWidth={2.5}
                     dot={{ fill: "#ff0055", r: 2.5 }}
@@ -414,7 +440,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="skin_absorbed_c"
-                    name="Piel / Traje Absorbido (°C)"
+                    name={t("thermalTimeline.seriesSkin")}
                     stroke="#df6500"
                     strokeWidth={2}
                     dot={{ fill: "#df6500", r: 2 }}
@@ -422,7 +448,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="hull_temp_c"
-                    name="Casco Interno Al-Li (°C)"
+                    name={t("thermalTimeline.seriesHull")}
                     stroke="#00b0ff"
                     strokeWidth={2}
                     dot={{ fill: "#00b0ff", r: 2 }}
@@ -433,12 +459,12 @@ export default function AnalyticsCharts() {
 
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#df6500]/40">
-                <span className="text-[#df6500] block">TIEMPO LÍMITE DE EVACUACIÓN HUMANA:</span>
-                <strong className="text-white">45 segundos (T aire &gt; 45°C)</strong>
+                <span className="text-[#df6500] block">{t("thermalTimeline.footerHuman")}</span>
+                <strong className="text-white">{t("thermalTimeline.footerHumanValue")}</strong>
               </div>
               <div className="bg-black p-2 border border-[#e040fb]/40">
-                <span className="text-[#e040fb] block">TIEMPO LÍMITE ROTURA DE CASCO:</span>
-                <strong className="text-white">118 segundos (T casco &gt; 150°C)</strong>
+                <span className="text-[#e040fb] block">{t("thermalTimeline.footerHull")}</span>
+                <strong className="text-white">{t("thermalTimeline.footerHullValue")}</strong>
               </div>
             </div>
           </div>
@@ -452,16 +478,16 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <TrendingUp className="h-4 w-4 text-[#76b900]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Tasa de Propagación (mm/s) vs. Concentración de O₂ (%)
+                  {t("flame.title")}
                 </h3>
               </div>
               <span className="text-[10px] font-mono text-[#76b900] bg-black px-2 py-0.5 border border-[#333333]">
-                SAFFIRE MODEL
+                {t("flame.badge")}
               </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              En microgravedad con flujo forzado constante (15 cm/s), la llama quema más rápido que en 1g debido a la falta de turbulencia convectiva que enfría la zona de reacción.
+              {t("flame.desc")}
             </p>
 
             <div className="h-[280px] w-full pt-2">
@@ -472,12 +498,12 @@ export default function AnalyticsCharts() {
                     dataKey="o2_pct"
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "% Oxígeno en Cabina", position: "insideBottom", offset: -5, fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("flame.axisX"), position: "insideBottom", offset: -5, fill: "#757575", fontSize: 10 }}
                   />
                   <YAxis
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "Velocidad (mm/s)", angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("flame.axisY"), angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
@@ -488,12 +514,12 @@ export default function AnalyticsCharts() {
                     x={26}
                     stroke="#df6500"
                     strokeDasharray="4 4"
-                    label={{ value: "LÍMITE ARTEMIS 26% O₂", fill: "#df6500", fontSize: 9, position: "top" }}
+                    label={{ value: t("flame.refArtemis"), fill: "#df6500", fontSize: 9, position: "top" }}
                   />
                   <Line
                     type="monotone"
                     dataKey="microgravity_0g"
-                    name="Microgravedad 0g (Cygnus)"
+                    name={t("flame.seriesMicro")}
                     stroke="#76b900"
                     strokeWidth={2.5}
                     dot={{ fill: "#76b900", r: 3 }}
@@ -501,7 +527,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="lunar_016g"
-                    name="Luna (0.16g)"
+                    name={t("flame.seriesLunar")}
                     stroke="#00b0ff"
                     strokeWidth={2}
                     dot={{ fill: "#00b0ff", r: 2.5 }}
@@ -509,7 +535,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="mars_038g"
-                    name="Marte (0.38g)"
+                    name={t("flame.seriesMars")}
                     stroke="#e040fb"
                     strokeWidth={2}
                     dot={{ fill: "#e040fb", r: 2.5 }}
@@ -517,7 +543,7 @@ export default function AnalyticsCharts() {
                   <Line
                     type="monotone"
                     dataKey="earth_1g"
-                    name="Tierra 1g (Referencia)"
+                    name={t("flame.seriesEarth")}
                     stroke="#757575"
                     strokeWidth={1.5}
                     strokeDasharray="5 5"
@@ -529,15 +555,15 @@ export default function AnalyticsCharts() {
 
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">EXP. 21% O₂ (ISS):</span>
+                <span className="text-[#757575] block">{t("flame.footerIss")}</span>
                 <strong className="text-white">0.91 mm/s</strong>
               </div>
               <div className="bg-black p-2 border border-[#df6500]/40">
-                <span className="text-[#df6500] block">ARTEMIS 26% O₂:</span>
+                <span className="text-[#df6500] block">{t("flame.footerArtemis")}</span>
                 <strong className="text-[#df6500]">1.73 mm/s (+90%)</strong>
               </div>
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">EXTINCIÓN LOI:</span>
+                <span className="text-[#757575] block">{t("flame.footerLoi")}</span>
                 <strong className="text-[#76b900]">&lt; 15.5% O₂</strong>
               </div>
             </div>
@@ -552,16 +578,16 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <Flame className="h-4 w-4 text-[#df6500]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Potencia Radiativa de Fuego (FRP kW) & Flujo Térmico (kW/m²)
+                  {t("radiation.title")}
                 </h3>
               </div>
               <span className="text-[10px] font-mono text-[#df6500] bg-black px-2 py-0.5 border border-[#333333]">
-                NASA FIRMS & SAFFIRE
+                {t("radiation.badge")}
               </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              Calibración cruzada del sensor MODIS/VIIRS adaptado a cabinas espaciales: el acrílico PMMA emite 18.4 kW de energía radiativa sin disipación convectiva.
+              {t("radiation.desc")}
             </p>
 
             <div className="h-[280px] w-full pt-2">
@@ -574,18 +600,19 @@ export default function AnalyticsCharts() {
                     tick={{ fill: "#898989", fontSize: 9, fontFamily: "monospace" }}
                     angle={-20}
                     textAnchor="end"
+                    tickFormatter={dn}
                   />
                   <YAxis
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "Potencia (kW) / Flujo (kW/m²)", angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("radiation.axisY"), angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
                     wrapperStyle={{ fontSize: 10, fontFamily: "monospace", paddingTop: 8 }}
                     formatter={(val) => <span className="text-[#cccccc]">{val}</span>}
                   />
-                  <Bar dataKey="frp_kw" name="FRP Radiativo (kW)" fill="#df6500">
+                  <Bar dataKey="frp_kw" name={t("radiation.seriesFrp")} fill="#df6500">
                     {materialsData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
@@ -593,22 +620,22 @@ export default function AnalyticsCharts() {
                       />
                     ))}
                   </Bar>
-                  <Bar dataKey="flux_kw_m2" name="Flujo Térmico (kW/m²)" fill="#76b900" />
+                  <Bar dataKey="flux_kw_m2" name={t("radiation.seriesFlux")} fill="#76b900" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">PMMA MÁXIMO FRP:</span>
+                <span className="text-[#757575] block">{t("radiation.footerPmma")}</span>
                 <strong className="text-[#df6500]">18.4 kW</strong>
               </div>
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">NOMEX AUTO-EXT.:</span>
-                <strong className="text-[#76b900]">0.8 kW (Seguro)</strong>
+                <span className="text-[#757575] block">{t("radiation.footerNomex")}</span>
+                <strong className="text-[#76b900]">{t("radiation.footerNomexValue")}</strong>
               </div>
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">KAPTON ENERGÍA:</span>
+                <span className="text-[#757575] block">{t("radiation.footerKapton")}</span>
                 <strong className="text-white">2.6 kW</strong>
               </div>
             </div>
@@ -623,16 +650,16 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <Layers className="h-4 w-4 text-[#00b0ff]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Hollín & Aerosoles: Aglomeración SAME (0g) vs. Tierra (1g)
+                  {t("soot.title")}
                 </h3>
               </div>
               <span className="text-[10px] font-mono text-[#00b0ff] bg-black px-2 py-0.5 border border-[#333333]">
-                EXP. SAME (ISS)
+                {t("soot.badge")}
               </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              Los detectores de ionización terrestres fallan en la ISS porque en 0g las partículas de hollín no escapan y se aglomeran en tamaños gigantes (&gt;0.5 a 5.0 µm).
+              {t("soot.desc")}
             </p>
 
             <div className="h-[280px] w-full pt-2">
@@ -643,32 +670,32 @@ export default function AnalyticsCharts() {
                     dataKey="size_um"
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "Diámetro de Partícula (µm)", position: "insideBottom", offset: -5, fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("soot.axisX"), position: "insideBottom", offset: -5, fill: "#757575", fontSize: 10 }}
                   />
                   <YAxis
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "% Distribución en Masa", angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("soot.axisY"), angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
                     wrapperStyle={{ fontSize: 10, fontFamily: "monospace", paddingTop: 8 }}
                     formatter={(val) => <span className="text-[#cccccc]">{val}</span>}
                   />
-                  <Bar dataKey="microgravity_0g" name="Microgravedad ISS (SAME)" fill="#00b0ff" />
-                  <Bar dataKey="earth_1g" name="Ambiente Terrestre 1g" fill="#525252" />
+                  <Bar dataKey="microgravity_0g" name={t("soot.seriesMicro")} fill="#00b0ff" />
+                  <Bar dataKey="earth_1g" name={t("soot.seriesEarth")} fill="#525252" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#00b0ff]/40">
-                <span className="text-[#00b0ff] block">PICO EN MICROGRAVEDAD:</span>
-                <strong className="text-white">0.50 µm (26.5% de masa)</strong>
+                <span className="text-[#00b0ff] block">{t("soot.footerPeakMicro")}</span>
+                <strong className="text-white">{t("soot.footerPeakMicroValue")}</strong>
               </div>
               <div className="bg-black p-2 border border-[#262626]">
-                <span className="text-[#757575] block">PICO EN TIERRA (1g):</span>
-                <strong className="text-[#898989]">0.05 µm (42.0% de masa)</strong>
+                <span className="text-[#757575] block">{t("soot.footerPeakEarth")}</span>
+                <strong className="text-[#898989]">{t("soot.footerPeakEarthValue")}</strong>
               </div>
             </div>
           </div>
@@ -682,16 +709,16 @@ export default function AnalyticsCharts() {
               <div className="flex items-center space-x-2">
                 <ShieldAlert className="h-4 w-4 text-[#76b900]" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                  Matriz de Inflamabilidad NASA-STD-6001 (LOI vs Quenching)
+                  {t("flammability.title")}
                 </h3>
               </div>
               <span className="text-[10px] font-mono text-[#76b900] bg-black px-2 py-0.5 border border-[#333333]">
-                CERTIFICACIÓN JSC
+                {t("flammability.badge")}
               </span>
             </div>
 
             <p className="text-[11px] text-[#898989] leading-tight">
-              Los materiales con Índice de Oxígeno Límite (LOI) &gt; 26% y Distancia de Quenching &gt; 10 mm son autorizados para cabina habitable de Artemis.
+              {t("flammability.desc")}
             </p>
 
             <div className="h-[280px] w-full pt-2">
@@ -702,11 +729,12 @@ export default function AnalyticsCharts() {
                     dataKey="name"
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 9, fontFamily: "monospace" }}
+                    tickFormatter={dn}
                   />
                   <YAxis
                     stroke="#757575"
                     tick={{ fill: "#898989", fontSize: 10, fontFamily: "monospace" }}
-                    label={{ value: "LOI (%) / Dist. Quenching (mm)", angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
+                    label={{ value: t("flammability.axisY"), angle: -90, position: "insideLeft", fill: "#757575", fontSize: 10 }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
@@ -717,26 +745,26 @@ export default function AnalyticsCharts() {
                     y={26}
                     stroke="#df6500"
                     strokeDasharray="4 4"
-                    label={{ value: "UMBRAL CERTIFICACIÓN NASA (26% LOI)", fill: "#df6500", fontSize: 9 }}
+                    label={{ value: t("flammability.refCert"), fill: "#df6500", fontSize: 9 }}
                   />
-                  <Bar dataKey="loi" name="Índice Oxígeno Límite (LOI %)" fill="#76b900">
+                  <Bar dataKey="loi" name={t("flammability.seriesLoi")} fill="#76b900">
                     {flammabilityData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.safe ? "#76b900" : "#df6500"} />
                     ))}
                   </Bar>
-                  <Bar dataKey="quenching_mm" name="Distancia de Quenching (mm)" fill="#00b0ff" />
+                  <Bar dataKey="quenching_mm" name={t("flammability.seriesQuenching")} fill="#00b0ff" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#333333] text-[10px] font-mono">
               <div className="bg-black p-2 border border-[#76b900]/40">
-                <span className="text-[#76b900] block">MATERIALES CERTIFICADOS:</span>
+                <span className="text-[#76b900] block">{t("flammability.footerCertified")}</span>
                 <strong className="text-white">Nomex (28.5%) &amp; Kapton (27.5%)</strong>
               </div>
               <div className="bg-black p-2 border border-[#df6500]/40">
-                <span className="text-[#df6500] block">MATERIALES PROHIBIDOS EN ARTEMIS:</span>
-                <strong className="text-white">PMMA (17.3%) &amp; Algodón (16.5%)</strong>
+                <span className="text-[#df6500] block">{t("flammability.footerForbidden")}</span>
+                <strong className="text-white">PMMA (17.3%) &amp; Cotton (16.5%)</strong>
               </div>
             </div>
           </div>
@@ -752,13 +780,13 @@ export default function AnalyticsCharts() {
               <div>
                 <div className="flex items-center space-x-2 text-[11px] font-bold text-[#76b900] uppercase tracking-widest">
                   <Database className="h-4 w-4" />
-                  <span>NASA PHYSICAL SCIENCES INFORMATICS (PSI) DATABASE</span>
+                  <span>{t("psi.eyebrow")}</span>
                 </div>
                 <h3 className="text-lg font-bold text-white mt-1">
-                  14 Estudios Experimentales de Microgravedad &amp; 32 Parámetros Validados
+                  {t("psi.title")}
                 </h3>
                 <p className="text-xs text-[#898989] mt-0.5">
-                  Repositorio oficial de investigaciones en la Estación Espacial Internacional (ISS), Cygnus y vuelos parabólicos.
+                  {t("psi.subtitle")}
                 </p>
               </div>
 
@@ -766,19 +794,19 @@ export default function AnalyticsCharts() {
               <div className="flex flex-wrap items-center gap-2">
                 <div className="px-3 py-1 bg-black border border-[#333333] text-center">
                   <span className="text-xs font-mono font-bold text-[#76b900]">14</span>
-                  <span className="text-[10px] text-[#898989] block uppercase">Estudios</span>
+                  <span className="text-[10px] text-[#898989] block uppercase">{t("psi.kpiStudies")}</span>
                 </div>
                 <div className="px-3 py-1 bg-black border border-[#333333] text-center">
                   <span className="text-xs font-mono font-bold text-[#00b0ff]">32</span>
-                  <span className="text-[10px] text-[#898989] block uppercase">Parámetros</span>
+                  <span className="text-[10px] text-[#898989] block uppercase">{t("psi.kpiParameters")}</span>
                 </div>
                 <div className="px-3 py-1 bg-black border border-[#333333] text-center">
                   <span className="text-xs font-mono font-bold text-[#e040fb]">8</span>
-                  <span className="text-[10px] text-[#898989] block uppercase">Docs NASA</span>
+                  <span className="text-[10px] text-[#898989] block uppercase">{t("psi.kpiDocs")}</span>
                 </div>
                 <div className="px-3 py-1 bg-black border border-[#76b900]/40 text-center">
-                  <span className="text-xs font-mono font-bold text-white">ISS Flight</span>
-                  <span className="text-[10px] text-[#76b900] block uppercase">Validado</span>
+                  <span className="text-xs font-mono font-bold text-white">{t("psi.kpiFlight")}</span>
+                  <span className="text-[10px] text-[#76b900] block uppercase">{t("psi.kpiValidated")}</span>
                 </div>
               </div>
             </div>
@@ -789,7 +817,7 @@ export default function AnalyticsCharts() {
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#757575]" />
                 <input
                   type="text"
-                  placeholder="Buscar por ID (PSI-159, PSI-60), título, material o parámetro..."
+                  placeholder={t("psi.search")}
                   value={psiSearch}
                   onChange={(e) => setPsiSearch(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 bg-black border border-[#333333] text-white text-xs placeholder-[#666666] focus:outline-none focus:border-[#76b900] font-mono"
@@ -798,11 +826,11 @@ export default function AnalyticsCharts() {
 
               <div className="flex flex-wrap items-center gap-1.5">
                 {[
-                  { id: "all", label: "TODOS" },
-                  { id: "combustion", label: "COMBUSTIÓN (ACME/BASS/SPICE)" },
-                  { id: "heat", label: "FLUIDOS & CALOR" },
-                  { id: "materials", label: "CIENCIA DE MATERIALES" },
-                  { id: "colloid", label: "COLOIDES" }
+                  { id: "all", label: t("psi.categories.all") },
+                  { id: "combustion", label: t("psi.categories.combustion") },
+                  { id: "heat", label: t("psi.categories.heat") },
+                  { id: "materials", label: t("psi.categories.materials") },
+                  { id: "colloid", label: t("psi.categories.colloid") }
                 ].map((cat) => (
                   <button
                     key={cat.id}
@@ -856,7 +884,7 @@ export default function AnalyticsCharts() {
                         {study.psi_id}
                       </span>
                       <span className="text-[10px] font-mono text-[#898989] uppercase">
-                        {study.status || "PUBLIC RELEASE"}
+                        {study.status || t("psi.publicRelease")}
                       </span>
                     </div>
 
@@ -876,7 +904,7 @@ export default function AnalyticsCharts() {
                     {study.parameters && study.parameters.length > 0 && (
                       <div className="space-y-1 pt-2 border-t border-[#262626]">
                         <span className="text-[9px] font-mono uppercase text-[#757575] block">
-                          Parámetros Físicos ({study.parameters.length}):
+                          {t("psi.parameters", { count: study.parameters.length })}
                         </span>
                         <div className="flex flex-wrap gap-1">
                           {study.parameters.slice(0, 3).map((p, pIdx) => (
@@ -889,7 +917,7 @@ export default function AnalyticsCharts() {
                           ))}
                           {study.parameters.length > 3 && (
                             <span className="text-[10px] font-mono text-[#76b900] self-center">
-                              +{study.parameters.length - 3} más
+                              {t("psi.more", { count: study.parameters.length - 3 })}
                             </span>
                           )}
                         </div>
@@ -900,10 +928,10 @@ export default function AnalyticsCharts() {
                     <div className="flex items-center justify-between pt-2.5 mt-2 border-t border-[#262626] text-[10px] font-mono text-[#757575]">
                       <div className="flex items-center space-x-1">
                         <FileText className="h-3 w-3" />
-                        <span>{study.documents_count || (study.documents ? study.documents.length : 0)} docs</span>
+                        <span>{t("psi.docs", { count: study.documents_count || (study.documents ? study.documents.length : 0) })}</span>
                       </div>
                       <span className="text-[#76b900] hover:underline">
-                        {selectedStudy?.psi_id === study.psi_id ? "Cerrar Detalle ▲" : "Ver Detalle ▼"}
+                        {selectedStudy?.psi_id === study.psi_id ? t("psi.closeDetail") : t("psi.viewDetail")}
                       </span>
                     </div>
 
@@ -911,15 +939,15 @@ export default function AnalyticsCharts() {
                     {selectedStudy?.psi_id === study.psi_id && (
                       <div className="mt-3 pt-3 border-t border-[#76b900]/40 space-y-3 bg-[#111111] -mx-4 -mb-4 p-4 text-xs font-mono">
                         <div>
-                          <span className="text-[#76b900] font-bold block mb-1">METODOLOGÍA &amp; ENFOQUE:</span>
+                          <span className="text-[#76b900] font-bold block mb-1">{t("psi.methodology")}</span>
                           <p className="text-[#cccccc] text-[11px] leading-relaxed">
-                            {study.approach || "Ensayos experimentales con hardware CIR / BASS / FAMIS a bordo de la ISS."}
+                            {study.approach || t("psi.approachFallback")}
                           </p>
                         </div>
 
                         {study.parameters && study.parameters.length > 0 && (
                           <div>
-                            <span className="text-[#00b0ff] font-bold block mb-1">TODOS LOS PARÁMETROS CALIBRADOS:</span>
+                            <span className="text-[#00b0ff] font-bold block mb-1">{t("psi.allParameters")}</span>
                             <div className="space-y-1 max-h-40 overflow-y-auto pr-1">
                               {study.parameters.map((p, idx) => (
                                 <div key={idx} className="flex justify-between py-0.5 border-b border-[#222222] text-[11px]">
@@ -933,7 +961,7 @@ export default function AnalyticsCharts() {
 
                         {study.contacts && study.contacts.length > 0 && (
                           <div>
-                            <span className="text-[#e040fb] font-bold block mb-1">EQUIPO DE INVESTIGACIÓN:</span>
+                            <span className="text-[#e040fb] font-bold block mb-1">{t("psi.team")}</span>
                             <div className="space-y-1">
                               {study.contacts.map((c: any, cIdx: number) => (
                                 <div key={cIdx} className="text-[11px] text-[#cccccc]">

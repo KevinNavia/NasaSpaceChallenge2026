@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Activity, Radio, Cpu, ShieldAlert, CheckCircle2, AlertOctagon, Zap, Thermometer } from "lucide-react";
 
 interface Esp32CockpitMirrorProps {
@@ -18,6 +19,7 @@ interface Esp32CockpitMirrorProps {
 }
 
 export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp32CockpitMirrorProps) {
+  const t = useTranslations("cockpit");
   const [touchPressed, setTouchPressed] = useState(false);
   const [simulatedCritical, setSimulatedCritical] = useState<boolean | null>(null);
 
@@ -79,7 +81,7 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
             <span>8MB OPI PSRAM</span>
             <span>•</span>
             <span className={isLive ? "text-[#76b900] font-bold" : "text-[#888888]"}>
-              {isLive ? "USB COM9 LINKED" : "OFFLINE MIRROR"}
+              {isLive ? t("linked") : t("offline")}
             </span>
           </div>
         </div>
@@ -96,7 +98,7 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
                 STELLARAPP
               </span>
               <span className="text-[10px] sm:text-xs font-bold text-white tracking-wide hidden xs:inline">
-                ASTRONAUT FLIGHT DECK // ECLSS HUD
+                {t("astronautDeck")}
               </span>
             </div>
 
@@ -111,7 +113,7 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
                   isCritical ? "text-[#e52020]" : isLive ? "text-[#76b900]" : "text-[#777777]"
                 }`}
               >
-                {isCritical ? "CRÍTICO" : isLive ? "EN LÍNEA" : "STANDBY"}
+                {isCritical ? t("critical") : isLive ? t("online") : t("standby")}
               </span>
             </div>
           </div>
@@ -122,7 +124,7 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
             <div className="bg-[#141926] border border-[#2a344a] rounded-md p-2 sm:p-3.5 flex flex-col justify-between">
               <div>
                 <span className="text-[9px] sm:text-[11px] font-bold text-[#8892b0] uppercase tracking-wider block">
-                  OXÍGENO AMBIENTAL
+                  {t("oxygen")}
                 </span>
                 <div className="mt-1 flex items-baseline space-x-1">
                   <span
@@ -138,7 +140,7 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
 
               <div className="mt-2 space-y-1.5">
                 <div className="flex justify-between text-[8px] sm:text-[10px] text-[#8892b0]">
-                  <span>Sensor Bruto:</span>
+                  <span>{t("rawSensor")}</span>
                   <span className="text-white font-bold">{o2Raw.toFixed(1)}%</span>
                 </div>
 
@@ -152,9 +154,9 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
                   />
                 </div>
                 <div className="flex justify-between text-[7px] sm:text-[8px] text-[#5c6882]">
-                  <span>18% (Sub)</span>
-                  <span>21% Nom</span>
-                  <span>30% Hiper</span>
+                  <span>{t("o2Ticks.sub")}</span>
+                  <span>{t("o2Ticks.nominal")}</span>
+                  <span>{t("o2Ticks.high")}</span>
                 </div>
               </div>
             </div>
@@ -163,7 +165,7 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
             <div className="bg-[#141926] border border-[#2a344a] rounded-md p-2 sm:p-3.5 flex flex-col justify-between">
               <div>
                 <span className="text-[9px] sm:text-[11px] font-bold text-[#8892b0] uppercase tracking-wider block">
-                  FILTRO KALMAN (CO)
+                  {t("kalmanFilter")}
                 </span>
                 <div className="mt-1 flex items-baseline space-x-1">
                   <span
@@ -179,11 +181,11 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
 
               <div className="mt-2 space-y-1 text-[8px] sm:text-[10px]">
                 <div className="flex justify-between text-[#8892b0]">
-                  <span>Filtro Kalman:</span>
-                  <span className="text-white font-bold">Activo</span>
+                  <span>{t("filterActive")}</span>
+                  <span className="text-white font-bold">{t("active")}</span>
                 </div>
                 <div className="flex justify-between text-[#8892b0]">
-                  <span>Ganancia (K):</span>
+                  <span>{t("gain")}</span>
                   <span className="text-white font-bold">{kGain.toFixed(3)}</span>
                 </div>
                 <div
@@ -191,7 +193,7 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
                     isCritical ? "text-[#e52020]" : "text-[#76b900]"
                   }`}
                 >
-                  {isCritical ? "TOXICIDAD ALTA" : "ESTABLE (±3.5σ)"}
+                  {isCritical ? t("toxicityHigh") : t("stable")}
                 </div>
               </div>
             </div>
@@ -200,7 +202,7 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
             <div className="bg-[#141926] border border-[#2a344a] rounded-md p-2 sm:p-3.5 flex flex-col justify-between">
               <div>
                 <span className="text-[9px] sm:text-[11px] font-bold text-[#8892b0] uppercase tracking-wider block">
-                  SONDA RP2040
+                  {t("rp2040Probe")}
                 </span>
                 <div className="mt-1 flex items-baseline space-x-1">
                   <span
@@ -216,21 +218,21 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
 
               <div className="mt-2 space-y-1 text-[8px] sm:text-[10px]">
                 <div className="flex justify-between text-[#8892b0]">
-                  <span>Hardware:</span>
+                  <span>{t("hardware")}</span>
                   <span className="text-white font-bold">Pico W (COM6)</span>
                 </div>
                 <div className="flex justify-between text-[#8892b0]">
-                  <span>Evacuación:</span>
+                  <span>{t("evacuation")}</span>
                   <span
                     className={`font-black uppercase ${
                       isCritical ? "text-[#e52020] animate-pulse" : "text-[#76b900]"
                     }`}
                   >
-                    {isCritical ? "< 3 MIN" : "NOMINAL"}
+                    {isCritical ? "< 3 MIN" : t("nominal")}
                   </span>
                 </div>
                 <div className="text-[7px] sm:text-[9px] text-[#5c6882]">
-                  {isCritical ? "🚨 DISPARO TÉRMICO" : "Monitoreo Continuo"}
+                  {isCritical ? t("thermalTrigger") : t("continuousMonitoring")}
                 </div>
               </div>
             </div>
@@ -251,8 +253,8 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
               <Zap className="h-4 w-4" />
               <span>
                 {isCritical
-                  ? "🚨 ALERTA CRÍTICA // INICIAR PURGA INERTE N2"
-                  : "ACTIVAR PURGA INERTE N2 / PROTOCOLO EVACUACIÓN"}
+                  ? t("purgeCritical")
+                  : t("purgeNormal")}
               </span>
             </button>
           </div>
@@ -262,10 +264,10 @@ export default function Esp32CockpitMirror({ hardwareData, onTriggerPurge }: Esp
         <div className="mt-2.5 flex flex-wrap items-center justify-between text-[10px] text-[#58687d] px-2 font-mono">
           <div className="flex items-center space-x-2">
             <span className="h-1.5 w-1.5 rounded-full bg-[#76b900]" />
-            <span>GEMELO DIGITAL SINCRONIZADO EN TIEMPO REAL CON LA PANTALLA FÍSICA</span>
+            <span>{t("syncCaption")}</span>
           </div>
           <span className="text-[#8892b0] hover:text-white cursor-pointer" onClick={() => setSimulatedCritical(null)}>
-            [RESET ESTADO]
+            {t("reset")}
           </span>
         </div>
       </div>

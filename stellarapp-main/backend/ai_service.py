@@ -3,6 +3,28 @@ import json
 import httpx
 from typing import Dict, Any, List
 
+from i18n import (
+    GUARDRAIL_EN,
+    INSTANT_EN,
+    SIMULATE,
+    TOXICITY,
+    assistant_prompt,
+    fallback_answer,
+    normalize_lang,
+)
+
+INSTANT_SOURCES = {
+    "sphere": ["EXP-SAFFIRE-001", "EXP-BASS-011", "NASA/TM-2017-219612"],
+    "artemis": ["EXP-SAFFIRE-004", "NASA-STD-6001B", "JSC-65828"],
+    "cool": ["EXP-FLEX-001", "EXP-ACME-002", "NASA PSI-159"],
+    "same": ["EXP-SAME-ISS", "NASA CR-2008-215286", "ISS-ECLSS-FD"],
+    "kalman": ["STELLARAPP-KALMAN-01", "NASA-STD-3001", "JSC-65828"],
+    "thermal": ["NASA-STD-3001", "NASA-SP-20205001358", "Saffire-IV-Telemetry"],
+    "materials": ["NASA-STD-6001B", "EXP-SAFFIRE-001", "EXP-SAFFIRE-002"],
+    "firms": ["NASA-FIRMS-EPSG6933", "EXP-SAFFIRE-001", "MODIS-VIIRS-FRP"],
+    "psi": ["NASA-PSI-159", "NASA-PSI-60", "NASA-PSI-62", "DOI:10.1080/00102202.2022.2041621"],
+}
+
 class CombustionAIService:
     def __init__(self, dataset_path: str):
         self.api_key = os.getenv("GEMINI_API_KEY", "")
@@ -76,15 +98,17 @@ class CombustionAIService:
             return True
         return False
 
-    async def ask_safety_assistant(self, query: str) -> Dict[str, Any]:
+    async def ask_safety_assistant(self, query: str, lang: str = "es") -> Dict[str, Any]:
         """
         Uses NASA combustion data as grounding context to answer astronaut fire safety queries.
-        Enforces strict domain guardrails.
+        Enforces strict domain guardrails. Answers in the requested language.
         """
+        lang = normalize_lang(lang)
+
         # Guardrail check
         if not self._is_query_in_domain(query):
             return {
-                "answer": (
+                "answer": GUARDRAIL_EN if lang == "en" else (
                     "⚠️ **CONTROL DE DOMINIO Y GUARDRAILS DE MISIÓN (NASA STELLARAPP):**\n\n"
                     "Esta terminal de inteligencia artificial está **estrictamente restringida al perímetro técnico del proyecto**:\n"
                     "• Física de combustión en microgravedad (0g, Lunar, Marciana).\n"
@@ -104,7 +128,7 @@ class CombustionAIService:
             }
 
         # 1. High-Speed Sub-Second Knowledge Engine (< 50ms) for core StellarApp topics
-        instant_resp = self._get_instant_stellarapp_response(query)
+        instant_resp = self._get_instant_stellarapp_response(query, lang)
         if instant_resp:
             return instant_resp
 
@@ -132,18 +156,12 @@ class CombustionAIService:
             for m in matched
         ], indent=1)
 
-        prompt = f"""Eres el Especialista de IA de la NASA para Seguridad contra Incendios en Microgravedad (ISS, Artemis, Marte).
-Responde a la consulta del astronauta o ingeniero de forma técnica, rigurosa y concisa (en 2 párrafos) en español.
-Básate en esta evidencia experimental de la NASA:
-{context_summary}
-
-CONSULTA DEL USUARIO:
-{query}
-
-INSTRUCCIONES CLAVE:
-1. Explica el mecanismo físico exacto (falta de convección natural y empuje hidrostático en 0g, transporte por difusión lenta, llama esférica/azul o fenómenos de llama fría).
-2. Detalla las implicaciones para la atmósfera de la nave y la recomendación operacional de supresión para la tripulación (ECLSS).
-3. Responde siempre en español formal, citando al menos un experimento ({', '.join(m.get('id', '') for m in matched)})."""
+        prompt = assistant_prompt(
+            lang,
+            context_summary,
+            query,
+            ", ".join(m.get("id", "") for m in matched),
+        )
 
         # 2. Try local Qwen model on Ollama with fast timeout (max 8s)
         if self.ollama_host:
@@ -197,17 +215,51 @@ INSTRUCCIONES CLAVE:
                 print(f"Gemini API error: {err}")
 
         # 4. Fallback intelligent rule-based agent (Clean, zero API key disclaimers)
-        return self._generate_fallback_answer(query)
+        return self._generate_fallback_answer(query, lang)
 
-    def _get_instant_stellarapp_response(self, query: str) -> Any:
+    def _detect_topic(self, query: str) -> Any:
+        """Maps a free-text query to one of the instant-answer topics (or None)."""
+        q = query.lower()
+
+        if any(w in q for w in ["esferic", "esféric", "azul", "flotabilidad", "buoyancy", "convecci", "forma de la llama", "forma", "shape", "spherical"]):
+            return "sphere"
+        if any(w in q for w in ["artemis", "26%", "26", "presion reducida", "presión reducida", "56.5", "normox"]):
+            return "artemis"
+        if any(w in q for w in ["cool flame", "fria", "fría", "flex", "flex-2", "heptan"]):
+            return "cool"
+        if any(w in q for w in ["same", "humo", "smoke", "hollin", "hollín", "aerosol", "particula", "partícula"]):
+            return "same"
+        if any(w in q for w in ["kalman", "monoxido", "monóxido", " co ", " co,", "ppm", "sensor co", "gas co", "ruido sensorial"]):
+            return "kalman"
+        if any(w in q for w in ["termic", "térmic", "temperatura", "soporta", "casco", "supervivencia", "confort", "al-li", "fluencia", "sellos", "viton", "oring"]):
+            return "thermal"
+        if any(w in q for w in ["pmma", "nomex", "kapton", "silicon", "etfe", "algodon", "algodón", "material", "loi", "inflamab"]):
+            return "materials"
+        if any(w in q for w in ["firms", "satelite", "satélite", "modis", "viirs", "tierra"]):
+            return "firms"
+        if any(w in q for w in ["psi", "estudios", "investigacion", "investigación", "repositorio", "spice", "ansys", "fluent", "ebullicion", "ebullición", "bifasic", "bifásic"]):
+            return "psi"
+        return None
+
+    def _get_instant_stellarapp_response(self, query: str, lang: str = "es") -> Any:
         """
         Sub-second (<50ms) high-speed aerospace response engine for core StellarApp topics.
         Ensures 100% grounded answers on NASA missions without waiting on CPU LLM inference.
         """
-        q = query.lower()
+        topic = self._detect_topic(query)
+        if not topic:
+            return None
+
+        if normalize_lang(lang) == "en":
+            return {
+                "answer": INSTANT_EN[topic],
+                "grounded": True,
+                "model": "StellarApp-AeroEngine (NASA Instant Inference)",
+                "sources": INSTANT_SOURCES[topic],
+            }
 
         # 1. Llamas esféricas, color azul y ausencia de convección (0g)
-        if any(w in q for w in ["esferic", "esféric", "azul", "flotabilidad", "buoyancy", "convecci", "forma de la llama", "forma"]):
+        if topic == "sphere":
             return {
                 "answer": (
                     "🔥 **Morfología de Llama en Microgravedad (0g) • Misiones Saffire & BASS-II:**\n\n"
@@ -221,7 +273,7 @@ INSTRUCCIONES CLAVE:
             }
 
         # 2. Atmósfera Artemis (26% O2 a 56.5 kPa)
-        if any(w in q for w in ["artemis", "26%", "26", "presion reducida", "presión reducida", "56.5", "normox"]):
+        if topic == "artemis":
             return {
                 "answer": (
                     "⚠️ **Peligro Crítico en Atmósfera de Exploración Artemis (26% O₂ • 56.5 kPa):**\n\n"
@@ -235,7 +287,7 @@ INSTRUCCIONES CLAVE:
             }
 
         # 3. Llamas Frías ('Cool Flames') - FLEX-2
-        if any(w in q for w in ["cool flame", "fria", "fría", "flex", "flex-2", "heptan"]):
+        if topic == "cool":
             return {
                 "answer": (
                     "❄️ **Fenómeno de 'Cool Flames' (Llamas Frías) • Misión FLEX-2 (ISS):**\n\n"
@@ -249,7 +301,7 @@ INSTRUCCIONES CLAVE:
             }
 
         # 4. Experimento SAME (Humo y Hollín en ISS)
-        if any(w in q for w in ["same", "humo", "smoke", "hollin", "hollín", "aerosol", "particula", "partícula"]):
+        if topic == "same":
             return {
                 "answer": (
                     "🌫️ **Aglomeración de Hollín y Falla de Detectores • Experimento SAME (ISS):**\n\n"
@@ -263,7 +315,7 @@ INSTRUCCIONES CLAVE:
             }
 
         # 5. Filtro de Kalman y Monóxido de Carbono (CO)
-        if any(w in q for w in ["kalman", "monoxido", "monóxido", " co ", " co,", "ppm", "sensor co", "gas co", "ruido sensorial"]):
+        if topic == "kalman":
             return {
                 "answer": (
                     "📈 **Filtro de Kalman para Telemetría de Monóxido de Carbono (CO) • StellarApp:**\n\n"
@@ -280,7 +332,7 @@ INSTRUCCIONES CLAVE:
             }
 
         # 6. Límites Térmicos (Tripulación vs. Casco de la Nave)
-        if any(w in q for w in ["termic", "térmic", "temperatura", "soporta", "casco", "supervivencia", "confort", "al-li", "fluencia", "sellos", "viton", "oring"]):
+        if topic == "thermal":
             return {
                 "answer": (
                     "🌡️ **Límites Térmicos Máximos: Tripulación vs. Casco de la Nave (NASA-STD-3001 & NASA-SP-20205001358):**\n\n"
@@ -300,7 +352,7 @@ INSTRUCCIONES CLAVE:
             }
 
         # 7. Materiales y Regla de Inflamabilidad (Nomex, PMMA, Kapton, Silicona, ETFE, Algodón)
-        if any(w in q for w in ["pmma", "nomex", "kapton", "silicon", "etfe", "algodon", "algodón", "material", "loi", "inflamab"]):
+        if topic == "materials":
             return {
                 "answer": (
                     "🧱 **Matriz de Inflamabilidad de Materiales Espaciales (NASA-STD-6001B):**\n\n"
@@ -316,7 +368,7 @@ INSTRUCCIONES CLAVE:
             }
 
         # 8. Puente NASA FIRMS (Tierra a Espacio)
-        if any(w in q for w in ["firms", "satelite", "satélite", "modis", "viirs", "tierra"]):
+        if topic == "firms":
             return {
                 "answer": (
                     "🌍🚀 **Puente Tierra-Espacio: NASA FIRMS a Saffire en Microgravedad:**\n\n"
@@ -330,7 +382,7 @@ INSTRUCCIONES CLAVE:
             }
 
         # 9. Repositorio Oficial NASA PSI (Physical Sciences Informatics)
-        if any(w in q for w in ["psi", "estudios", "investigacion", "investigación", "repositorio", "spice", "ansys", "fluent", "ebullicion", "ebullición", "bifasic", "bifásic"]):
+        if topic == "psi":
             return {
                 "answer": (
                     "🔬 **Repositorio Oficial NASA Physical Sciences Informatics (PSI):**\n\n"
@@ -348,7 +400,7 @@ INSTRUCCIONES CLAVE:
 
         return None
 
-    def _generate_fallback_answer(self, query: str) -> Dict[str, Any]:
+    def _generate_fallback_answer(self, query: str, lang: str = "es") -> Dict[str, Any]:
         q = query.lower()
         matched = []
         for exp in self.dataset:
@@ -359,25 +411,15 @@ INSTRUCCIONES CLAVE:
             matched = self.dataset[:2]
 
         ref_exp = matched[0]
-        
-        simulated_response = (
-            f"**Análisis de Seguridad Espacial NASA (Basado en {ref_exp['mission']})**\n\n"
-            f"1. **Mecanismo Físico:** En microgravedad ({ref_exp['environment']}), la ausencia de convección natural impide que los gases calientes asciendan. "
-            f"La combustión pasa a ser dominada por difusión molecular y ventilación forzada ({ref_exp['air_flow_velocity_cms']} cm/s).\n"
-            f"2. **Comportamiento del Material ({ref_exp['material']}):** Presenta una tasa de propagación de llama de {ref_exp['flame_spread_rate_mms']} mm/s "
-            f"con forma de llama '{ref_exp['flame_shape']}'. Índice de Oxígeno Límite (LOI): {ref_exp['limiting_oxygen_index_pct']}%.\n"
-            f"3. **Riesgo Operacional en Nave:** {ref_exp['spacecraft_implication']}\n"
-            f"4. **Protocolo de Supresión Recomendado:** {ref_exp['recommended_suppression']}."
-        )
 
         return {
-            "answer": simulated_response,
+            "answer": fallback_answer(ref_exp, lang),
             "grounded": True,
             "model": "NASA-Combustion-RuleEngine (Local Grounding)",
             "sources": [e["id"] for e in matched]
         }
 
-    async def simulate_combustion(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    async def simulate_combustion(self, params: Dict[str, Any], lang: str = "es") -> Dict[str, Any]:
         """
         Calculates predicted flame behavior and risk index for arbitrary spacecraft atmospheric conditions.
         Enriched with NASA PSI-159 calibration and Limiting Oxygen Index (LOI) thresholds.
@@ -387,20 +429,22 @@ INSTRUCCIONES CLAVE:
         velocity = float(params.get("air_flow_velocity_cms", 5.0))
         gravity = float(params.get("gravity_g", 0.0001))
         material = params.get("material", "PMMA")
+        lang = normalize_lang(lang)
+        texts = SIMULATE[lang]
 
         # Resolving material properties against NASA PSI-159 database
         mat_registry = {
-            "nomex": {"loi": 30.0, "toxicidad": "CO (bajo a medio)", "nombre": "Nomex"},
-            "pbi": {"loi": 40.0, "toxicidad": "CO (bajo)", "nombre": "PBI"},
-            "kapton": {"loi": 38.0, "toxicidad": "HCN + CO (alto)", "nombre": "Kapton"},
-            "kevlar": {"loi": 29.0, "toxicidad": "CO (medio)", "nombre": "Kevlar"},
-            "ptfe": {"loi": 95.0, "toxicidad": "HF (muy alto)", "nombre": "PTFE"},
-            "pmma": {"loi": 17.3, "toxicidad": "CO + CO2 (alto)", "nombre": "PMMA"},
-            "cotton": {"loi": 16.5, "toxicidad": "CO (moderado)", "nombre": "Algodón"},
-            "algodon": {"loi": 16.5, "toxicidad": "CO (moderado)", "nombre": "Algodón"},
-            "algodón": {"loi": 16.5, "toxicidad": "CO (moderado)", "nombre": "Algodón"},
-            "etfe": {"loi": 25.0, "toxicidad": "HF trazas + CO", "nombre": "ETFE"},
-            "heptane": {"loi": 14.0, "toxicidad": "CO + Hidrocarburos no quemados", "nombre": "n-Heptano"}
+            "nomex": {"loi": 30.0, "tox_key": "nomex", "nombre": "Nomex"},
+            "pbi": {"loi": 40.0, "tox_key": "pbi", "nombre": "PBI"},
+            "kapton": {"loi": 38.0, "tox_key": "kapton", "nombre": "Kapton"},
+            "kevlar": {"loi": 29.0, "tox_key": "kevlar", "nombre": "Kevlar"},
+            "ptfe": {"loi": 95.0, "tox_key": "ptfe", "nombre": "PTFE"},
+            "pmma": {"loi": 17.3, "tox_key": "pmma", "nombre": "PMMA"},
+            "cotton": {"loi": 16.5, "tox_key": "cotton", "nombre": "Algodón" if lang == "es" else "Cotton"},
+            "algodon": {"loi": 16.5, "tox_key": "cotton", "nombre": "Algodón" if lang == "es" else "Cotton"},
+            "algodón": {"loi": 16.5, "tox_key": "cotton", "nombre": "Algodón" if lang == "es" else "Cotton"},
+            "etfe": {"loi": 25.0, "tox_key": "etfe", "nombre": "ETFE"},
+            "heptane": {"loi": 14.0, "tox_key": "heptane", "nombre": "n-Heptano" if lang == "es" else "n-Heptane"}
         }
 
         # Merge dynamic materials from database.json if available
@@ -410,7 +454,7 @@ INSTRUCCIONES CLAVE:
                 if mid:
                     mat_registry[mid] = {
                         "loi": float(m.get("loi", 25.0)),
-                        "toxicidad": m.get("toxicidad", "CO"),
+                        "tox_text": m.get("toxicidad", "CO"),
                         "nombre": m.get("nombre", mid.upper())
                     }
 
@@ -422,10 +466,12 @@ INSTRUCCIONES CLAVE:
                     matched_mat = v
                     break
         if not matched_mat:
-            matched_mat = {"loi": 21.0, "toxicidad": "CO (moderado)", "nombre": material}
+            matched_mat = {"loi": 21.0, "tox_key": "default", "nombre": material}
 
         loi = matched_mat["loi"]
-        toxicity = matched_mat["toxicidad"]
+        toxicity = matched_mat.get("tox_text") or TOXICITY.get(
+            matched_mat.get("tox_key", "default"), TOXICITY["default"]
+        )[lang]
         loi_exceeded = (o2 >= loi)
 
         # NASA Empirical risk modeling
@@ -449,11 +495,11 @@ INSTRUCCIONES CLAVE:
         estimated_spread_rate = round(base_spread, 2)
 
         if loi_exceeded:
-            compliance = f"⚠️ ALERTA CRÍTICA PSI-159: O₂ ({o2}%) >= LOI ({loi}%). El material sostendrá llama. Emisión tóxica: {toxicity}."
+            compliance = texts["compliance_alert"].format(o2=o2, loi=loi, tox=toxicity)
         else:
-            compliance = f"✅ NASA PSI-159 / STD-6001: Material auto-extinguible en este régimen (O₂: {o2}% < LOI: {loi}%). Emisión esperada: {toxicity}."
+            compliance = texts["compliance_safe"].format(o2=o2, loi=loi, tox=toxicity)
 
-        sensor_ctx = "Calibrado con NASA PSI-159 (PMT1: 4.42 V, IonCurrent: -0.888, MFC Max: 4.92 V)"
+        sensor_ctx = texts["sensor_ctx"]
 
         return {
             "input_parameters": params,
@@ -461,7 +507,7 @@ INSTRUCCIONES CLAVE:
             "risk_score": round(risk_score, 2),
             "estimated_flame_spread_mms": estimated_spread_rate,
             "cool_flame_risk": True if (gravity < 0.01 and velocity < 3.0) else False,
-            "extinction_strategy": "Cortar flujo de ventilación a < 1.0 cm/s de inmediato e inyectar N2/CO2" if gravity < 0.1 else "Uso de extintor de agua nebulizada / CO2",
+            "extinction_strategy": texts["strategy_space"] if gravity < 0.1 else texts["strategy_earth"],
             "compliance_note": compliance,
             "material_loi": loi,
             "toxic_hazard": toxicity,

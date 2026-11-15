@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>StellarApp - Ficha Técnica de Hardware y Software</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm 14mm 12mm 14mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #ffffff;
+      color: #1a202c;
+      font-size: 9.5pt;
+      line-height: 1.45;
+    }
+
+    /* Header */
+    .header {
+      border-bottom: 2px solid #76b900;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .brand-title {
+      font-size: 20pt;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: #0b0f19;
+    }
+    .brand-title span {
+      color: #76b900;
+    }
+    .brand-subtitle {
+      font-size: 8.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #4a5568;
+    }
+    .meta-box {
+      text-align: right;
+      font-size: 7.5pt;
+      font-family: Consolas, monospace;
+      color: #718096;
+    }
+    .badge-prod {
+      background-color: #0b0f19;
+      color: #76b900;
+      padding: 2px 6px;
+      font-weight: bold;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 3px;
+    }
+
+    /* Section Grid */
+    .section-title {
+      font-size: 11pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #0b0f19;
+      background-color: #f7fafc;
+      border-left: 4px solid #76b900;
+      padding: 4px 8px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* Cards */
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 9px 11px;
+      background-color: #ffffff;
+    }
+    .card-hw {
+      border-top: 3px solid #0088cc;
+    }
+    .card-esp {
+      border-top: 3px solid #76b900;
+    }
+    .card-sw {
+      border-top: 3px solid #805ad5;
+    }
+    .card-core {
+      border-top: 3px solid #dd6b20;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .card-title {
+      font-size: 10pt;
+      font-weight: 800;
+      color: #1a202c;
+    }
+    .tag {
+      font-size: 6.5pt;
+      font-family: Consolas, monospace;
+      font-weight: bold;
+      padding: 1px 5px;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
+    .tag-blue { background-color: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+    .tag-green { background-color: #f0fff4; color: #276749; border: 1px solid #c6f6d5; }
+    .tag-purple { background-color: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+    .tag-orange { background-color: #fffaf0; color: #c05621; border: 1px solid #feebc8; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      margin-top: 4px;
+    }
+    th, td {
+      padding: 3px 6px;
+      text-align: left;
+      border-bottom: 1px solid #edf2f7;
+    }
+    th {
+      background-color: #f7fafc;
+      color: #4a5568;
+      font-weight: 700;
+    }
+    td.spec-name {
+      font-weight: 600;
+      color: #2d3748;
+      width: 32%;
+    }
+    td.spec-val {
+      font-family: Consolas, monospace;
+      color: #1a202c;
+    }
+
+    /* Diagram */
+    .flow-diagram {
+      background-color: #0b0f19;
+      color: #e2e8f0;
+      border-radius: 6px;
+      padding: 9px 12px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      font-family: Consolas, monospace;
+      font-size: 8pt;
+      line-height: 1.4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .flow-node {
+      border: 1px solid #2d3748;
+      border-radius: 4px;
+      padding: 5px 8px;
+      background-color: #141926;
+      text-align: center;
+      width: 22%;
+    }
+    .flow-node-title {
+      font-weight: bold;
+      font-size: 8pt;
+    }
+    .flow-node-sub {
+      font-size: 6.5pt;
+      color: #a0aec0;
+    }
+    .flow-arrow {
+      color: #76b900;
+      font-weight: bold;
+      font-size: 11pt;
+    }
+
+    /* Features List */
+    ul.features-list {
+      list-style-type: none;
+      font-size: 8pt;
+      margin-top: 4px;
+    }
+    ul.features-list li {
+      position: relative;
+      padding-left: 14px;
+      margin-bottom: 3px;
+    }
+    ul.features-list li::before {
+      content: "■";
+      position: absolute;
+      left: 0;
+      font-size: 6pt;
+      color: #76b900;
+      top: 1px;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid #e2e8f0;
+      margin-top: 10px;
+      padding-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7.5pt;
+      color: #718096;
+      font-family: Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="brand-title">STELLAR<span>APP</span></div>
+      <div class="brand-subtitle">Ficha Técnica Oficial // Hardware & Software Ecosystem</div>
+    </div>
+    <div class="meta-box">
+      <div class="badge-prod">DESPLEGADO EN PRODUCCIÓN</div>
+      <div>NASA Space Apps Challenge 2026</div>
+      <div>https://stellarapp.nerosystem.solutions</div>
+    </div>
+  </div>
+
+  <!-- Hardware Section -->
+  <div class="section-title">1. ARQUITECTURA DE HARDWARE (HARDWARE-IN-THE-LOOP - HIL)</div>
+  <div class="grid-2">
+    <!-- Card Pico W -->
+    <div class="card card-hw">
+      <div class="card-header">
+        <span class="card-title">Raspberry Pi Pico W</span>
+        <span class="tag tag-blue">Sonda IoT de Silicio</span>
+      </div>
+      <table>
+        <tr><td class="spec-name">Microcontrolador</td><td class="spec-val">RP2040 Dual ARM Cortex-M0+ @ 133MHz</td></tr>
+        <tr><td class="spec-name">Sensor Utilizado</td><td class="spec-val">Sensor Térmico Interno (ADC4 Calibrado)</td></tr>
+        <tr><td class="spec-name">Firmware</td><td class="spec-val">MicroPython v1.23 embebido</td></tr>
+        <tr><td class="spec-name">Conectividad</td><td class="spec-val">USB CDC Serie (COM6) @ 115,200 baud</td></tr>
+        <tr><td class="spec-name">Frecuencia Emisión</td><td class="spec-val">1.0 Hz (Paquetes estructurados JSON)</td></tr>
+      </table>
+      <ul class="features-list">
+        <li><strong>Filtro de Kalman en Silicio:</strong> Reduce ruido estocástico del sensor (±3.5σ).</li>
+        <li><strong>Detección Térmica de Fuego:</strong> Disparo inmediato de alarma al superar 42°C.</li>
+      </ul>
+    </div>
+
+    <!-- Card ESP32-8048S043 -->
+    <div class="card card-esp">
+      <div class="card-header">
+        <span class="card-title">Sunton ESP32-8048S043</span>
+        <span class="tag tag-green">Astronaut Flight Deck HUD</span>
+      </div>
+      <table>
+        <tr><td class="spec-name">Microprocesador</td><td class="spec-val">ESP32-S3 Dual-Core LX7 @ 240MHz</td></tr>
+        <tr><td class="spec-name">Memoria</td><td class="spec-val">16MB Flash Quad-SPI + 8MB Octal PSRAM</td></tr>
+        <tr><td class="spec-name">Pantalla & Bus</td><td class="spec-val">4.3" IPS 800x480 RGB-565 (16-bit @ 14MHz)</td></tr>
+        <tr><td class="spec-name">Control Táctil</td><td class="spec-val">Capacitivo GT911 sobre bus I2C (400kHz)</td></tr>
+        <tr><td class="spec-name">Framework & Tool</td><td class="spec-val">C++ / PlatformIO / LovyanGFX / ArduinoJson</td></tr>
+      </table>
+      <ul class="features-list">
+        <li><strong>HUD de Cabina en Tiempo Real:</strong> Medidores de O₂, CO y temperatura del chip.</li>
+        <li><strong>Interacción Táctil de Emergencia:</strong> Botón físico para activación de purga con N₂.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Flow Diagram -->
+  <div class="section-title">2. FLUJO DE TELEMETRÍA Y CONTROL BIDIRECCIONAL EN TIEMPO REAL</div>
+  <div class="flow-diagram">
+    <div class="flow-node">
+      <div class="flow-node-title" style="color: #63b3ed;">SONDA RP2040</div>
+      <div class="flow-node-sub">MicroPython COM6<br>Lectura Térmica + Kalman</div>
+    </div>
+    <div class="flow-arrow">➔</div>
+    <div class="flow-node">
+      <div class="flow-node-title" style="color: #68d391;">PUENTE PYTHON</div>
+      <div class="flow-node-sub">bridge_pico.py<br>Keep-Alive + Retransmisión</div>
+    </div>
+    <div class="flow-arrow">➔</div>
+    <div class="flow-node">
+      <div class="flow-node-title" style="color: #f6e05e;">ESP32 HUD 4.3"</div>
+      <div class="flow-node-sub">C++ LovyanGFX COM9<br>Pantalla Táctil Cabina</div>
+    </div>
+    <div class="flow-arrow">➔</div>
+    <div class="flow-node">
+      <div class="flow-node-title" style="color: #fc8181;">NUBE & AUDITORIO</div>
+      <div class="flow-node-sub">FastAPI + Next.js<br>@Stellar_App_bot (Telegram)</div>
+    </div>
+  </div>
+
+  <!-- Software Section -->
+  <div class="section-title">3. ARQUITECTURA DE SOFTWARE, MODELOS Y SERVICIOS</div>
+  <div class="grid-2">
+    <!-- Frontend -->
+    <div class="card card-sw">
+      <div class="card-header">
+        <span class="card-title">Frontend & Gemelo Digital</span>
+        <span class="tag tag-purple">Next.js 14 / TypeScript</span>
+      </div>
+      <table>
+        <tr><td class="spec-name">Framework UI</td><td class="spec-val">Next.js 14 (App Router) + React 18</td></tr>
+        <tr><td class="spec-name">Estilos & Gráficos</td><td class="spec-val">Tailwind CSS + Recharts + Lucide Icons</td></tr>
+        <tr><td class="spec-name">Gemelo Digital</td><td class="spec-val">Esp32CockpitMirror.tsx (Réplica 800x480)</td></tr>
+        <tr><td class="spec-name">Soporte Idiomas</td><td class="spec-val">Next-Intl (Bilingüe Español / Inglés)</td></tr>
+        <tr><td class="spec-name">Rendimiento</td><td class="spec-val">SSG + Edge Client Polling (1.2s de refresco)</td></tr>
+      </table>
+      <ul class="features-list">
+        <li><strong>Selector de Hábitats:</strong> ISS (916 m³), Base Lunar (280 m³) y Rover (42 m³).</li>
+        <li><strong>Vista Dual Sincronizada:</strong> Muestra simultáneamente la cabina y la analítica.</li>
+      </ul>
+    </div>
+
+    <!-- Backend & Core -->
+    <div class="card card-core">
+      <div class="card-header">
+        <span class="card-title">Backend & Algoritmos Físicos</span>
+        <span class="tag tag-orange">FastAPI / Python 3.12</span>
+      </div>
+      <table>
+        <tr><td class="spec-name">Servidor REST</td><td class="spec-val">FastAPI asíncrono + Uvicorn ASGI</td></tr>
+        <tr><td class="spec-name">Manejo Serie</td><td class="spec-val">PySerial + Requests Session Keep-Alive</td></tr>
+        <tr><td class="spec-name">Bot Telegram</td><td class="spec-val">Python Telegram Bot / Webhook en Producción</td></tr>
+        <tr><td class="spec-name">Bases de Datos</td><td class="spec-val">NASA PSI Database (30 KB validados JSON)</td></tr>
+        <tr><td class="spec-name">Infraestructura</td><td class="spec-val">Docker Compose + Reverse Proxy Nginx SSL</td></tr>
+      </table>
+      <ul class="features-list">
+        <li><strong>Ecuaciones NASA-STD-6001:</strong> Cálculo dinámico de toxicidad y tiempo crítico.</li>
+        <li><strong>Alarma Acústica Telegram:</strong> Notificación instantánea a teléfonos del jurado.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div><strong>Repositorio Código Fuente:</strong> github.com/C3llf3r/stellarapp</div>
+    <div><strong>Plataforma en Vivo:</strong> stellarapp.nerosystem.solutions</div>
+    <div><strong>Canal Telegram:</strong> @Stellar_App_bot</div>
+  </div>
+
+</body>
+</html>

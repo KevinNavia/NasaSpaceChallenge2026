@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { Link } from "../../../navigation";
 import KalmanTelemetry from "../../../components/KalmanTelemetry";
 import LocaleSwitcher from "../../../components/LocaleSwitcher";
 import { 
@@ -27,10 +28,13 @@ import {
   Play,
   Film,
   ZoomIn,
-  ExternalLink
+  ExternalLink,
+  Presentation
 } from "lucide-react";
 
 export default function PitchLanding() {
+  const t = useTranslations("pitch");
+  const tf = useTranslations("footage");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{
@@ -57,37 +61,37 @@ export default function PitchLanding() {
   const nasaPhotos = [
     {
       src: "/media/nasa/saffire-iv-pmma-flame.jpg",
-      title: "Combustión de Acrílico (PMMA) en Cygnus",
-      badge: "PMMA • SAFFIRE-IV",
+      title: tf("photos.pmma.title"),
+      badge: tf("photos.pmma.badge"),
       badgeColor: "text-[#76b900] border-[#76b900]/40",
-      desc: "Frente de llama extendido sobre polímero estructural en el carguero Cygnus a presión y concentración controlada. Evidencia empírica de avance de llama sin corrientes convectivas.",
+      desc: tf("photos.pmma.desc"),
       nasaId: "jsc2023e046631",
       nasaUrl: "https://images.nasa.gov/details/jsc2023e046631"
     },
     {
       src: "/media/nasa/saffire-iv-fabric-flame.jpg",
-      title: "Propagación de Llama en Tejido de Nave",
-      badge: "TEJIDO • SAFFIRE-IV",
+      title: tf("photos.fabric.title"),
+      badge: tf("photos.fabric.badge"),
       badgeColor: "text-[#df6500] border-[#df6500]/40",
-      desc: "Muestra de tejido ardiendo bajo flujo forzado de 20 cm/s en atmósfera enriquecida con oxígeno. Demuestra que los tejidos estructurales arden con alta violencia en microgravedad.",
+      desc: tf("photos.fabric.desc"),
       nasaId: "jsc2023e046375",
       nasaUrl: "https://images.nasa.gov/details/jsc2023e046375"
     },
     {
       src: "/media/nasa/bass-ii-acrylic-flame.jpg",
-      title: "Llama Esférica en la Estación Espacial (0G)",
-      badge: "BASS-II • ISS",
+      title: tf("photos.sphere.title"),
+      badge: tf("photos.sphere.badge"),
       badgeColor: "text-[#00b0ff] border-[#00b0ff]/40",
-      desc: "Placa acrílica de 4 mm quemada en el Microgravity Science Glovebox a bordo de la ISS. Muestra la esfericidad isotrópica y la emisión azul tenue por radicales C2/CH.",
+      desc: tf("photos.sphere.desc"),
       nasaId: "iss040e072900",
       nasaUrl: "https://images.nasa.gov/details/iss040e072900"
     },
     {
       src: "/media/nasa/bass-ii-reduced-o2-flame.jpg",
-      title: "Combustión en Presión Parcial Reducida de O₂",
-      badge: "ATMÓSFERA SUB-NOMINAL",
+      title: tf("photos.reducedO2.title"),
+      badge: tf("photos.reducedO2.badge"),
       badgeColor: "text-[#e040fb] border-[#e040fb]/40",
-      desc: "Ensayo card 15 bajo presiones y concentraciones de oxígeno equivalentes a atmósferas de exploración espacial de próxima generación (Artemis / Marte).",
+      desc: tf("photos.reducedO2.desc"),
       nasaId: "iss040e086481",
       nasaUrl: "https://images.nasa.gov/details/iss040e086481"
     }
@@ -95,113 +99,91 @@ export default function PitchLanding() {
 
   const problems = [
     {
-      title: "40 AÑOS DE DATOS INACCESIBLES",
-      desc: "Miles de experimentos de combustión (Saffire, BASS, FLEX) dispersos en reportes técnicos estáticos (PDFs en NTRS) y videos sin indexar ni comparar.",
+      title: t("problem.data.title"),
+      desc: t("problem.data.desc"),
       icon: Database,
     },
     {
-      title: "LA FÍSICA CAMBIA RADICALMENTE EN 0G",
-      desc: "Sin flotabilidad gravitacional, las llamas se vuelven esféricas, casi invisibles ('Cool Flames') y los protocolos terrestres de extinción fallan de inmediato.",
+      title: t("problem.physics.title"),
+      desc: t("problem.physics.desc"),
       icon: Flame,
     },
     {
-      title: "NUEVO RIESGO EN ARTEMIS Y MARTE",
-      desc: "Las atmósferas de exploración espacial operarán a 26%-34% de O₂ y 56 kPa. Los materiales arden hasta un 95% más rápido con gotas encendidas flotantes.",
+      title: t("problem.artemis.title"),
+      desc: t("problem.artemis.desc"),
       icon: AlertTriangle,
     },
     {
-      title: "FALTA DE UN PUENTE TIERRA–ESPACIO",
-      desc: "La ciencia del fuego de la NASA estaba fragmentada: observación satelital macro en la Tierra (NASA FIRMS) separada de la combustión micro en naves espaciales (Saffire).",
+      title: t("problem.bridge.title"),
+      desc: t("problem.bridge.desc"),
       icon: Terminal,
     },
   ];
 
   const valueProps = [
     {
-      title: "1. DESBLOQUEO DE 40 AÑOS DE CIENCIA NASA & REPOSITORIO PSI",
-      desc: "Indexa y correlaciona misiones de vuelo espacial real (Saffire, BASS-II, FLEX-2, SAME, ACME) y 14 estudios oficiales de NASA Physical Sciences Informatics con 32 parámetros calibrados.",
+      title: t("value.science.title"),
+      desc: t("value.science.desc"),
     },
     {
-      title: "2. GEMELO DIGITAL DE MORFOLOGÍA Y PROPAGACIÓN EN 0G",
-      desc: "Modela la física sin flotabilidad (llamas esféricas isotrópicas, 'Cool Flames' invisibles y transferencia de calor radiativo hasta 42% a las paredes del hábitat).",
+      title: t("value.twin.title"),
+      desc: t("value.twin.desc"),
     },
     {
-      title: "3. CERTIFICACIÓN DE RIESGO EN ATMÓSFERAS ARTEMIS (26%–34% O₂)",
-      desc: "Evalúa materiales estructurales bajo la norma NASA-STD-6001B frente a la aceleración de hasta +90% en la velocidad de llama en presiones reducidas (56.5 kPa).",
+      title: t("value.certification.title"),
+      desc: t("value.certification.desc"),
     },
     {
-      title: "4. COPILOTO AUTÓNOMO AIR-GAPPED (<1 ms) PARA EL ECLSS",
-      desc: "Guía a la tripulación ante incendios súbitos sin depender de la Tierra (corte de ventilación forzada a <1.2 cm/s para auto-asfixia pasiva y aislamiento de mamparos).",
+      title: t("value.copilot.title"),
+      desc: t("value.copilot.desc"),
     },
   ];
 
-  const pitchQuestions = [
-    {
-      q: "¿Cuál es el objetivo primordial del proyecto StellarApp?",
-      a: "Proteger la vida de los astronautas y la integridad estructural de las naves en misiones de exploración profunda (Artemis en la Luna y hábitats en Marte), donde la física del fuego cambia drásticamente respecto a la Tierra, los métodos convencionales de extinción fallan y la evacuación es imposible.",
-    },
-    {
-      q: "¿Por qué esto es vital para la NASA hoy y no hace 20 años?",
-      a: "Porque la ISS opera a 101 kPa y 21% de O₂ (igual que en la Tierra). Pero el programa Artemis (Luna) y los hábitats de Marte usarán 26%-32% de O₂ para permitir paseos espaciales (EVAs) sin descompresión. En este nuevo régimen, los materiales se queman con una violencia extrema que nunca se vio en la Tierra.",
-    },
-    {
-      q: "¿Por qué se implementó un motor dual con inferencia sub-milisegundo y LLM local (Qwen-2.5)?",
-      a: "En una misión a la Luna o Marte, la latencia de comunicación con la Tierra es de varios segundos a minutos (hasta 20 minutos en Marte). Un sistema de contingencia contra incendios no puede depender de APIs en la nube: debe operar 100% offline (air-gapped) dentro de la aviónica de la nave con respuestas deterministas instantáneas (<1 ms).",
-    },
-    {
-      q: "¿Cómo se integra la base de datos oficial NASA Physical Sciences Informatics (PSI)?",
-      a: "StellarApp incorpora 14 investigaciones en órbita y 32 parámetros experimentales validados de la NASA (PSI-159, PSI-60, PSI-62, PSI-138), incluyendo ganancias de fotomultiplicadores PMT (8.0-10.0), flujos masivos estáticos MFCA1 y análisis pirométrico de más de 1600 imágenes de flama en la ISS.",
-    },
-    {
-      q: "¿Cómo ayuda directamente a los astronautas y directores de vuelo ante un fuego?",
-      a: "Si ocurre un fuego en 0g, un extintor convencional puede esparcir gotas de polímero fundido por toda la cabina. StellarApp indica qué material arde, su umbral de extinción por asfixia (cortando el flujo de ventilación ECLSS a <1.2 cm/s) y los minutos exactos antes del colapso térmico humano (45°C) y del casco de Al-Li (150°C).",
-    },
-    {
-      q: "¿Cómo garantiza el equipo la exactitud técnica y la ausencia de fallos de software?",
-      a: "A través del ciclo autónomo de calidad Ralph Loop: 35 pruebas automatizadas (100% aprobadas en 0.74s) verifican las ecuaciones de transporte difusivo sin convección, los límites de inflamabilidad (LOI) de NASA-STD-6001B y la calibración empírica con datos de Cygnus Saffire.",
-    },
-  ];
+  const pitchQuestions = [1, 2, 3, 4, 5, 6].map((i) => ({
+    q: t(`defense.q${i}.q`),
+    a: t(`defense.q${i}.a`),
+  }));
 
   const ralphLoopInnovations = [
     {
-      title: "Suite de Calidad Ralph Loop (35/35 Tests Automatizados)",
-      desc: "Pruebas continuas de unidad e integración que cubren modelos de microgravedad, guardrails aeroespaciales, convergencia del filtro de Kalman y validación Pydantic estricta.",
-      metric: "35 / 35 PASS",
+      title: t("innovations.tests.title"),
+      desc: t("innovations.tests.desc"),
+      metric: t("innovations.tests.metric"),
       icon: ShieldCheck,
       color: "text-[#76b900]",
-      badge: "100% APROBADO"
+      badge: t("innovations.tests.badge")
     },
     {
-      title: "Repositorio Oficial NASA PSI (14 Estudios & 32 Parámetros)",
-      desc: "Integración de la base de datos oficial NASA Physical Sciences Informatics: 14 estudios espaciales, calibración de sensores ópticos PMT, flujo estático MFCA1 y más de 1600 imágenes pirométricas en la ISS.",
-      metric: "14 Estudios / 32 Parámetros",
+      title: t("innovations.psi.title"),
+      desc: t("innovations.psi.desc"),
+      metric: t("innovations.psi.metric"),
       icon: Database,
       color: "text-[#e040fb]",
-      badge: "CALIBRADO EN VUELO"
+      badge: t("innovations.psi.badge")
     },
     {
-      title: "Motor Híbrido AeroEngine Dual (Sub-Milisegundo + Qwen 2.5 3B)",
-      desc: "Inferencia instantánea (<0.02ms) para telemetría crítica de vuelo espacial combinada con LLM local Qwen 2.5 3B en el servidor orbital, eliminando dependencias de la nube para naves aisladas (air-gapped).",
-      metric: "< 1 ms",
+      title: t("innovations.engine.title"),
+      desc: t("innovations.engine.desc"),
+      metric: t("innovations.engine.metric"),
       icon: Zap,
       color: "text-[#00b0ff]",
-      badge: "AIR-GAPPED READY"
+      badge: t("innovations.engine.badge")
     },
     {
-      title: "Límites Térmicos NASA-STD-3001 vs Casco NASA-SP-20205001358",
-      desc: "Curvas de supervivencia dinámica en cabina durante un fuego de 180s: monitorea umbrales tisulares de dolor/evacuación (45°C–50°C) versus pérdida de fluencia en aleación Al-Li del casco (150°C).",
-      metric: "180s Dinámicos",
+      title: t("innovations.thermal.title"),
+      desc: t("innovations.thermal.desc"),
+      metric: t("innovations.thermal.metric"),
       icon: Activity,
       color: "text-[#df6500]",
-      badge: "SUPERVIVENCIA"
+      badge: t("innovations.thermal.badge")
     },
     {
-      title: "Asistente Virtual Astronauta Flotante con HUD Espacial",
-      desc: "Agente HUD con avatar orbital que acompaña al astronauta en cualquier pantalla, dotado de aislamiento estricto de dominio aeroespacial y RAG inteligente sobre experimentos de la ISS.",
-      metric: "Aero HUD",
+      title: t("innovations.assistant.title"),
+      desc: t("innovations.assistant.desc"),
+      metric: t("innovations.assistant.metric"),
       icon: Cpu,
       color: "text-[#76b900]",
-      badge: "INTERFAZ TRIPULACIÓN"
+      badge: t("innovations.assistant.badge")
     }
   ];
 
@@ -219,36 +201,46 @@ export default function PitchLanding() {
                 STELLAR<span className="text-[#76b900]">APP</span>
               </span>
               <span className="text-[10px] sm:text-[11px] font-bold tracking-widest text-[#898989] uppercase border-l border-[#333333] pl-2 hidden xs:inline">
-                PITCH 2026
+                {t("nav.badge")}
               </span>
             </div>
           </Link>
 
           {/* Desktop Actions */}
-          <div className="hidden sm:flex items-center space-x-3">
+          <div className="hidden sm:flex items-center gap-2 sm:gap-2.5">
             <LocaleSwitcher className="rounded-[2px]" />
 
             <a
+              href="/pitch-deck.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-8 inline-flex items-center space-x-1.5 px-3 text-xs font-bold uppercase tracking-wider bg-[#76b900] hover:bg-[#5a8d00] text-black rounded-[2px] box-border transition-colors shadow-sm shadow-[#76b900]/20"
+            >
+              <Presentation className="h-3.5 w-3.5" />
+              <span>{t("nav.deck3d")}</span>
+            </a>
+
+            <a
               href="#kalman"
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-black hover:bg-[#111111] text-[#76b900] border border-[#76b900]/40 transition-colors"
+              className="h-8 inline-flex items-center space-x-1.5 px-3 text-xs font-bold uppercase tracking-wider bg-black hover:bg-[#111111] text-[#76b900] border border-[#76b900] rounded-[2px] box-border transition-colors"
             >
               <Activity className="h-3.5 w-3.5" />
-              <span>SONDA HARDWARE</span>
+              <span>{t("nav.hardware")}</span>
             </a>
 
             <button
               onClick={() => setShowQRModal(true)}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-[#0088cc] hover:bg-[#0077b5] text-white border border-[#0099e6] shadow-sm shadow-[#0088cc]/30 transition-colors"
+              className="h-8 inline-flex items-center space-x-1.5 px-3 text-xs font-bold uppercase tracking-wider bg-[#0088cc] hover:bg-[#0077b5] text-white border border-[#0099e6] rounded-[2px] box-border transition-colors"
             >
               <Send className="h-3.5 w-3.5" />
-              <span>BOT EN VIVO</span>
+              <span>{t("nav.bot")}</span>
             </button>
 
             <Link
               href="/"
-              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider bg-[#76b900] text-black hover:bg-[#5a8d00] transition-colors"
+              className="h-8 inline-flex items-center space-x-1.5 px-3.5 text-xs font-bold uppercase tracking-wider bg-[#76b900] text-black hover:bg-[#5a8d00] rounded-[2px] box-border transition-colors"
             >
-              <span>WORKBENCH</span>
+              <span>{t("nav.workbench")}</span>
               <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
@@ -259,14 +251,14 @@ export default function PitchLanding() {
             <button
               onClick={() => setShowQRModal(true)}
               className="p-1.5 bg-[#0088cc] text-white rounded-[2px] border border-[#0099e6]"
-              aria-label="Abrir QR Telegram"
+              aria-label={t("nav.openQr")}
             >
               <Send className="h-4 w-4" />
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-1.5 text-white hover:text-[#76b900] border border-[#333333] bg-[#111111] transition-colors rounded-[2px]"
-              aria-label="Abrir menú de navegación"
+              aria-label={t("nav.openMenu")}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -277,13 +269,27 @@ export default function PitchLanding() {
         {isMobileMenuOpen && (
           <div className="sm:hidden bg-[#0d0d0d] border-b border-[#333333] px-5 py-4 space-y-2.5 animate-in slide-in-from-top-2 duration-200">
             <a
+              href="/pitch-deck.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full flex items-center justify-between px-3.5 py-2.5 bg-[#76b900] text-black text-xs font-bold uppercase tracking-wider hover:bg-[#5a8d00] transition-colors rounded-[2px]"
+            >
+              <div className="flex items-center space-x-2">
+                <Presentation className="h-4 w-4" />
+                <span>{t("nav.deck3d")}</span>
+              </div>
+              <ChevronRight className="h-4 w-4" />
+            </a>
+
+            <a
               href="#kalman"
               onClick={() => setIsMobileMenuOpen(false)}
               className="w-full flex items-center justify-between px-3.5 py-2.5 bg-black border border-[#76b900] text-[#76b900] text-xs font-bold uppercase tracking-wider hover:bg-[#111111] transition-colors rounded-[2px]"
             >
               <div className="flex items-center space-x-2">
                 <Activity className="h-4 w-4" />
-                <span>SONDA HARDWARE (COM6)</span>
+                <span>{t("nav.hardwareShort")}</span>
               </div>
               <ChevronRight className="h-4 w-4" />
             </a>
@@ -295,7 +301,7 @@ export default function PitchLanding() {
             >
               <div className="flex items-center space-x-2">
                 <Sparkles className="h-4 w-4 fill-black" />
-                <span>ABRIR WORKBENCH EN VIVO</span>
+                <span>{t("nav.openWorkbench")}</span>
               </div>
               <ChevronRight className="h-4 w-4" />
             </Link>
@@ -309,7 +315,7 @@ export default function PitchLanding() {
             >
               <div className="flex items-center space-x-2">
                 <Send className="h-4 w-4" />
-                <span>CONECTAR BOT TELEGRAM</span>
+                <span>{t("nav.connectBot")}</span>
               </div>
               <QrCode className="h-4 w-4" />
             </button>
@@ -320,7 +326,7 @@ export default function PitchLanding() {
               className="w-full flex items-center space-x-2 px-3.5 py-2.5 border border-[#333333] text-white text-xs font-bold uppercase tracking-wider bg-black/60 hover:border-white transition-colors rounded-[2px]"
             >
               <Radio className="h-4 w-4 text-[#76b900]" />
-              <span>TELEMETRÍA FILTRO DE KALMAN</span>
+              <span>{t("nav.kalman")}</span>
             </Link>
           </div>
         )}
@@ -334,7 +340,7 @@ export default function PitchLanding() {
             <div className="flex items-center justify-between pb-2 border-b border-[#222222]">
               <div className="flex items-center space-x-2 text-[#0088cc]">
                 <Send className="h-4 w-4" />
-                <span className="text-xs font-bold uppercase tracking-wider text-white">RED TELEMETRÍA TELEGRAM</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-white">{t("qr.title")}</span>
               </div>
               <button
                 onClick={() => setShowQRModal(false)}
@@ -347,7 +353,7 @@ export default function PitchLanding() {
             <div className="p-3 bg-white border border-[#0088cc]/50 inline-block shadow-lg">
               <Image
                 src="/images/telegram-bot-qr.png"
-                alt="QR Bot Telegram @Stellar_App_bot"
+                alt={t("qr.alt")}
                 width={200}
                 height={200}
                 className="mx-auto"
@@ -358,7 +364,7 @@ export default function PitchLanding() {
             <div className="space-y-1.5 font-mono">
               <p className="text-xs text-white font-bold">@Stellar_App_bot</p>
               <p className="text-[11px] text-[#aaaaaa] leading-relaxed">
-                Escanea el código con tu celular para unirte a la red de alertas de vuelo del auditorio.
+                {t("qr.desc")}
               </p>
             </div>
 
@@ -369,13 +375,13 @@ export default function PitchLanding() {
                 rel="noopener noreferrer"
                 className="w-full py-2 bg-[#0088cc] hover:bg-[#0077b5] text-white text-xs font-bold uppercase tracking-wider transition-colors inline-block text-center"
               >
-                ABRIR EN TELEGRAM
+                {t("qr.open")}
               </a>
               <button
                 onClick={() => setShowQRModal(false)}
                 className="w-full py-1.5 bg-black border border-[#333333] hover:border-white text-xs text-[#aaaaaa] uppercase tracking-wider transition-colors"
               >
-                CERRAR
+                {t("qr.close")}
               </button>
             </div>
           </div>
@@ -409,7 +415,7 @@ export default function PitchLanding() {
                   href={selectedImage.src}
                   target="_blank"
                   rel="noreferrer"
-                  title="Abrir imagen original"
+                  title={t("lightbox.open")}
                   className="p-1.5 text-[#898989] hover:text-[#76b900] hover:bg-black transition-colors border border-[#333333]"
                 >
                   <ExternalLink className="h-4 w-4" />
@@ -417,7 +423,7 @@ export default function PitchLanding() {
                 <button
                   onClick={() => setSelectedImage(null)}
                   className="p-1.5 text-[#898989] hover:text-white hover:bg-[#262626] transition-colors border border-[#333333]"
-                  title="Cerrar (Esc)"
+                  title={t("lightbox.closeEsc")}
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -442,7 +448,7 @@ export default function PitchLanding() {
                 <div className="flex items-center space-x-3 text-[10px] font-mono text-[#898989]">
                   <span>NASA ID: <strong className="text-[#76b900]">{selectedImage.nasaId}</strong></span>
                   <span>•</span>
-                  <span>DOMINIO PÚBLICO OFICIAL</span>
+                  <span>{t("lightbox.publicDomain")}</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2 shrink-0 w-full sm:w-auto justify-end">
@@ -459,7 +465,7 @@ export default function PitchLanding() {
                   onClick={() => setSelectedImage(null)}
                   className="px-3.5 py-1.5 bg-[#76b900] hover:bg-[#5a8d00] text-black font-bold uppercase text-[11px] tracking-wider transition-colors"
                 >
-                  CERRAR
+                  {t("lightbox.close")}
                 </button>
               </div>
             </div>
@@ -475,49 +481,93 @@ export default function PitchLanding() {
 
           <div className="inline-flex items-center space-x-2 px-3 py-1 bg-black border border-[#76b900] text-[#76b900] text-xs font-bold uppercase tracking-widest">
             <Award className="h-3.5 w-3.5" />
-            <span>CHALLENGE: FLAME &amp; FIRE BEHAVIOR IN MICROGRAVITY</span>
+            <span>{t("hero.challenge")}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
-            Seguridad contra Incendios para la Exploración Humana en la Luna y Marte
+            {t("hero.title")}
           </h1>
 
           <p className="text-sm sm:text-base text-[#a7a7a7] max-w-2xl mx-auto leading-relaxed">
-            StellarApp es la primera plataforma de <strong>inteligencia de combustión espacial</strong> que desbloquea, clasifica y modela con IA cuatro décadas de investigación de la NASA en microgravedad.
+            {t.rich("hero.subtitle", { b: (chunks) => <strong>{chunks}</strong> })}
           </p>
 
           {/* Mission Objective Callout */}
           <div className="bg-black/90 border border-[#76b900]/60 p-4 sm:p-5 text-left font-mono space-y-1.5 shadow-lg shadow-black">
             <div className="flex items-center justify-between">
               <span className="text-[10px] uppercase font-bold text-[#76b900] tracking-wider">
-                // OBJETIVO PRIMORDIAL DE MISIÓN STELLARAPP
+                {t("hero.objectiveLabel")}
               </span>
               <span className="text-[9px] px-2 py-0.5 bg-[#76b900]/10 border border-[#76b900]/40 text-[#76b900]">
-                ARTEMIS &amp; MARS READY
+                {t("hero.missionBadge")}
               </span>
             </div>
             <p className="text-xs text-white leading-relaxed">
-              Proteger la vida de los astronautas y la integridad estructural de la nave en <strong>bases lunares y hábitats marcianos</strong>, donde el fuego se comporta de forma radicalmente distinta a la Tierra, los extintores convencionales fallan y la evacuación es físicamente imposible.
+              {t.rich("hero.objective", { b: (chunks) => <strong>{chunks}</strong> })}
             </p>
           </div>
 
           {/* KPI Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
             <div className="p-3 bg-black border border-[#333333] text-center">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-[#76b900]">40 Años</div>
-              <div className="text-[10px] uppercase font-mono text-[#898989]">Ciencia NASA</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono text-[#76b900]">{t("hero.kpiYears")}</div>
+              <div className="text-[10px] uppercase font-mono text-[#898989]">{t("hero.kpiYearsLabel")}</div>
             </div>
             <div className="p-3 bg-black border border-[#333333] text-center">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-[#00b0ff]">14 Estudios</div>
-              <div className="text-[10px] uppercase font-mono text-[#898989]">NASA PSI Repositorio</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono text-[#00b0ff]">{t("hero.kpiStudies")}</div>
+              <div className="text-[10px] uppercase font-mono text-[#898989]">{t("hero.kpiStudiesLabel")}</div>
             </div>
             <div className="p-3 bg-black border border-[#333333] text-center">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-[#e040fb]">&lt; 1 ms</div>
-              <div className="text-[10px] uppercase font-mono text-[#898989]">Inferencia Air-Gapped</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono text-[#e040fb]">{t("hero.kpiLatency")}</div>
+              <div className="text-[10px] uppercase font-mono text-[#898989]">{t("hero.kpiLatencyLabel")}</div>
             </div>
             <div className="p-3 bg-black border border-[#76b900]/40 text-center">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-white">35 / 35</div>
-              <div className="text-[10px] uppercase font-mono text-[#76b900]">Tests Ralph Loop</div>
+              <div className="text-xl sm:text-2xl font-bold font-mono text-white">{t("hero.kpiTests")}</div>
+              <div className="text-[10px] uppercase font-mono text-[#76b900]">{t("hero.kpiTestsLabel")}</div>
+            </div>
+          </div>
+
+          {/* Interactive 3D Pitch Deck Card */}
+          <div className="relative bg-[#0b101d] border-2 border-[#76b900] p-6 sm:p-7 text-left space-y-4 shadow-2xl shadow-[#76b900]/15">
+            <div className="corner-square border-[#76b900]" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#76b900]/30 pb-3">
+              <div className="flex items-center space-x-2 text-[#76b900]">
+                <Presentation className="h-5 w-5 animate-pulse" />
+                <span className="text-xs font-mono font-bold uppercase tracking-wider">
+                  {t("hero.deckBadge")}
+                </span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 bg-[#76b900]/20 text-[#76b900] border border-[#76b900]/50 rounded-[2px] w-fit">
+                8 SLIDES · 0g THREE.JS · HIL TELEMETRY
+              </span>
+            </div>
+
+            <div className="space-y-1">
+              <h3 className="text-lg sm:text-xl font-bold text-white">
+                {t("hero.deckTitle")}
+              </h3>
+              <p className="text-xs sm:text-sm text-[#a7a7a7] leading-relaxed">
+                {t("hero.deckDesc")}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <a
+                href="/pitch-deck.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 bg-[#76b900] hover:bg-[#5a8d00] text-black font-bold text-xs uppercase tracking-wider transition-colors inline-flex items-center space-x-2 rounded-[2px]"
+              >
+                <Play className="h-4 w-4 fill-black" />
+                <span>{t("hero.ctaDeck")}</span>
+              </a>
+              <a
+                href="/pitch-deck.html"
+                className="px-4 py-2.5 bg-black hover:bg-[#111111] text-white border border-[#333333] hover:border-[#76b900] font-bold text-xs uppercase tracking-wider transition-colors inline-flex items-center space-x-1.5 rounded-[2px]"
+              >
+                <ExternalLink className="h-3.5 w-3.5 text-[#76b900]" />
+                <span>{t("hero.ctaDeckWindow")}</span>
+              </a>
             </div>
           </div>
 
@@ -527,13 +577,13 @@ export default function PitchLanding() {
               className="px-6 py-3 bg-[#76b900] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#5a8d00] transition-colors flex items-center space-x-2"
             >
               <Sparkles className="h-4 w-4 fill-black" />
-              <span>PROBAR DASHBOARD EN VIVO</span>
+              <span>{t("hero.ctaDashboard")}</span>
             </Link>
             <a
               href="#defensa"
               className="px-6 py-3 bg-black text-white border border-[#333333] hover:border-white font-bold text-xs uppercase tracking-wider transition-colors"
             >
-              DEFENSA ANTE LOS JUECES
+              {t("hero.ctaDefense")}
             </a>
           </div>
         </div>
@@ -542,10 +592,10 @@ export default function PitchLanding() {
         <section className="space-y-6">
           <div>
             <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-              DIAGNÓSTICO DEL PROBLEMA
+              {t("problem.eyebrow")}
             </span>
             <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
-              El Fuego en Microgravedad Desafía los Estándares Terrestres
+              {t("problem.title")}
             </h2>
           </div>
 
@@ -573,13 +623,13 @@ export default function PitchLanding() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
               <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-                VALOR ESTRATÉGICO PARA LA NASA
+                {t("value.eyebrow")}
               </span>
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                ¿Por Qué StellarApp es Indispensable para Artemis?
+                {t("value.title")}
               </h2>
               <p className="text-xs sm:text-sm text-[#a7a7a7] leading-relaxed">
-                En el espacio profundo la evacuación es imposible. La plataforma asiste directamente a la NASA en tres áreas prioritarias:
+                {t("value.intro")}
               </p>
               <div className="space-y-3 pt-2">
                 {valueProps.map((vp, idx) => (
@@ -594,23 +644,23 @@ export default function PitchLanding() {
             <div className="lg:col-span-5 grid grid-cols-2 gap-4">
               <div className="p-5 bg-black border border-[#333333] text-center space-y-1">
                 <div className="text-3xl font-bold font-mono text-[#76b900]">95%</div>
-                <div className="text-[11px] font-bold uppercase text-white">Aumento en Tasa</div>
-                <p className="text-[10px] text-[#757575]">En 26% O₂ (Atmósfera Artemis).</p>
+                <div className="text-[11px] font-bold uppercase text-white">{t("value.rateTitle")}</div>
+                <p className="text-[10px] text-[#757575]">{t("value.rateDesc")}</p>
               </div>
               <div className="p-5 bg-black border border-[#333333] text-center space-y-1">
                 <div className="text-3xl font-bold font-mono text-white">0.0001g</div>
-                <div className="text-[11px] font-bold uppercase text-white">Microgravedad Real</div>
-                <p className="text-[10px] text-[#757575]">Datos de Cygnus Saffire.</p>
+                <div className="text-[11px] font-bold uppercase text-white">{t("value.microTitle")}</div>
+                <p className="text-[10px] text-[#757575]">{t("value.microDesc")}</p>
               </div>
               <div className="p-5 bg-black border border-[#333333] text-center space-y-1">
                 <div className="text-3xl font-bold font-mono text-[#76b900]">&lt; 1.2 cm/s</div>
-                <div className="text-[11px] font-bold uppercase text-white">Extinción Pasiva</div>
-                <p className="text-[10px] text-[#757575]">Auto-asfixia al apagar flujo.</p>
+                <div className="text-[11px] font-bold uppercase text-white">{t("value.extinctionTitle")}</div>
+                <p className="text-[10px] text-[#757575]">{t("value.extinctionDesc")}</p>
               </div>
               <div className="p-5 bg-black border border-[#333333] text-center space-y-1">
                 <div className="text-3xl font-bold font-mono text-white">STD-6001</div>
-                <div className="text-[11px] font-bold uppercase text-white">Norma NASA</div>
-                <p className="text-[10px] text-[#757575]">Ensayos de inflamabilidad.</p>
+                <div className="text-[11px] font-bold uppercase text-white">{t("value.standardTitle")}</div>
+                <p className="text-[10px] text-[#757575]">{t("value.standardDesc")}</p>
               </div>
             </div>
           </div>
@@ -621,15 +671,15 @@ export default function PitchLanding() {
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
               <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-                INGENIERÍA DE ALTA RESILIENCIA
+                {t("innovations.eyebrow")}
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
-                Innovaciones Implementadas con el Ciclo Autónomo Ralph Loop
+                {t("innovations.title")}
               </h2>
             </div>
             <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#1a1a1a] border border-[#333333] text-xs font-mono text-[#76b900]">
               <CheckCircle2 className="h-4 w-4" />
-              <span>TEST SUITE: 35 / 35 PASANDO (100% VERIFICADO)</span>
+              <span>{t("innovations.badge")}</span>
             </div>
           </div>
 
@@ -667,13 +717,13 @@ export default function PitchLanding() {
                 <div className="relative w-28 h-28 sm:w-36 sm:h-36 bg-[#0a0a0a] border border-[#333333] p-2 flex items-center justify-center shadow-lg shadow-black/80">
                   <Image
                     src="/images/astronaut-agent.png"
-                    alt="Astronauta Asistente StellarApp"
+                    alt={t("assistant.alt")}
                     width={140}
                     height={140}
                     className="object-contain filter drop-shadow-[0_0_12px_rgba(118,185,0,0.3)]"
                   />
                   <div className="absolute -bottom-2 px-2 py-0.5 bg-[#76b900] text-black font-mono text-[9px] font-bold uppercase">
-                    HUD FLOTANTE
+                    {t("assistant.hudBadge")}
                   </div>
                 </div>
               </div>
@@ -681,26 +731,26 @@ export default function PitchLanding() {
               <div className="md:col-span-9 space-y-3">
                 <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 bg-black border border-[#76b900] text-[#76b900] text-[10px] font-bold uppercase tracking-wider">
                   <Sparkles className="h-3 w-3" />
-                  <span>ASISTENTE VIRTUAL DE TRIPULACIÓN CON GROUNDING NASA</span>
+                  <span>{t("assistant.badge")}</span>
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold text-white">
-                  Copiloto Táctico Siempre Accesible para Emergencias en Vuelo
+                  {t("assistant.title")}
                 </h3>
                 <p className="text-xs text-[#cccccc] leading-relaxed">
-                  A diferencia de interfaces estáticas, el asistente de StellarApp flota de manera no intrusiva sobre cualquier panel de la aplicación. Integra un motor dual: resuelve consultas prioritarias en <strong>&lt;0.02 ms</strong> y ejecuta razonamiento RAG local con <strong>Qwen-2.5-3B</strong> sin enviar telemetría a servidores externos.
+                  {t.rich("assistant.body", { b: (chunks) => <strong>{chunks}</strong> })}
                 </p>
                 <div className="flex flex-wrap gap-2 pt-1">
                   <span className="px-2 py-1 bg-black border border-[#333333] text-[11px] font-mono text-[#a7a7a7]">
-                    • 100% Offline Air-Gapped
+                    {t("assistant.tagOffline")}
                   </span>
                   <span className="px-2 py-1 bg-black border border-[#333333] text-[11px] font-mono text-[#a7a7a7]">
-                    • Guardrails NASA-STD-6001B
+                    {t("assistant.tagGuardrails")}
                   </span>
                   <span className="px-2 py-1 bg-black border border-[#333333] text-[11px] font-mono text-[#a7a7a7]">
-                    • Límite Térmico Humano (45°C) & Casco Al-Li (150°C)
+                    {t("assistant.tagThermal")}
                   </span>
                   <span className="px-2 py-1 bg-black border border-[#76b900]/40 text-[11px] font-mono text-[#76b900]">
-                    • 14 Estudios & 32 Parámetros NASA PSI Validados
+                    {t("assistant.tagPsi")}
                   </span>
                 </div>
               </div>
@@ -716,13 +766,13 @@ export default function PitchLanding() {
                 <div className="relative bg-white p-3 border-2 border-[#0088cc] shadow-xl shadow-[#0088cc]/20">
                   <Image
                     src="/images/telegram-bot-qr.png"
-                    alt="QR Bot Telegram StellarApp"
+                    alt={t("telegram.alt")}
                     width={180}
                     height={180}
                     className="object-contain"
                   />
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[#0088cc] text-white font-mono text-[9px] font-bold uppercase whitespace-nowrap">
-                    ESCANEAR CON LA CÁMARA
+                    {t("telegram.scan")}
                   </div>
                 </div>
                 <a
@@ -740,51 +790,51 @@ export default function PitchLanding() {
               <div className="md:col-span-8 space-y-4">
                 <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 bg-black border border-[#0088cc] text-[#0088cc] text-[10px] font-bold uppercase tracking-wider">
                   <Radio className="h-3 w-3 animate-pulse" />
-                  <span>DEMOSTRACIÓN INTERACTIVA EN VIVO CON EL AUDITORIO Y JUECES</span>
+                  <span>{t("telegram.badge")}</span>
                 </div>
 
                 <h3 className="text-lg sm:text-2xl font-bold text-white">
-                  Conecta tu Teléfono a la Red de Alerta Temprana ECLSS
+                  {t("telegram.title")}
                 </h3>
 
                 <p className="text-xs sm:text-sm text-[#cccccc] leading-relaxed">
-                  Para que los evaluadores de la NASA y el público experimenten la velocidad de respuesta en primera persona, hemos habilitado un <strong>Webhook en tiempo real con Telegram</strong>. Cualquier persona en la sala puede suscribirse en 5 segundos sin instalar ninguna aplicación adicional.
+                  {t.rich("telegram.body", { b: (chunks) => <strong>{chunks}</strong> })}
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   <div className="p-3 bg-black/60 border border-[#333333] space-y-1">
                     <span className="text-[10px] font-bold text-[#0088cc] uppercase block">
-                      1. ESCANEAR & SUSCRIBIRSE
+                      {t("telegram.step1Title")}
                     </span>
                     <p className="text-[11px] text-[#a7a7a7]">
-                      Apunta tu cámara al código QR y pulsa <strong>/start</strong> en Telegram para autenticar tu credencial de tripulante.
+                      {t.rich("telegram.step1Desc", { b: (chunks) => <strong>{chunks}</strong> })}
                     </p>
                   </div>
 
                   <div className="p-3 bg-black/60 border border-[#333333] space-y-1">
                     <span className="text-[10px] font-bold text-[#76b900] uppercase block">
-                      2. ALARMA SIMULTÁNEA DE CABINA
+                      {t("telegram.step2Title")}
                     </span>
                     <p className="text-[11px] text-[#a7a7a7]">
-                      Cuando simulamos una fuga crítica de CO o fuego difusivo en el escenario, <strong>todos los teléfonos vibran al mismo milisegundo</strong>.
+                      {t.rich("telegram.step2Desc", { b: (chunks) => <strong>{chunks}</strong> })}
                     </p>
                   </div>
 
                   <div className="p-3 bg-black/60 border border-[#333333] space-y-1">
                     <span className="text-[10px] font-bold text-[#ffb703] uppercase block">
-                      3. BOTONES DE TELEMETRÍA IOT
+                      {t("telegram.step3Title")}
                     </span>
                     <p className="text-[11px] text-[#a7a7a7]">
-                      Consulta el estado del Filtro de Kalman, la concentración de O₂ y el tiempo límite de evacuación directamente en el bot.
+                      {t("telegram.step3Desc")}
                     </p>
                   </div>
 
                   <div className="p-3 bg-black/60 border border-[#333333] space-y-1">
                     <span className="text-[10px] font-bold text-[#ff0055] uppercase block">
-                      4. SIMULADOR DE MATERIALES
+                      {t("telegram.step4Title")}
                     </span>
                     <p className="text-[11px] text-[#a7a7a7]">
-                      Envía <code>/simular nomex</code> o pulsa el botón para ver cómo un material ignífugo en la Tierra se vuelve reactivo en Artemis.
+                      {t.rich("telegram.step4Desc", { b: (chunks) => <strong>{chunks}</strong> })}
                     </p>
                   </div>
                 </div>
@@ -804,17 +854,17 @@ export default function PitchLanding() {
             <div>
               <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 bg-black border border-[#76b900] text-[#76b900] text-[10px] font-bold uppercase tracking-wider mb-2">
                 <Film className="h-3 w-3" />
-                <span>EVIDENCIA OFICIAL DE VUELO ESPACIAL (DOMINIO PÚBLICO NASA)</span>
+                <span>{tf("eyebrow")}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-white">
-                Metraje de Video y Fotografía de Combustión en Microgravedad
+                {tf("title")}
               </h2>
               <p className="text-xs text-[#a7a7a7] mt-1">
-                Archivos oficiales obtenidos de <strong>images.nasa.gov</strong> de las misiones de fuego real Saffire (carguero Cygnus) e ISS (BASS-II y SoFIE).
+                {tf.rich("subtitle", { b: (chunks) => <strong>{chunks}</strong> })}
               </p>
             </div>
             <span className="text-[10px] font-mono text-[#898989] shrink-0">
-              NASA GLENN &amp; JSC ARCHIVES
+              {tf("archive")}
             </span>
           </div>
 
@@ -827,11 +877,11 @@ export default function PitchLanding() {
                 <div className="flex items-center space-x-2">
                   <Play className="h-4 w-4 text-[#76b900]" />
                   <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                    Experimento Saffire-V (Cygnus) // Fuego Real
+                    {tf("video1Title")}
                   </h3>
                 </div>
                 <span className="px-1.5 py-0.5 text-[9px] font-mono bg-black border border-[#76b900]/40 text-[#76b900]">
-                  VIDEO OFICIAL
+                  {tf("officialVideo")}
                 </span>
               </div>
               <div className="relative rounded overflow-hidden bg-black border border-[#222222]">
@@ -844,7 +894,7 @@ export default function PitchLanding() {
               </div>
               <div className="space-y-1 font-sans">
                 <p className="text-[11px] text-[#cccccc] leading-relaxed">
-                  Combustión sobre una muestra de PMMA (plexiglás) con ventilación forzada en el interior del carguero Cygnus tras desacoplarse de la ISS. Muestra cómo el fuego se ancla y avanza sin corrientes ascendentes.
+                  {tf("video1Desc")}
                 </p>
                 <div className="flex items-center justify-between text-[10px] font-mono text-[#757575] pt-1 border-t border-[#2a2a2a]">
                   <span>ID: GRC-2021-CN-00008</span>
@@ -854,7 +904,7 @@ export default function PitchLanding() {
                     rel="noreferrer"
                     className="text-[#76b900] hover:underline"
                   >
-                    Ver en NASA.gov ↗
+                    {tf("viewOnNasa")}
                   </a>
                 </div>
               </div>
@@ -867,11 +917,11 @@ export default function PitchLanding() {
                 <div className="flex items-center space-x-2">
                   <Play className="h-4 w-4 text-[#00b0ff]" />
                   <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                    Experimento SoFIE-GEL (ISS) // Llama Esférica
+                    {tf("video2Title")}
                   </h3>
                 </div>
                 <span className="px-1.5 py-0.5 text-[9px] font-mono bg-black border border-[#00b0ff]/40 text-[#00b0ff]">
-                  VIDEO OFICIAL
+                  {tf("officialVideo")}
                 </span>
               </div>
               <div className="relative rounded overflow-hidden bg-black border border-[#222222]">
@@ -884,7 +934,7 @@ export default function PitchLanding() {
               </div>
               <div className="space-y-1 font-sans">
                 <p className="text-[11px] text-[#cccccc] leading-relaxed">
-                  Ignición y extinción de combustible sólido en microgravedad. Se observa la llama esférica girando sobre sí misma hasta alcanzar el límite crítico de autoextinción por asfixia radiativa.
+                  {tf("video2Desc")}
                 </p>
                 <div className="flex items-center justify-between text-[10px] font-mono text-[#757575] pt-1 border-t border-[#2a2a2a]">
                   <span>ID: SoFIE-GEL</span>
@@ -894,7 +944,7 @@ export default function PitchLanding() {
                     rel="noreferrer"
                     className="text-[#00b0ff] hover:underline"
                   >
-                    Ver en NASA.gov ↗
+                    {tf("viewOnNasa")}
                   </a>
                 </div>
               </div>
@@ -919,7 +969,7 @@ export default function PitchLanding() {
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                     <span className="px-2 py-1 bg-black/90 border border-[#76b900] text-[#76b900] text-[10px] font-mono font-bold flex items-center space-x-1 shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-transform">
                       <ZoomIn className="h-3.5 w-3.5" />
-                      <span>AMPLIAR</span>
+                      <span>{tf("enlarge")}</span>
                     </span>
                   </div>
                   <span className={`absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/85 text-[9px] font-mono border ${photo.badgeColor}`}>
@@ -943,10 +993,10 @@ export default function PitchLanding() {
         <section id="defensa" className="space-y-6">
           <div>
             <span className="text-[11px] font-bold text-[#76b900] uppercase tracking-widest block">
-              DEFENSA TÉCNICA DEL PROYECTO
+              {t("defense.eyebrow")}
             </span>
             <h2 className="text-xl sm:text-2xl font-bold text-white mt-1">
-              Preguntas Clave de los Evaluadores de la NASA
+              {t("defense.title")}
             </h2>
           </div>
 
@@ -970,22 +1020,22 @@ export default function PitchLanding() {
         {/* Bottom CTA */}
         <div className="p-8 bg-[#1a1a1a] border border-[#76b900] text-center space-y-4 relative">
           <div className="corner-square" />
-          <h3 className="text-xl font-bold text-white uppercase">Acceso al Panel de Control de Vuelo</h3>
+          <h3 className="text-xl font-bold text-white uppercase">{t("cta.title")}</h3>
           <p className="text-xs text-[#a7a7a7] max-w-xl mx-auto">
-            Explora el catálogo de experimentos, ejecuta la simulación predictiva de atmósferas y consulta al agente IA.
+            {t("cta.body")}
           </p>
           <Link
             href="/"
             className="inline-flex items-center space-x-2 px-6 py-3 bg-[#76b900] text-black font-bold uppercase tracking-wider text-xs hover:bg-[#5a8d00] transition-colors"
           >
-            <span>LANZAR WORKBENCH STELLARAPP</span>
+            <span>{t("cta.button")}</span>
             <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
       </main>
 
       <footer className="border-t border-[#333333] bg-black py-8 text-center text-xs text-[#757575]">
-        <p>Equipo StellarApp • NASA Space Apps Challenge 2026</p>
+        <p>{t("footer")}</p>
       </footer>
     </div>
   );

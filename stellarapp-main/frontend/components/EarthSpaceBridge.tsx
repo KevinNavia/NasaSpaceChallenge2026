@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Globe2, Orbit, Flame, ShieldAlert, Cpu, Layers, Radio, BarChart3 } from "lucide-react";
 
 interface FirmsData {
@@ -26,6 +27,8 @@ interface FirmsData {
 }
 
 export default function EarthSpaceBridge() {
+  const t = useTranslations("bridge");
+  const locale = useLocale();
   const [data, setData] = useState<FirmsData | null>(null);
   const [selectedScale, setSelectedScale] = useState<"earth" | "space">("earth");
   const [material, setMaterial] = useState("PMMA");
@@ -36,7 +39,7 @@ export default function EarthSpaceBridge() {
   } | null>(null);
 
   useEffect(() => {
-    fetch("/api/firms/summary")
+    fetch(`/api/firms/summary?lang=${locale}`)
       .then((res) => res.json())
       .then((d) => setData(d))
       .catch(() => {
@@ -59,14 +62,13 @@ export default function EarthSpaceBridge() {
             sensor_challenge: "Aglomeración de partículas de hollín (SAME) y fuegos fríos invisibles (ACME)",
             extinction_paradigm: "Corte de ventilación forzada (< 1.2 cm/s) + Dilución inerte N2",
           },
-          scientific_takeaway:
-            "En la Tierra el penacho asciende por flotabilidad convectiva facilitando la detección satelital IR. En el espacio la ausencia de convección atrapa la llama en una capa difusiva esférica sin humo visible.",
+          scientific_takeaway: t("fallbackTakeaway"),
         });
       });
 
     // Default FRP calculation
     calcFrp("PMMA");
-  }, []);
+  }, [locale]);
 
   const calcFrp = async (mat: string) => {
     setMaterial(mat);
@@ -79,6 +81,7 @@ export default function EarthSpaceBridge() {
           spread_rate_mms: mat === "PMMA" ? 2.85 : 0.8,
           oxygen_concentration_pct: 26.0,
           gravity_g: 0.0001,
+          lang: locale,
         }),
       });
       if (resp.ok) {
@@ -104,13 +107,13 @@ export default function EarthSpaceBridge() {
         <div>
           <div className="flex items-center space-x-2 text-xs font-bold text-[#76b900] uppercase tracking-widest">
             <Globe2 className="h-4 w-4" />
-            <span>EARTH-TO-SPACE FIRE BRIDGE (NASA FIRMS & SAFFIRE)</span>
+            <span>{t("eyebrow")}</span>
           </div>
           <h2 className="text-xl lg:text-2xl font-bold text-white mt-1">
-            Ciencia del Fuego en Dos Escalas: Planetaria vs. Microgravedad
+            {t("title")}
           </h2>
           <p className="text-xs text-[#898989] mt-0.5">
-            Integración de la observación orbital satelital (FRP en MW) con la física de combustión en hábitats presurizados.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -122,7 +125,7 @@ export default function EarthSpaceBridge() {
               selectedScale === "earth" ? "bg-[#76b900] text-black" : "text-[#898989] hover:text-white"
             }`}
           >
-            MACRO: NASA FIRMS (TIERRA)
+            {t("modes.earth")}
           </button>
           <button
             onClick={() => setSelectedScale("space")}
@@ -130,7 +133,7 @@ export default function EarthSpaceBridge() {
               selectedScale === "space" ? "bg-[#76b900] text-black" : "text-[#898989] hover:text-white"
             }`}
           >
-            MICRO: NAVE ESPACIAL (0G)
+            {t("modes.space")}
           </button>
         </div>
       </div>
@@ -143,66 +146,62 @@ export default function EarthSpaceBridge() {
             <div className="p-6 bg-black border border-[#333333] space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-[#262626]">
                 <span className="text-xs font-bold uppercase text-[#76b900]">
-                  SISTEMA NASA FIRMS (MODIS & VIIRS)
+                  {t("earthPanel.system")}
                 </span>
-                <span className="text-[11px] font-mono text-[#898989]">RESOLUCIÓN: 375m – 1000m</span>
+                <span className="text-[11px] font-mono text-[#898989]">{t("earthPanel.resolution")}</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="p-3 bg-[#1a1a1a] border border-[#333333]">
-                  <span className="text-[10px] font-bold uppercase text-[#757575] block">Métrica Central</span>
-                  <div className="text-sm font-bold text-white mt-1">FRP (MegaWatts)</div>
-                  <span className="text-[10px] text-[#898989] block mt-0.5">Potencia Radiativa</span>
+                  <span className="text-[10px] font-bold uppercase text-[#757575] block">{t("earthPanel.metricLabel")}</span>
+                  <div className="text-sm font-bold text-white mt-1">{t("earthPanel.metricValue")}</div>
+                  <span className="text-[10px] text-[#898989] block mt-0.5">{t("earthPanel.metricSub")}</span>
                 </div>
                 <div className="p-3 bg-[#1a1a1a] border border-[#333333]">
-                  <span className="text-[10px] font-bold uppercase text-[#757575] block">Malla de Discretización</span>
-                  <div className="text-sm font-bold text-[#76b900] mt-1">EPSG:6933</div>
-                  <span className="text-[10px] text-[#898989] block mt-0.5">Celdas 10 km / 20 km</span>
+                  <span className="text-[10px] font-bold uppercase text-[#757575] block">{t("earthPanel.gridLabel")}</span>
+                  <div className="text-sm font-bold text-[#76b900] mt-1">{t("earthPanel.gridValue")}</div>
+                  <span className="text-[10px] text-[#898989] block mt-0.5">{t("earthPanel.gridSub")}</span>
                 </div>
                 <div className="p-3 bg-[#1a1a1a] border border-[#333333]">
-                  <span className="text-[10px] font-bold uppercase text-[#757575] block">Índice de Jaccard</span>
+                  <span className="text-[10px] font-bold uppercase text-[#757575] block">{t("earthPanel.jaccardLabel")}</span>
                   <div className="text-sm font-bold text-white mt-1 font-mono">0.684</div>
-                  <span className="text-[10px] text-[#898989] block mt-0.5">Concordancia Sensores</span>
+                  <span className="text-[10px] text-[#898989] block mt-0.5">{t("earthPanel.jaccardSub")}</span>
                 </div>
               </div>
 
               <p className="text-xs text-[#cccccc] leading-relaxed pt-2">
-                <strong>Mecanismo Físico:</strong> En la Tierra, la combustión genera penachos térmicos ascendentes
-                por flotabilidad gravitacional. Los satélites de órbita polar detectan la radiación infrarroja de onda media (3.9 µm y 11 µm),
-                estimando la masa total de biomasa consumida en megavatios (FRP).
+                <strong>{t("earthPanel.mechanismTitle")}</strong> {t("earthPanel.mechanism")}
               </p>
             </div>
           ) : (
             <div className="p-6 bg-black border border-[#76b900] space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-[#262626]">
                 <span className="text-xs font-bold uppercase text-[#76b900]">
-                  SISTEMA DE SEGURIDAD EN NAVE (SAFFIRE / ECLSS / SAME)
+                  {t("spacePanel.system")}
                 </span>
-                <span className="text-[11px] font-mono text-[#76b900]">0.0001g (MICROGRAVEDAD)</span>
+                <span className="text-[11px] font-mono text-[#76b900]">{t("spacePanel.microgravity")}</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="p-3 bg-[#1a1a1a] border border-[#333333]">
-                  <span className="text-[10px] font-bold uppercase text-[#757575] block">Métrica Central</span>
-                  <div className="text-sm font-bold text-white mt-1">Flujo Térmico</div>
-                  <span className="text-[10px] text-[#898989] block mt-0.5">kW / m² radiados</span>
+                  <span className="text-[10px] font-bold uppercase text-[#757575] block">{t("spacePanel.metricLabel")}</span>
+                  <div className="text-sm font-bold text-white mt-1">{t("spacePanel.metricValue")}</div>
+                  <span className="text-[10px] text-[#898989] block mt-0.5">{t("spacePanel.metricSub")}</span>
                 </div>
                 <div className="p-3 bg-[#1a1a1a] border border-[#333333]">
-                  <span className="text-[10px] font-bold uppercase text-[#757575] block">Desafío Sensor</span>
-                  <div className="text-sm font-bold text-[#df6500] mt-1">Hollín Gigante</div>
-                  <span className="text-[10px] text-[#898989] block mt-0.5">Aglomeración (SAME)</span>
+                  <span className="text-[10px] font-bold uppercase text-[#757575] block">{t("spacePanel.sensorLabel")}</span>
+                  <div className="text-sm font-bold text-[#df6500] mt-1">{t("spacePanel.sensorValue")}</div>
+                  <span className="text-[10px] text-[#898989] block mt-0.5">{t("spacePanel.sensorSub")}</span>
                 </div>
                 <div className="p-3 bg-[#1a1a1a] border border-[#333333]">
-                  <span className="text-[10px] font-bold uppercase text-[#757575] block">Fuegos Fríos</span>
+                  <span className="text-[10px] font-bold uppercase text-[#757575] block">{t("spacePanel.coolLabel")}</span>
                   <div className="text-sm font-bold text-[#76b900] mt-1">ACME (CIR)</div>
-                  <span className="text-[10px] text-[#898989] block mt-0.5">Sin llama visible</span>
+                  <span className="text-[10px] text-[#898989] block mt-0.5">{t("spacePanel.coolSub")}</span>
                 </div>
               </div>
 
               <p className="text-xs text-[#cccccc] leading-relaxed pt-2">
-                <strong>Mecanismo Físico:</strong> En microgravedad, el calor no asciende. El fuego transfiere hasta un 42%
-                de su energía por radiación directa esférica sobre componentes vecinos, y el hollín se aglomera en cadenas microscópicas
-                anómalas que ciegan los detectores iónicos estándar de la Tierra.
+                <strong>{t("spacePanel.mechanismTitle")}</strong> {t("spacePanel.mechanism")}
               </p>
             </div>
           )}
@@ -210,7 +209,7 @@ export default function EarthSpaceBridge() {
           {/* Scientific Synthesis Callout */}
           <div className="p-4 bg-black border-l-2 border-[#76b900] border-t border-r border-b border-[#333333] text-xs text-[#a7a7a7]">
             <span className="text-white font-bold uppercase text-[11px] block mb-1">
-              Conclusión Metodológica NASA:
+              {t("conclusionLabel")}
             </span>
             <p className="text-xs leading-relaxed">{data?.scientific_takeaway}</p>
           </div>
@@ -221,15 +220,15 @@ export default function EarthSpaceBridge() {
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-[#333333]">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#898989]">
-                CALCULADOR DE POTENCIA RADIATIVA (FRP)
+                {t("frp.title")}
               </span>
-              <span className="text-[10px] font-mono text-[#76b900] font-bold">ATMÓSFERA 26% O₂</span>
+              <span className="text-[10px] font-mono text-[#76b900] font-bold">{t("frp.atmosphere")}</span>
             </div>
 
             <div className="mt-4 space-y-4">
               <div>
                 <label className="text-[11px] font-bold uppercase text-[#a7a7a7] block mb-1.5">
-                  Material de Ensayo
+                  {t("frp.material")}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {["PMMA", "Nomex", "Cotton"].map((m) => (
@@ -252,25 +251,25 @@ export default function EarthSpaceBridge() {
                 <div className="space-y-3 pt-2">
                   <div className="p-4 bg-[#1a1a1a] border border-[#333333]">
                     <span className="text-[10px] font-bold uppercase text-[#757575] block">
-                      Potencia Radiativa de Fuego en Hábitat (FRP)
+                      {t("frp.powerLabel")}
                     </span>
                     <div className="text-2xl font-mono font-bold text-[#76b900] mt-1">
                       {frpResult.estimated_frp_kw} <span className="text-xs text-white">kW</span>
                     </div>
                     <span className="text-[10px] text-[#898989] font-mono mt-0.5 block">
-                      Fracción radiativa neta: {frpResult.radiative_fraction_pct}%
+                      {t("frp.radiativeFraction", { value: frpResult.radiative_fraction_pct })}
                     </span>
                   </div>
 
                   <div className="p-4 bg-[#1a1a1a] border border-[#333333]">
                     <span className="text-[10px] font-bold uppercase text-[#757575] block">
-                      Flujo Térmico Superficial
+                      {t("frp.fluxLabel")}
                     </span>
                     <div className="text-xl font-mono font-bold text-white mt-1">
                       {frpResult.thermal_flux_kw_m2} <span className="text-xs text-[#757575]">kW/m²</span>
                     </div>
                     <span className="text-[10px] text-[#df6500] font-mono mt-0.5 block">
-                      {frpResult.estimated_frp_kw > 15 ? "CRÍTICO: Riesgo de ignición secundaria" : "MODERADO"}
+                      {frpResult.estimated_frp_kw > 15 ? t("frp.critical") : t("frp.moderate")}
                     </span>
                   </div>
                 </div>
@@ -279,8 +278,8 @@ export default function EarthSpaceBridge() {
           </div>
 
           <div className="pt-4 border-t border-[#333333] flex items-center justify-between text-[10px] font-mono text-[#757575]">
-            <span>BASADO EN MODELOS FIRMS & SAFFIRE</span>
-            <span className="text-[#76b900]">EQUAL-AREA GRID READY</span>
+            <span>{t("frp.footerLeft")}</span>
+            <span className="text-[#76b900]">{t("frp.footerRight")}</span>
           </div>
         </div>
       </div>

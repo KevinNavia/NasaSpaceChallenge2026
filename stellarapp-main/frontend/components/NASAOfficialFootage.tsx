@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { Film, Play, ZoomIn, ExternalLink, X } from "lucide-react";
 
 interface NasaPhoto {
@@ -14,6 +15,7 @@ interface NasaPhoto {
 }
 
 export default function NASAOfficialFootage() {
+  const t = useTranslations("footage");
   const [selectedImage, setSelectedImage] = useState<NasaPhoto | null>(null);
 
   useEffect(() => {
@@ -29,37 +31,37 @@ export default function NASAOfficialFootage() {
   const nasaPhotos: NasaPhoto[] = [
     {
       src: "/media/nasa/saffire-iv-pmma-flame.jpg",
-      title: "Combustión de Acrílico (PMMA) en Cygnus",
-      badge: "PMMA • SAFFIRE-IV",
+      title: t("photos.pmma.title"),
+      badge: t("photos.pmma.badge"),
       badgeColor: "text-[#76b900] border-[#76b900]/40",
-      desc: "Frente de llama extendido sobre polímero estructural en el carguero Cygnus a presión y concentración controlada. Evidencia empírica de avance de llama sin corrientes convectivas.",
+      desc: t("photos.pmma.desc"),
       nasaId: "jsc2023e046631",
       nasaUrl: "https://images.nasa.gov/details/jsc2023e046631",
     },
     {
       src: "/media/nasa/saffire-iv-fabric-flame.jpg",
-      title: "Propagación de Llama en Tejido de Nave",
-      badge: "TEJIDO • SAFFIRE-IV",
+      title: t("photos.fabric.title"),
+      badge: t("photos.fabric.badge"),
       badgeColor: "text-[#df6500] border-[#df6500]/40",
-      desc: "Muestra de tejido ardiendo bajo flujo forzado de 20 cm/s en atmósfera enriquecida con oxígeno. Demuestra que los tejidos estructurales arden con alta violencia en microgravedad.",
+      desc: t("photos.fabric.desc"),
       nasaId: "jsc2023e046375",
       nasaUrl: "https://images.nasa.gov/details/jsc2023e046375",
     },
     {
       src: "/media/nasa/bass-ii-acrylic-flame.jpg",
-      title: "Llama Esférica en la Estación Espacial (0G)",
-      badge: "BASS-II • ISS",
+      title: t("photos.sphere.title"),
+      badge: t("photos.sphere.badge"),
       badgeColor: "text-[#00b0ff] border-[#00b0ff]/40",
-      desc: "Placa acrílica de 4 mm quemada en el Microgravity Science Glovebox a bordo de la ISS. Muestra la esfericidad isotrópica y la emisión azul tenue por radicales C2/CH.",
+      desc: t("photos.sphere.desc"),
       nasaId: "iss040e072900",
       nasaUrl: "https://images.nasa.gov/details/iss040e072900",
     },
     {
       src: "/media/nasa/bass-ii-reduced-o2-flame.jpg",
-      title: "Combustión en Presión Parcial Reducida de O₂",
-      badge: "ATMÓSFERA SUB-NOMINAL",
+      title: t("photos.reducedO2.title"),
+      badge: t("photos.reducedO2.badge"),
       badgeColor: "text-[#e040fb] border-[#e040fb]/40",
-      desc: "Ensayo card 15 bajo presiones y concentraciones de oxígeno equivalentes a atmósferas de exploración espacial de próxima generación (Artemis / Marte).",
+      desc: t("photos.reducedO2.desc"),
       nasaId: "iss040e086481",
       nasaUrl: "https://images.nasa.gov/details/iss040e086481",
     },
@@ -72,17 +74,17 @@ export default function NASAOfficialFootage() {
         <div>
           <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 bg-black border border-[#76b900] text-[#76b900] text-[10px] font-bold uppercase tracking-wider mb-2">
             <Film className="h-3 w-3" />
-            <span>EVIDENCIA OFICIAL DE VUELO ESPACIAL (DOMINIO PÚBLICO NASA)</span>
+            <span>{t("eyebrow")}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-white">
-            Metraje de Video y Fotografía de Combustión en Microgravedad
+            {t("title")}
           </h2>
           <p className="text-xs text-[#a7a7a7] mt-1">
-            Archivos oficiales obtenidos de <strong>images.nasa.gov</strong> de las misiones de fuego real Saffire (carguero Cygnus) e ISS (BASS-II y SoFIE).
+            {t.rich("subtitle", { b: (chunks) => <strong>{chunks}</strong> })}
           </p>
         </div>
         <span className="text-[10px] font-mono text-[#898989] shrink-0">
-          NASA GLENN &amp; JSC ARCHIVES
+          {t("archive")}
         </span>
       </div>
 
@@ -95,11 +97,11 @@ export default function NASAOfficialFootage() {
             <div className="flex items-center space-x-2">
               <Play className="h-4 w-4 text-[#76b900]" />
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                Experimento Saffire-V (Cygnus) // Fuego Real
+                {t("video1Title")}
               </h3>
             </div>
             <span className="px-1.5 py-0.5 text-[9px] font-mono bg-black border border-[#76b900]/40 text-[#76b900]">
-              VIDEO OFICIAL
+              {t("officialVideo")}
             </span>
           </div>
           <div className="relative rounded overflow-hidden bg-black border border-[#222222]">
@@ -112,7 +114,7 @@ export default function NASAOfficialFootage() {
           </div>
           <div className="space-y-1 font-sans">
             <p className="text-[11px] text-[#cccccc] leading-relaxed">
-              Combustión sobre una muestra de PMMA (plexiglás) con ventilación forzada en el interior del carguero Cygnus tras desacoplarse de la ISS. Muestra cómo el fuego se ancla y avanza sin corrientes ascendentes.
+              {t("video1Desc")}
             </p>
             <div className="flex items-center justify-between text-[10px] font-mono text-[#757575] pt-1 border-t border-[#2a2a2a]">
               <span>ID: GRC-2021-CN-00008</span>
@@ -122,7 +124,7 @@ export default function NASAOfficialFootage() {
                 rel="noreferrer"
                 className="text-[#76b900] hover:underline"
               >
-                Ver en NASA.gov ↗
+                {t("viewOnNasa")}
               </a>
             </div>
           </div>
@@ -135,11 +137,11 @@ export default function NASAOfficialFootage() {
             <div className="flex items-center space-x-2">
               <Play className="h-4 w-4 text-[#00b0ff]" />
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-                Experimento SoFIE-GEL (ISS) // Llama Esférica
+                {t("video2Title")}
               </h3>
             </div>
             <span className="px-1.5 py-0.5 text-[9px] font-mono bg-black border border-[#00b0ff]/40 text-[#00b0ff]">
-              VIDEO OFICIAL
+              {t("officialVideo")}
             </span>
           </div>
           <div className="relative rounded overflow-hidden bg-black border border-[#222222]">
@@ -152,7 +154,7 @@ export default function NASAOfficialFootage() {
           </div>
           <div className="space-y-1 font-sans">
             <p className="text-[11px] text-[#cccccc] leading-relaxed">
-              Ignición y extinción de combustible sólido en microgravedad. Se observa la llama esférica girando sobre sí misma hasta alcanzar el límite crítico de autoextinción por asfixia radiativa.
+              {t("video2Desc")}
             </p>
             <div className="flex items-center justify-between text-[10px] font-mono text-[#757575] pt-1 border-t border-[#2a2a2a]">
               <span>ID: SoFIE-GEL</span>
@@ -162,7 +164,7 @@ export default function NASAOfficialFootage() {
                 rel="noreferrer"
                 className="text-[#00b0ff] hover:underline"
               >
-                Ver en NASA.gov ↗
+                {t("viewOnNasa")}
               </a>
             </div>
           </div>
@@ -187,7 +189,7 @@ export default function NASAOfficialFootage() {
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                 <span className="px-2 py-1 bg-black/90 border border-[#76b900] text-[#76b900] text-[10px] font-mono font-bold flex items-center space-x-1 shadow-lg transform -translate-y-1 group-hover:translate-y-0 transition-transform">
                   <ZoomIn className="h-3.5 w-3.5" />
-                  <span>AMPLIAR</span>
+                  <span>{t("enlarge")}</span>
                 </span>
               </div>
               <span className={`absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/85 text-[9px] font-mono border ${photo.badgeColor}`}>
@@ -233,7 +235,7 @@ export default function NASAOfficialFootage() {
                   href={selectedImage.src}
                   target="_blank"
                   rel="noreferrer"
-                  title="Abrir imagen original"
+                  title={t("lightbox.openOriginal")}
                   className="p-1.5 text-[#898989] hover:text-[#76b900] hover:bg-black transition-colors border border-[#333333]"
                 >
                   <ExternalLink className="h-4 w-4" />
@@ -241,7 +243,7 @@ export default function NASAOfficialFootage() {
                 <button
                   onClick={() => setSelectedImage(null)}
                   className="p-1.5 text-[#898989] hover:text-white hover:bg-[#262626] transition-colors border border-[#333333]"
-                  title="Cerrar (Esc)"
+                  title={t("lightbox.closeEsc")}
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -264,9 +266,9 @@ export default function NASAOfficialFootage() {
                   {selectedImage.desc}
                 </p>
                 <div className="flex items-center space-x-3 text-[10px] font-mono text-[#898989]">
-                  <span>NASA ID: <strong className="text-[#76b900]">{selectedImage.nasaId}</strong></span>
+                  <span>{t("nasaId")}: <strong className="text-[#76b900]">{selectedImage.nasaId}</strong></span>
                   <span>•</span>
-                  <span>DOMINIO PÚBLICO OFICIAL</span>
+                  <span>{t("publicDomain")}</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2 shrink-0 w-full sm:w-auto justify-end">
@@ -283,7 +285,7 @@ export default function NASAOfficialFootage() {
                   onClick={() => setSelectedImage(null)}
                   className="px-3.5 py-1.5 bg-[#76b900] hover:bg-[#5a8d00] text-black font-bold uppercase text-[11px] tracking-wider transition-colors"
                 >
-                  CERRAR
+                  {t("lightbox.close")}
                 </button>
               </div>
             </div>

@@ -65,5 +65,762 @@
   "footer": {
     "credit": "NASA International Space Apps Challenge 2026.",
     "standard": "STANDARD: NASA-STD-6001 | DATA: NASA PSI & NTRS"
+  },
+  "metrics": {
+    "experiments": {
+      "title": "FLIGHT EXPERIMENTS",
+      "subtitle": "{count} materials analyzed (Saffire, BASS, FLEX)"
+    },
+    "coolFlames": {
+      "title": "COOL FLAME CASES",
+      "subtitle": "Quasi-steady combustion with no visible flame (600-800K)"
+    },
+    "maxSpread": {
+      "title": "MAX SPREAD RATE",
+      "subtitle": "Reached in Artemis exploration atmosphere (26% O₂)"
+    },
+    "criticalProfiles": {
+      "title": "CRITICAL PROFILES",
+      "subtitle": "High-impact risks for Moon and Mars habitats"
+    }
+  },
+  "comparison": {
+    "eyebrow": "COMPARATIVE PHYSICAL SPECIFICATION",
+    "title": "Earth Gravity (1.0g) vs. Space Microgravity (0g)",
+    "subtitle": "Differential analysis of heat and mass transfer without convective buoyancy.",
+    "dataSource": "DATA SOURCE: NASA PHYSICAL SCIENCES INFORMATICS",
+    "earthColumn": "TERRESTRIAL CONDITION (1.0 G)",
+    "spaceColumn": "ORBITAL MICROGRAVITY (0.0001 G)",
+    "glennLab": "NASA Glenn Lab",
+    "saffireBass": "Saffire & BASS-II",
+    "labels": {
+      "shape": "Flame Geometry",
+      "spread": "Spread Rate",
+      "temperature": "Estimated Temperature",
+      "mechanismEarth": "Convective Mechanism",
+      "mechanismSpace": "Pure Diffusion Physics"
+    },
+    "suppressionTitle": "RECOMMENDED ECLSS OPERATIONAL PROTOCOL",
+    "materials": {
+      "PMMA": {
+        "name": "PMMA (Plexiglas)",
+        "type": "Structural thermoplastic in windows and spacecraft components",
+        "earthShape": "Elongated cone (convective teardrop)",
+        "earthSpread": "0.88 mm/s",
+        "earthTemp": "1820 K",
+        "earthMechanism": "Violent natural convection: Archimedes buoyancy evacuates hot gases and continuously feeds fresh air.",
+        "spaceShape": "Diffuse hemispherical dome",
+        "spaceSpread": "2.85 mm/s (in 26% O₂ exploration atmosphere)",
+        "spaceTemp": "1420 - 1650 K",
+        "spaceMechanism": "No natural convection. The flame clings to the surface and ejects floating incandescent molten droplets.",
+        "suppression": "Shut down Cygnus/ISS module ventilation below 1.0 cm/s + inert gas purge (N₂)."
+      },
+      "Nomex": {
+        "name": "Nomex Aramid Fabric",
+        "type": "Aramid fiber used in crew suits and thermal insulation",
+        "earthShape": "Small oscillating vertical flame",
+        "earthSpread": "0.20 mm/s",
+        "earthTemp": "1100 K",
+        "earthMechanism": "Rapid char layer formation assisted by the convective airflow.",
+        "spaceShape": "Faint spherical self-extinguishing micro-plume",
+        "spaceSpread": "0.12 mm/s",
+        "spaceTemp": "980 K",
+        "spaceMechanism": "Massive radiative loss due to its spherical shape. Without forced flow above 2 cm/s it self-asphyxiates from lack of O₂ renewal.",
+        "suppression": "Passive self-extinction by isolating the ventilation duct."
+      },
+      "Cotton": {
+        "name": "Cotton / Cellulose (NASA Std 1)",
+        "type": "Fibers from towels, underwear and packaging",
+        "earthShape": "Bright yellow flame with a soot plume",
+        "earthSpread": "1.10 mm/s",
+        "earthTemp": "1400 K",
+        "earthMechanism": "Fast open-flame combustion followed by glowing embers.",
+        "spaceShape": "Pale blue dome transitioning to smoldering fire",
+        "spaceSpread": "0.62 mm/s",
+        "spaceTemp": "1150 K",
+        "spaceMechanism": "Shifts to internal combustion with no detectable flame or smoke. It can reignite hours later if ventilation resumes.",
+        "suppression": "Infrared thermal inspection + localized direct CO₂ injection."
+      }
+    }
+  },
+  "experimentCard": {
+    "gravity": "Gravity",
+    "oxygen": "Oxygen",
+    "flameVelocity": "Flame Vel.",
+    "morphology": "Recorded Morphology:",
+    "implication": "In-Flight Implication:",
+    "suppression": "Recommended Suppression:",
+    "showSpec": "View full specification",
+    "hideSpec": "Hide specification",
+    "risk": {
+      "extreme": "Extreme",
+      "critical": "Critical",
+      "moderate": "Moderate",
+      "low": "Low"
+    }
+  },
+  "footage": {
+    "eyebrow": "OFFICIAL SPACEFLIGHT EVIDENCE (NASA PUBLIC DOMAIN)",
+    "title": "Microgravity Combustion Video & Photography",
+    "subtitle": "Official files sourced from <b>images.nasa.gov</b> covering the real-fire Saffire missions (Cygnus freighter) and the ISS (BASS-II and SoFIE).",
+    "archive": "NASA GLENN & JSC ARCHIVES",
+    "officialVideo": "OFFICIAL VIDEO",
+    "viewOnNasa": "View on NASA.gov ↗",
+    "enlarge": "ENLARGE",
+    "nasaId": "NASA ID",
+    "publicDomain": "OFFICIAL PUBLIC DOMAIN",
+    "video1Title": "Saffire-V Experiment (Cygnus) // Real Fire",
+    "video1Desc": "Combustion over a PMMA (plexiglas) sample with forced ventilation inside the Cygnus freighter after undocking from the ISS. Shows how fire anchors and spreads without upward currents.",
+    "video2Title": "SoFIE-GEL Experiment (ISS) // Spherical Flame",
+    "video2Desc": "Ignition and extinction of a solid fuel in microgravity. The spherical flame is seen rotating until it reaches the critical limit of self-extinction through radiative quenching.",
+    "photos": {
+      "pmma": {
+        "title": "Acrylic (PMMA) Combustion in Cygnus",
+        "badge": "PMMA • SAFFIRE-IV",
+        "desc": "Extended flame front over a structural polymer inside the Cygnus freighter at controlled pressure and concentration. Empirical evidence of flame spread without convective currents."
+      },
+      "fabric": {
+        "title": "Flame Spread Across Spacecraft Fabric",
+        "badge": "FABRIC • SAFFIRE-IV",
+        "desc": "Fabric sample burning under a 20 cm/s forced flow in an oxygen-enriched atmosphere. Demonstrates that structural fabrics burn violently in microgravity."
+      },
+      "sphere": {
+        "title": "Spherical Flame on the Space Station (0G)",
+        "badge": "BASS-II • ISS",
+        "desc": "4 mm acrylic slab burned in the Microgravity Science Glovebox aboard the ISS. Shows isotropic sphericity and the faint blue emission from C2/CH radicals."
+      },
+      "reducedO2": {
+        "title": "Combustion at Reduced O₂ Partial Pressure",
+        "badge": "SUB-NOMINAL ATMOSPHERE",
+        "desc": "Test card 15 under pressures and oxygen concentrations equivalent to next-generation space exploration atmospheres (Artemis / Mars)."
+      }
+    },
+    "lightbox": {
+      "openOriginal": "Open original image",
+      "closeEsc": "Close (Esc)",
+      "close": "CLOSE"
+    }
+  },
+  "simulator": {
+    "eyebrow": "AI PREDICTION WORKBENCH",
+    "title": "Combustion Simulator for Exploration Atmospheres",
+    "subtitle": "Real-time prediction for lunar habitats (Artemis), Mars transits and orbital spacecraft.",
+    "materialLabel": "Test Material",
+    "gravityLabel": "Gravity Regime",
+    "materials": {
+      "nomex": "Nomex (LOI 30% - ISS Suits / NASA Reference)",
+      "pbi": "PBI (LOI 40% - Optimal for High-Oxygen Artemis)",
+      "kapton": "Kapton (LOI 38% - Insulation / HCN Alert)",
+      "kevlar": "Kevlar (LOI 29% - Protective textile)",
+      "ptfe": "PTFE (LOI 95% - High inertia / HF Alert)",
+      "pmma": "PMMA (LOI 17.3% - Structural acrylic)",
+      "cotton": "Cotton (LOI 16.5% - NASA Standard Test 1)",
+      "etfe": "ETFE (LOI 25% - Aerospace wiring)",
+      "heptane": "n-Heptane (LOI 14% - Droplet combustion)"
+    },
+    "gravities": {
+      "micro": "Orbital Microgravity (0g - ISS / Cygnus)",
+      "lunar": "Lunar Gravity (0.166g - Artemis Base)",
+      "mars": "Martian Gravity (0.38g - Mars Habitat)",
+      "earth": "Earth Gravity (1.0g - Earth)"
+    },
+    "o2Label": "Oxygen Concentration (% O₂)",
+    "o2Ticks": {
+      "hypoxic": "16% (Hypoxic limit)",
+      "iss": "21% (ISS Standard)",
+      "artemis": "30%-37% (Artemis / Exploration)"
+    },
+    "pressureLabel": "Cabin Pressure (kPa)",
+    "pressureTicks": {
+      "exploration": "56 kPa (Exploration Atmosphere)",
+      "seaLevel": "101.3 kPa (Sea level)"
+    },
+    "flowLabel": "Ventilation Flow (cm/s)",
+    "flowTicks": {
+      "zero": "0 cm/s (Self-asphyxiation)",
+      "normal": "10 cm/s (Normal ECLSS flow)",
+      "active": "30 cm/s (Active duct)"
+    },
+    "run": "RUN PREDICTIVE SIMULATION",
+    "calculating": "COMPUTING PHYSICAL MODEL...",
+    "diagnosis": "TECHNICAL DIAGNOSIS",
+    "risk": "RISK: {level}",
+    "riskIndex": "Risk Index",
+    "estimatedRate": "Estimated Rate",
+    "coolFlameTitle": "COOL FLAME ALERT:",
+    "coolFlameBody": "With airflow < 3 cm/s, combustion continues without light emission or conventional heat detectable by standard sensors.",
+    "calibration": "NASA PSI-159 CALIBRATION // LOI vs O₂",
+    "loiExceeded": "LOI EXCEEDED",
+    "materialSafe": "SAFE MATERIAL",
+    "loiLimit": "LOI LIMIT",
+    "o2Ambient": "AMBIENT O₂",
+    "margin": "MARGIN",
+    "decompositionGas": "Decomposition Gas:",
+    "eclssStrategy": "ECLSS Strategy",
+    "placeholder": "Adjust the parameters and press Run.",
+    "riskLevels": {
+      "Extreme": "Extreme",
+      "Critical": "Critical",
+      "Moderate": "Moderate",
+      "Low": "Low"
+    },
+    "fallback": {
+      "strategySpace": "Immediate cabin ventilation shutdown (< 1.0 cm/s) and inert N₂ gas injection",
+      "strategyEarth": "Water mist / CO₂ extinguisher discharge",
+      "alert": "⚠️ PSI-159 ALERT: O₂ ({o2}%) >= LOI ({loi}%). Critical toxicity: {tox}.",
+      "safe": "✅ NASA PSI-159 / STD-6001: Self-extinguishing material (O₂: {o2}% < LOI: {loi}%).",
+      "sensorContext": "Calibrated with NASA PSI-159 (PMT1: 4.42 V, IonCurrent: -0.888)",
+      "tox": {
+        "nomex": "CO (low to medium)",
+        "pbi": "CO (low)",
+        "kapton": "HCN + CO (high)",
+        "kevlar": "CO (medium)",
+        "ptfe": "HF (very high)",
+        "pmma": "CO + CO2 (high)",
+        "cotton": "CO (moderate)",
+        "etfe": "HF traces + CO",
+        "heptane": "CO + Hydrocarbons",
+        "default": "CO (medium)"
+      }
+    }
+  },
+  "bridge": {
+    "eyebrow": "EARTH-TO-SPACE FIRE BRIDGE (NASA FIRMS & SAFFIRE)",
+    "title": "Fire Science at Two Scales: Planetary vs. Microgravity",
+    "subtitle": "Integrating satellite orbital observation (FRP in MW) with combustion physics in pressurized habitats.",
+    "modes": {
+      "earth": "MACRO: NASA FIRMS (EARTH)",
+      "space": "MICRO: SPACECRAFT (0G)"
+    },
+    "earthPanel": {
+      "system": "NASA FIRMS SYSTEM (MODIS & VIIRS)",
+      "resolution": "RESOLUTION: 375m – 1000m",
+      "metricLabel": "Core Metric",
+      "metricValue": "FRP (MegaWatts)",
+      "metricSub": "Radiative Power",
+      "gridLabel": "Discretization Grid",
+      "gridValue": "EPSG:6933",
+      "gridSub": "10 km / 20 km cells",
+      "jaccardLabel": "Jaccard Index",
+      "jaccardSub": "Sensor Concordance",
+      "mechanismTitle": "Physical Mechanism:",
+      "mechanism": "On Earth, combustion produces thermal plumes rising through gravitational buoyancy. Polar-orbiting satellites detect mid-wave infrared radiation (3.9 µm and 11 µm), estimating the total biomass consumed in megawatts (FRP)."
+    },
+    "spacePanel": {
+      "system": "SPACECRAFT SAFETY SYSTEM (SAFFIRE / ECLSS / SAME)",
+      "microgravity": "0.0001g (MICROGRAVITY)",
+      "metricLabel": "Core Metric",
+      "metricValue": "Thermal Flux",
+      "metricSub": "kW / m² radiated",
+      "sensorLabel": "Sensor Challenge",
+      "sensorValue": "Giant Soot",
+      "sensorSub": "Agglomeration (SAME)",
+      "coolLabel": "Cool Flames",
+      "coolSub": "No visible flame",
+      "mechanismTitle": "Physical Mechanism:",
+      "mechanism": "In microgravity, heat does not rise. Fire transfers up to 42% of its energy by direct spherical radiation onto neighboring components, and soot agglomerates into anomalous microscopic chains that clog standard Earth ion detectors."
+    },
+    "conclusionLabel": "NASA Methodological Conclusion:",
+    "fallbackTakeaway": "On Earth the plume rises through convective buoyancy, which aids IR satellite detection. In space the absence of convection traps the flame in a spherical diffusive layer with no visible smoke.",
+    "frp": {
+      "title": "RADIATIVE POWER CALCULATOR (FRP)",
+      "atmosphere": "26% O₂ ATMOSPHERE",
+      "material": "Test Material",
+      "powerLabel": "Habitat Fire Radiative Power (FRP)",
+      "radiativeFraction": "Net radiative fraction: {value}%",
+      "fluxLabel": "Surface Thermal Flux",
+      "critical": "CRITICAL: Secondary ignition risk",
+      "moderate": "MODERATE",
+      "footerLeft": "BASED ON FIRMS & SAFFIRE MODELS",
+      "footerRight": "EQUAL-AREA GRID READY"
+    }
+  },
+  "kalman": {
+    "eyebrow": "ECLSS PREDICTIVE SAFETY ALGORITHM",
+    "title": "Kalman Filter: CO Toxicity Monitoring in Habitats",
+    "subtitle": "Stochastic IoT noise filtering to compute critical evacuation times in confined volumes.",
+    "habitats": {
+      "iss": "ISS (916 m³)",
+      "lunar": "LUNAR BASE (280 m³)",
+      "rover": "LUNAR ROVER (42 m³)"
+    },
+    "hardwareStatus": {
+      "live": "Hardware-in-the-Loop Active",
+      "synthetic": "Synthetic Simulation Mode",
+      "deviceSuffix": "[{device} on USB COM6]",
+      "hint": "[Connect the Pico W and run the bridge for real telemetry]"
+    },
+    "viewModes": {
+      "dual": "⚡ Dual View",
+      "mirror": "🖥️ ESP32 Display",
+      "analytics": "📊 Kalman Analytics"
+    },
+    "chipSensor": "Chip Sensor:",
+    "syncOn": "⚡ Live Sync",
+    "syncOff": "Pause Sync",
+    "o2Control": "Ambient Oxygen ({value}%)",
+    "controlledBy": "📡 Controlled by Pico W",
+    "artemisEva": "Artemis EVA Habitat",
+    "issStandard": "ISS Standard",
+    "o2Ticks": {
+      "sub": "18% (Sub-nominal)",
+      "nominal": "21% (Nominal)",
+      "enriched": "32% (Enriched)"
+    },
+    "rawSensorLive": "Raw Sensor (RP2040)",
+    "rawSensorSim": "Raw Sensor (IoT Noise)",
+    "rawO2": "Raw O₂: {value}%",
+    "oscillation": "Oscillation ±3.5σ",
+    "kalmanEstimate": "Kalman Estimate ({mode})",
+    "estimateModes": {
+      "hardware": "Hardware",
+      "real": "Real"
+    },
+    "kGain": "K-Gain: {value}",
+    "volumeDynamics": "Volume & Dynamics:",
+    "contingency": "CONTINGENCY STATUS",
+    "criticalTime": "CRITICAL TIME",
+    "physicalDiagnosis": "Physical Diagnosis:",
+    "protocols": "Mandatory Crew Protocols:",
+    "audience": {
+      "question": "ARE YOU IN THE AUDIENCE OR A JUDGE?",
+      "desc": "Scan this code with your phone to link to the cabin and receive the live alarm.",
+      "broadcast": "🚨 BROADCAST ALERT TO THE AUDIENCE (TELEGRAM)",
+      "broadcasting": "BROADCASTING TO TELEGRAM...",
+      "channel": "Channel: @Stellar_App_bot"
+    },
+    "computing": "COMPUTING STOCHASTIC FILTERING...",
+    "broadcast": {
+      "success": "Alert successfully sent to {count} devices on Telegram.",
+      "error": "Error broadcasting alert to Telegram.",
+      "offline": "Alert server temporarily offline."
+    },
+    "fallback": {
+      "rover": "Pressurized Lunar Rover",
+      "lunar": "Lunar Base (Artemis)",
+      "iss": "ISS Module",
+      "description": "Simulation of toxic CO gas dispersion in microgravity.",
+      "alertTitleRed": "RED // EVACUATION",
+      "alertTitleOrange": "ORANGE // TOXIC ALERT",
+      "diagnosis": "Real-time monitoring with a Kalman filter to reduce IoT sensor noise.",
+      "actions": {
+        "hatches": "Verify hatch airtightness",
+        "extraction": "Adjust forced ECLSS extraction",
+        "masks": "Prepare self-contained O₂ masks"
+      },
+      "evacShort": "< 3 min",
+      "evacLong": "< 15 min"
+    }
+  },
+  "cockpit": {
+    "astronautDeck": "ASTRONAUT FLIGHT DECK // ECLSS HUD",
+    "critical": "CRITICAL",
+    "online": "ONLINE",
+    "standby": "STANDBY",
+    "linked": "USB COM9 LINKED",
+    "offline": "OFFLINE MIRROR",
+    "oxygen": "AMBIENT OXYGEN",
+    "rawSensor": "Raw Sensor:",
+    "o2Ticks": {
+      "sub": "18% (Sub)",
+      "nominal": "21% Nom",
+      "high": "30% Hyper"
+    },
+    "kalmanFilter": "KALMAN FILTER (CO)",
+    "filterActive": "Kalman Filter:",
+    "active": "Active",
+    "gain": "Gain (K):",
+    "toxicityHigh": "HIGH TOXICITY",
+    "stable": "STABLE (±3.5σ)",
+    "rp2040Probe": "RP2040 PROBE",
+    "hardware": "Hardware:",
+    "evacuation": "Evacuation:",
+    "nominal": "NOMINAL",
+    "thermalTrigger": "🚨 THERMAL TRIGGER",
+    "continuousMonitoring": "Continuous Monitoring",
+    "purgeCritical": "🚨 CRITICAL ALERT // START INERT N2 PURGE",
+    "purgeNormal": "ACTIVATE INERT N2 PURGE / EVACUATION PROTOCOL",
+    "syncCaption": "DIGITAL TWIN SYNCHRONIZED IN REAL TIME WITH THE PHYSICAL DISPLAY",
+    "reset": "[RESET STATE]"
+  },
+  "ai": {
+    "assistant": {
+      "intro": "NASA Microgravity Fire Safety AI specialist active. Full indexing of the Saffire, BASS-II and FLEX-2 missions. Which physical parameter or extinction protocol for Artemis/Mars would you like to query?",
+      "questions": {
+        "q1": "Why are flames spherical in microgravity?",
+        "q2": "What danger does 26% O2 pose on Artemis?",
+        "q3": "How does the ISS extinction protocol work without convection?",
+        "q4": "What did FLEX-2 discover about the 'Cool Flames' phenomenon?"
+      },
+      "headerTitle": "NASA COMBUSTION INTELLIGENCE AGENT",
+      "grounding": "GROUNDED IN SAFFIRE & BASS PAPERS",
+      "processing": "PROCESSING QUERY WITH GEMINI ENGINE...",
+      "prompts": "PROMPTS:",
+      "placeholder": "Enter your technical question about microgravity fire...",
+      "ref": "REF: {sources}",
+      "fallback": "**OPERATIONAL SAFETY DIAGNOSIS (LOCAL FALLBACK):**\n\n1. **Physical Mechanism:** In microgravity (0g), the absence of convective buoyancy eliminates rising currents. Oxygen is transferred only by slow diffusion.\n2. **Cabin Hazard:** Smoldering combustion may emit neither black smoke nor visible light, releasing carbon monoxide without triggering conventional detectors.\n3. **Protocol:** Stop ventilation in the affected module below 1.2 cm/s and flood it with nitrogen gas."
+    },
+    "floating": {
+      "intro": "👨‍🚀 **HELLO! I AM YOUR MICROGRAVITY MISSION ASSISTANT (STELLARAPP)**\n\nI am indexed with the flight experiments **Saffire (I-IV)**, **BASS-II**, **FLEX-2**, **SAME** and the fire standards **NASA-STD-6001** / **NASA-STD-3001**.\n\nI have **active guardrails**: I only answer questions about space safety, 0g/Moon/Mars combustion and crew protection. Which parameter would you like to evaluate?",
+      "questions": {
+        "q1": "Why are flames spherical and blue in 0g?",
+        "q2": "What is the danger of 26% O₂ on Artemis?",
+        "q3": "How does SAME detect agglomerated smoke on the ISS?",
+        "q4": "What are the thermal limits for the astronaut and the suit?"
+      },
+      "widgetTitle": "NASA ASSISTANT",
+      "widgetSub": "ASTRONAUT • IN ORBIT",
+      "title": "NASA ASTRONAUT ASSISTANT",
+      "guardrails": "ACTIVE GUARDRAILS • 0G COMBUSTION",
+      "resetTitle": "Reset chat",
+      "maximize": "Maximize",
+      "minimize": "Minimize",
+      "closeTitle": "Close window",
+      "assistantName": "STELLARAPP ASTRONAUT",
+      "engineerName": "MISSION ENGINEER",
+      "citations": "NASA CITATIONS:",
+      "loading": "THE ASTRONAUT IS CHECKING TELEMETRY AND NASA STANDARDS...",
+      "placeholder": "Ask the astronaut about microgravity or fire...",
+      "grounding": "GROUNDING: Saffire • BASS • FLEX • FIRMS",
+      "guardrailBadge": "GUARDRAIL: 100% SCIENTIFIC",
+      "fallback": "**LOCAL TECHNICAL DIAGNOSIS (LOCAL NETWORK FALLBACK):**\n\n1. **Physical Mechanism:** In microgravity there is no natural convective draft. The flame front depends solely on forced cabin ventilation flow.\n2. **Operational Mitigation:** Stop air recirculation below 1.2 cm/s to induce radiative quenching and inject nitrogen N₂.",
+      "resetIntro": "👨‍🚀 **COMMUNICATION RESET:**\n\nGuardrails active. Ask any technical question about microgravity, Saffire, FIRMS or Artemis/Mars safety.",
+      "avatarAlt": "NASA Assistant Astronaut",
+      "widgetAria": "Floating AI Assistant"
+    }
+  },
+  "analytics": {
+    "eyebrow": "NASA TELEMETRY & GRAPHICAL ANALYTICS CENTER",
+    "title": "Comparative Combustion & Thermal Limits Visualization",
+    "subtitle": "Physical regression and survival models standardized by NASA-STD-3001, NASA-STD-6001 and Saffire missions.",
+    "tabs": {
+      "all": "ALL CHARTS",
+      "thermal": "THERMAL LIMITS (HUMAN / HULL)",
+      "flame": "SPREAD vs O₂",
+      "radiation": "FRP & RADIATION",
+      "soot": "SAME SOOT (ISS)",
+      "flammability": "NASA-STD-6001 MATRIX",
+      "psi": "NASA PSI (14 STUDIES)"
+    },
+    "thermalBands": {
+      "title": "Maximum Thermal Limits: Crew vs. Spacecraft (°C)",
+      "badge": "NASA-STD-3001 vs SP-20205001358",
+      "desc": "Comparison of critical thermal degradation thresholds: the crew requires mandatory evacuation at +45°C, while the Al-Li alloy hull loses 40% stiffness at +150°C.",
+      "axisY": "Max Temp (°C)",
+      "refEvac": "CREW EVACUATION (+45°C)",
+      "refCreep": "HULL CREEP (+150°C)",
+      "series": "Maximum Temperature (°C)",
+      "footerNominal": "NOMINAL COMFORT:",
+      "footerEvac": "HUMAN EVACUATION:",
+      "footerCreep": "AL-LI HULL CREEP:",
+      "footerCreepValue": "+150.0°C (Critical)"
+    },
+    "thermalTimeline": {
+      "title": "Cabin Thermal Excursion vs. Fire Time (0 - 180s)",
+      "badge": "0g DYNAMIC SIMULATION",
+      "desc": "Temperature evolution in a lunar habitat (280 m³) with PMMA ignition: air crosses the survival threshold at 45 s and the hull at 118 s.",
+      "axisX": "Time after Ignition (seconds)",
+      "axisY": "Temperature (°C)",
+      "refHuman": "HUMAN COLLAPSE (+45°C)",
+      "refHull": "HULL FAILURE (+150°C)",
+      "seriesCabin": "Cabin Interior Air (°C)",
+      "seriesSkin": "Skin / Suit Absorbed (°C)",
+      "seriesHull": "Al-Li Inner Hull (°C)",
+      "footerHuman": "HUMAN EVACUATION TIME LIMIT:",
+      "footerHumanValue": "45 seconds (air T > 45°C)",
+      "footerHull": "HULL RUPTURE TIME LIMIT:",
+      "footerHullValue": "118 seconds (hull T > 150°C)"
+    },
+    "flame": {
+      "title": "Spread Rate (mm/s) vs. O₂ Concentration (%)",
+      "badge": "SAFFIRE MODEL",
+      "desc": "In microgravity with constant forced flow (15 cm/s), the flame burns faster than at 1g due to the lack of convective turbulence cooling the reaction zone.",
+      "axisX": "Cabin Oxygen %",
+      "axisY": "Rate (mm/s)",
+      "refArtemis": "ARTEMIS LIMIT 26% O₂",
+      "seriesMicro": "Microgravity 0g (Cygnus)",
+      "seriesLunar": "Moon (0.16g)",
+      "seriesMars": "Mars (0.38g)",
+      "seriesEarth": "Earth 1g (Reference)",
+      "footerIss": "EXP. 21% O₂ (ISS):",
+      "footerArtemis": "ARTEMIS 26% O₂:",
+      "footerLoi": "LOI EXTINCTION:"
+    },
+    "radiation": {
+      "title": "Fire Radiative Power (FRP kW) & Thermal Flux (kW/m²)",
+      "badge": "NASA FIRMS & SAFFIRE",
+      "desc": "Cross-calibration of the MODIS/VIIRS sensor adapted to spacecraft cabins: PMMA acrylic emits 18.4 kW of radiative energy without convective dissipation.",
+      "axisY": "Power (kW) / Flux (kW/m²)",
+      "seriesFrp": "Radiative FRP (kW)",
+      "seriesFlux": "Thermal Flux (kW/m²)",
+      "footerPmma": "PMMA MAX FRP:",
+      "footerNomex": "NOMEX SELF-EXT.:",
+      "footerNomexValue": "0.8 kW (Safe)",
+      "footerKapton": "KAPTON ENERGY:"
+    },
+    "soot": {
+      "title": "Soot & Aerosols: SAME Agglomeration (0g) vs. Earth (1g)",
+      "badge": "EXP. SAME (ISS)",
+      "desc": "Earth-based ionization detectors fail on the ISS because in 0g soot particles do not escape and agglomerate into giant sizes (>0.5 to 5.0 µm).",
+      "axisX": "Particle Diameter (µm)",
+      "axisY": "% Mass Distribution",
+      "seriesMicro": "ISS Microgravity (SAME)",
+      "seriesEarth": "Terrestrial 1g Environment",
+      "footerPeakMicro": "MICROGRAVITY PEAK:",
+      "footerPeakMicroValue": "0.50 µm (26.5% of mass)",
+      "footerPeakEarth": "EARTH PEAK (1g):",
+      "footerPeakEarthValue": "0.05 µm (42.0% of mass)"
+    },
+    "flammability": {
+      "title": "NASA-STD-6001 Flammability Matrix (LOI vs Quenching)",
+      "badge": "JSC CERTIFICATION",
+      "desc": "Materials with a Limiting Oxygen Index (LOI) > 26% and Quenching Distance > 10 mm are approved for the Artemis habitable cabin.",
+      "axisY": "LOI (%) / Quenching Dist. (mm)",
+      "refCert": "NASA CERTIFICATION THRESHOLD (26% LOI)",
+      "seriesLoi": "Limiting Oxygen Index (LOI %)",
+      "seriesQuenching": "Quenching Distance (mm)",
+      "footerCertified": "CERTIFIED MATERIALS:",
+      "footerForbidden": "MATERIALS PROHIBITED ON ARTEMIS:"
+    },
+    "psi": {
+      "eyebrow": "NASA PHYSICAL SCIENCES INFORMATICS (PSI) DATABASE",
+      "title": "14 Microgravity Experimental Studies & 32 Validated Parameters",
+      "subtitle": "Official repository of research aboard the International Space Station (ISS), Cygnus and parabolic flights.",
+      "kpiStudies": "Studies",
+      "kpiParameters": "Parameters",
+      "kpiDocs": "NASA Docs",
+      "kpiFlight": "ISS Flight",
+      "kpiValidated": "Validated",
+      "search": "Search by ID (PSI-159, PSI-60), title, material or parameter...",
+      "categories": {
+        "all": "ALL",
+        "combustion": "COMBUSTION (ACME/BASS/SPICE)",
+        "heat": "FLUIDS & HEAT",
+        "materials": "MATERIALS SCIENCE",
+        "colloid": "COLLOIDS"
+      },
+      "parameters": "Physical Parameters ({count}):",
+      "more": "+{count} more",
+      "docs": "{count} docs",
+      "viewDetail": "View Detail ▼",
+      "closeDetail": "Close Detail ▲",
+      "methodology": "METHODOLOGY & APPROACH:",
+      "approachFallback": "Experimental tests with CIR / BASS / FAMIS hardware aboard the ISS.",
+      "allParameters": "ALL CALIBRATED PARAMETERS:",
+      "team": "RESEARCH TEAM:",
+      "publicRelease": "PUBLIC RELEASE"
+    },
+    "data": {
+      "pmmaAcrylic": "PMMA (Acrylic)",
+      "siblCottonGlass": "SIBL Cotton/Glass",
+      "siliconeRtv": "Silicone RTV",
+      "etfeWiring": "ETFE Wiring",
+      "kaptonFilm": "Kapton Film",
+      "nomexTextile": "Nomex Textile",
+      "crewComfort": "Crew Comfort",
+      "humanSurvival": "Human Survival",
+      "skinPain": "Skin Pain / Burn",
+      "avionicsColdPlates": "Avionics Cold Plates",
+      "hullCreep": "Al-Li Hull (Creep)",
+      "vitonSeals": "Viton O-Ring Seals",
+      "saffirePeak": "Saffire Fire (0g Peak)",
+      "siblCotton": "SIBL (Cotton)",
+      "silicone": "Silicone"
+    }
+  },
+  "pitch": {
+    "nav": {
+      "badge": "PITCH 2026",
+      "deck3d": "LIVE 3D DECK",
+      "hardware": "HARDWARE PROBE",
+      "hardwareShort": "HARDWARE PROBE (COM6)",
+      "bot": "LIVE BOT",
+      "workbench": "WORKBENCH",
+      "openWorkbench": "OPEN LIVE WORKBENCH",
+      "connectBot": "CONNECT TELEGRAM BOT",
+      "kalman": "KALMAN FILTER TELEMETRY",
+      "openQr": "Open Telegram QR",
+      "openMenu": "Open navigation menu"
+    },
+    "qr": {
+      "title": "TELEGRAM TELEMETRY NETWORK",
+      "alt": "Telegram Bot QR @Stellar_App_bot",
+      "desc": "Scan the code with your phone to join the auditorium flight-alert network.",
+      "open": "OPEN IN TELEGRAM",
+      "close": "CLOSE"
+    },
+    "lightbox": {
+      "open": "Open original image",
+      "closeEsc": "Close (Esc)",
+      "publicDomain": "OFFICIAL PUBLIC DOMAIN",
+      "close": "CLOSE"
+    },
+    "hero": {
+      "challenge": "CHALLENGE: FLAME & FIRE BEHAVIOR IN MICROGRAVITY",
+      "title": "Fire Safety for Human Exploration on the Moon and Mars",
+      "subtitle": "StellarApp is the first <b>space combustion intelligence</b> platform that unlocks, classifies and models four decades of NASA microgravity research with AI.",
+      "objectiveLabel": "// STELLARAPP PRIMARY MISSION OBJECTIVE",
+      "missionBadge": "ARTEMIS & MARS READY",
+      "objective": "Protect astronaut lives and spacecraft structural integrity in <b>lunar bases and Martian habitats</b>, where fire behaves radically differently from Earth, conventional extinguishers fail and evacuation is physically impossible.",
+      "kpiYears": "40 Years",
+      "kpiYearsLabel": "NASA Science",
+      "kpiStudies": "14 Studies",
+      "kpiStudiesLabel": "NASA PSI Repository",
+      "kpiLatency": "< 1 ms",
+      "kpiLatencyLabel": "Air-Gapped Inference",
+      "kpiTests": "35 / 35",
+      "kpiTestsLabel": "Ralph Loop Tests",
+      "ctaDashboard": "TRY THE LIVE DASHBOARD",
+      "ctaDefense": "JUDGE DEFENSE",
+      "deckBadge": "INTERACTIVE 3D PITCH DECK · HIL HARDWARE",
+      "deckTitle": "Live 3D Slide Deck for Judges & Audience",
+      "deckDesc": "Three.js 0g flame physics, Hardware-in-the-Loop telemetry (Pico W + ESP32) and live Telegram interactive QR.",
+      "ctaDeck": "START 3D PRESENTATION (FULLSCREEN)",
+      "ctaDeckWindow": "OPEN IN NEW TAB"
+    },
+    "problem": {
+      "eyebrow": "PROBLEM DIAGNOSIS",
+      "title": "Microgravity Fire Defies Terrestrial Standards",
+      "data": {
+        "title": "40 YEARS OF INACCESSIBLE DATA",
+        "desc": "Thousands of combustion experiments (Saffire, BASS, FLEX) scattered across static technical reports (NTRS PDFs) and videos that are neither indexed nor compared."
+      },
+      "physics": {
+        "title": "PHYSICS CHANGES RADICALLY IN 0G",
+        "desc": "Without gravitational buoyancy, flames become spherical, nearly invisible ('Cool Flames'), and terrestrial extinction protocols fail immediately."
+      },
+      "artemis": {
+        "title": "NEW RISK ON ARTEMIS AND MARS",
+        "desc": "Space exploration atmospheres will operate at 26%-34% O₂ and 56 kPa. Materials burn up to 95% faster with floating ignited droplets."
+      },
+      "bridge": {
+        "title": "A MISSING EARTH–SPACE BRIDGE",
+        "desc": "NASA's fire science was fragmented: macro satellite observation on Earth (NASA FIRMS) separated from micro combustion in spacecraft (Saffire)."
+      }
+    },
+    "value": {
+      "eyebrow": "STRATEGIC VALUE FOR NASA",
+      "title": "Why Is StellarApp Indispensable for Artemis?",
+      "intro": "In deep space, evacuation is impossible. The platform directly assists NASA in three priority areas:",
+      "science": {
+        "title": "1. UNLOCKING 40 YEARS OF NASA SCIENCE & PSI REPOSITORY",
+        "desc": "Indexes and correlates real spaceflight missions (Saffire, BASS-II, FLEX-2, SAME, ACME) and 14 official NASA Physical Sciences Informatics studies with 32 calibrated parameters."
+      },
+      "twin": {
+        "title": "2. 0G MORPHOLOGY & SPREAD DIGITAL TWIN",
+        "desc": "Models buoyancy-free physics (isotropic spherical flames, invisible 'Cool Flames' and radiative heat transfer of up to 42% to habitat walls)."
+      },
+      "certification": {
+        "title": "3. RISK CERTIFICATION IN ARTEMIS ATMOSPHERES (26%–34% O₂)",
+        "desc": "Evaluates structural materials under NASA-STD-6001B against flame-speed acceleration of up to +90% at reduced pressures (56.5 kPa)."
+      },
+      "copilot": {
+        "title": "4. AUTONOMOUS AIR-GAPPED (<1 ms) ECLSS COPILOT",
+        "desc": "Guides the crew through sudden fires without depending on Earth (forced ventilation cutoff below 1.2 cm/s for passive self-asphyxiation and bulkhead isolation)."
+      },
+      "rateTitle": "Rate Increase",
+      "rateDesc": "At 26% O₂ (Artemis atmosphere).",
+      "microTitle": "True Microgravity",
+      "microDesc": "Cygnus Saffire data.",
+      "extinctionTitle": "Passive Extinction",
+      "extinctionDesc": "Self-asphyxiation when flow is cut.",
+      "standardTitle": "NASA Standard",
+      "standardDesc": "Flammability tests."
+    },
+    "innovations": {
+      "eyebrow": "HIGH-RESILIENCE ENGINEERING",
+      "title": "Innovations Delivered Through the Ralph Loop Autonomous Cycle",
+      "badge": "TEST SUITE: 35 / 35 PASSING (100% VERIFIED)",
+      "tests": {
+        "title": "Ralph Loop Quality Suite (35/35 Automated Tests)",
+        "desc": "Continuous unit and integration tests covering microgravity models, aerospace guardrails, Kalman filter convergence and strict Pydantic validation.",
+        "metric": "35 / 35 PASS",
+        "badge": "100% PASSED"
+      },
+      "psi": {
+        "title": "Official NASA PSI Repository (14 Studies & 32 Parameters)",
+        "desc": "Integration of the official NASA Physical Sciences Informatics database: 14 space studies, PMT optical sensor calibration, MFCA1 static flow and over 1600 pyrometric images on the ISS.",
+        "metric": "14 Studies / 32 Parameters",
+        "badge": "FLIGHT CALIBRATED"
+      },
+      "engine": {
+        "title": "AeroEngine Dual Hybrid Engine (Sub-Millisecond + Qwen 2.5 3B)",
+        "desc": "Instant inference (<0.02ms) for critical spaceflight telemetry combined with a local Qwen 2.5 3B LLM on the orbital server, removing cloud dependencies for isolated (air-gapped) spacecraft.",
+        "metric": "< 1 ms",
+        "badge": "AIR-GAPPED READY"
+      },
+      "thermal": {
+        "title": "NASA-STD-3001 Thermal Limits vs NASA-SP-20205001358 Hull",
+        "desc": "Dynamic cabin survival curves during a 180s fire: monitors tissue pain/evacuation thresholds (45°C–50°C) versus creep loss in the Al-Li hull alloy (150°C).",
+        "metric": "180s Dynamic",
+        "badge": "SURVIVABILITY"
+      },
+      "assistant": {
+        "title": "Floating Astronaut Virtual Assistant with Space HUD",
+        "desc": "HUD agent with an orbital avatar that accompanies the astronaut on any screen, featuring strict aerospace domain isolation and intelligent RAG over ISS experiments.",
+        "metric": "Aero HUD",
+        "badge": "CREW INTERFACE"
+      }
+    },
+    "assistant": {
+      "badge": "CREW VIRTUAL ASSISTANT WITH NASA GROUNDING",
+      "hudBadge": "FLOATING HUD",
+      "alt": "StellarApp Assistant Astronaut",
+      "title": "Tactical Copilot Always Available for In-Flight Emergencies",
+      "body": "Unlike static interfaces, the StellarApp assistant floats unobtrusively over any application panel. It integrates a dual engine: it resolves priority queries in <b>under 0.02 ms</b> and runs local RAG reasoning with <b>Qwen-2.5-3B</b> without sending telemetry to external servers.",
+      "tagOffline": "• 100% Offline Air-Gapped",
+      "tagGuardrails": "• NASA-STD-6001B Guardrails",
+      "tagThermal": "• Human Thermal Limit (45°C) & Al-Li Hull (150°C)",
+      "tagPsi": "• 14 Validated NASA PSI Studies & 32 Parameters"
+    },
+    "telegram": {
+      "badge": "LIVE INTERACTIVE DEMO WITH THE AUDIENCE AND JUDGES",
+      "scan": "SCAN WITH YOUR CAMERA",
+      "alt": "StellarApp Telegram Bot QR",
+      "title": "Connect Your Phone to the ECLSS Early-Warning Network",
+      "body": "So that NASA evaluators and the audience can experience the response speed first-hand, we enabled a <b>real-time Telegram webhook</b>. Anyone in the room can subscribe in 5 seconds without installing any additional app.",
+      "step1Title": "1. SCAN & SUBSCRIBE",
+      "step1Desc": "Point your camera at the QR code and tap <b>/start</b> in Telegram to authenticate your crew credential.",
+      "step2Title": "2. SIMULTANEOUS CABIN ALARM",
+      "step2Desc": "When we simulate a critical CO leak or diffuse fire in the scenario, <b>every phone vibrates at the same millisecond</b>.",
+      "step3Title": "3. IOT TELEMETRY BUTTONS",
+      "step3Desc": "Check the Kalman Filter status, O₂ concentration and evacuation time limit directly in the bot.",
+      "step4Title": "4. MATERIAL SIMULATOR",
+      "step4Desc": "Send <b>/simular nomex</b> or tap the button to see how a fireproof material on Earth becomes reactive on Artemis."
+    },
+    "defense": {
+      "eyebrow": "PROJECT TECHNICAL DEFENSE",
+      "title": "Key Questions from NASA Evaluators",
+      "q1": {
+        "q": "What is the primary objective of the StellarApp project?",
+        "a": "To protect astronaut lives and the structural integrity of spacecraft on deep-space missions (Artemis on the Moon and habitats on Mars), where fire physics changes drastically compared with Earth, conventional extinction methods fail and evacuation is impossible."
+      },
+      "q2": {
+        "q": "Why is this vital for NASA today and not 20 years ago?",
+        "a": "Because the ISS operates at 101 kPa and 21% O₂ (the same as Earth). But the Artemis program (Moon) and Mars habitats will use 26%-32% O₂ to allow spacewalks (EVAs) without decompression. In this new regime, materials burn with an extreme violence never seen on Earth."
+      },
+      "q3": {
+        "q": "Why implement a dual engine with sub-millisecond inference and a local LLM (Qwen-2.5)?",
+        "a": "On a Moon or Mars mission, communication latency with Earth ranges from seconds to minutes (up to 20 minutes on Mars). A fire contingency system cannot depend on cloud APIs: it must operate 100% offline (air-gapped) inside the spacecraft avionics with instant deterministic responses (<1 ms)."
+      },
+      "q4": {
+        "q": "How is the official NASA Physical Sciences Informatics (PSI) database integrated?",
+        "a": "StellarApp incorporates 14 on-orbit investigations and 32 validated NASA experimental parameters (PSI-159, PSI-60, PSI-62, PSI-138), including PMT photomultiplier gains (8.0-10.0), static mass flows MFCA1 and pyrometric analysis of over 1600 flame images on the ISS."
+      },
+      "q5": {
+        "q": "How does it directly help astronauts and flight directors during a fire?",
+        "a": "If a fire occurs in 0g, a conventional extinguisher can spread molten polymer droplets throughout the cabin. StellarApp indicates which material is burning, its asphyxiation extinction threshold (cutting ECLSS ventilation flow below 1.2 cm/s) and the exact minutes before human thermal collapse (45°C) and Al-Li hull failure (150°C)."
+      },
+      "q6": {
+        "q": "How does the team guarantee technical accuracy and the absence of software failures?",
+        "a": "Through the autonomous Ralph Loop quality cycle: 35 automated tests (100% passing in 0.74s) verify the convection-free diffusive transport equations, the NASA-STD-6001B flammability limits (LOI) and empirical calibration with Cygnus Saffire data."
+      }
+    },
+    "cta": {
+      "title": "Access the Flight Control Panel",
+      "body": "Explore the experiment catalog, run the predictive atmosphere simulation and consult the AI agent.",
+      "button": "LAUNCH STELLARAPP WORKBENCH"
+    },
+    "footer": "StellarApp Team • NASA Space Apps Challenge 2026"
   }
 }

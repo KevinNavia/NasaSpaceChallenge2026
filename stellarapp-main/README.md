@@ -1,81 +1,184 @@
-# StellarApp - NASA Space Apps Challenge 2026
+# StellarApp — NASA Space Apps Challenge 2026
 
-## 🚀 Desafío: Seguridad Contra Incendios y Combustión en Microgravedad
+**English** · [Español](README.es.md)
 
-Plataforma interactiva con Inteligencia Artificial que resume, clasifica e interpreta décadas de investigación de la NASA sobre la física del fuego en microgravedad (ISS, Cygnus Saffire, BASS-II, FLEX-2), orientada a proteger a los astronautas en misiones **Artemis (Luna)** y naves hacia **Marte**.
+**Challenge:** Fire Safety and Combustion in Microgravity
 
----
+An interactive AI platform that unlocks, classifies and models four decades of NASA research on fire physics in microgravity (ISS, Cygnus Saffire, BASS-II, FLEX-2), aimed at protecting astronauts on **Artemis (Moon)** missions and spacecraft traveling to **Mars**.
 
-## 🛰️ Características Principales
-
-1. **Catálogo Experimental Normalizado:**
-   - Ingesta estructurada de datos de **Saffire (I, II, IV)**, **BASS-II** y **FLEX-2**.
-   - Parámetros físicos: Tasa de propagación de llama ($mm/s$), Índice de Oxígeno Límite ($LOI$), distancia de extinción y morfología de la llama.
-
-2. **Comparador Físico 1g (Tierra) vs. 0g (Espacio):**
-   - Ilustración del impacto de la flotabilidad gravitacional: llamas cónicas por convección natural vs. llamas esféricas difusas en microgravedad.
-   - Análisis de riesgos específicos como el goteo de plástico fundido en ingravidez y fuegos latentes (*smoldering*).
-
-3. **Simulador Predictivo de Atmósferas de Exploración:**
-   - Cálculo en tiempo real del riesgo para perfiles de hábitat (ej. atmósfera Artemis: 26% - 32% $O_2$ a 56 kPa).
-   - Detección de peligro de **"Cool Flames"** (combustión invisible a baja temperatura).
-
-4. **Asistente de Seguridad con Inteligencia Artificial (Gemini):**
-   - Respuestas en lenguaje natural fundamentadas en papers técnicos de la NASA.
-   - Recomendaciones operativas para el sistema de control ambiental de la nave (ECLSS).
+Live demo: <https://stellarapp.nerosystem.solutions>
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Key Features
 
-- **Frontend:** Next.js 14 / React / Tailwind CSS / Lucide Icons.
-- **Backend:** FastAPI (Python 3.14).
-- **Inteligencia Artificial:** Gemini API (`gemini-2.0-flash`) con sistema de grounding sobre el dataset de la NASA.
-- **Fuentes de Datos:** NASA Physical Sciences Informatics (PSI) & NASA Technical Reports Server (NTRS).
+1. **Normalized Experimental Catalog**
+   - Structured ingestion of **Saffire (I, II, IV)**, **BASS-II** and **FLEX-2** data.
+   - Physical parameters: flame spread rate (mm/s), Limiting Oxygen Index (LOI), quenching distance and flame morphology.
+
+2. **Physical Comparator: 1g (Earth) vs. 0g (Space)**
+   - Illustrates the impact of gravitational buoyancy: conical flames driven by natural convection versus spherical, diffuse flames in microgravity.
+   - Specific hazard analysis such as molten plastic dripping in weightlessness and smoldering fires.
+
+3. **Predictive Exploration-Atmosphere Simulator**
+   - Real-time risk calculation for habitat profiles (e.g., Artemis atmosphere: 26%–34% O₂ at 56 kPa).
+   - Detection of invisible **"Cool Flames"** (low-temperature combustion).
+
+4. **AI Safety Assistant**
+   - Natural-language answers grounded in NASA technical papers.
+   - Operational recommendations for the spacecraft Environmental Control and Life Support System (ECLSS).
+
+5. **Kalman CO-Toxicity Telemetry & Hardware-in-the-Loop**
+   - Stochastic filtering of IoT sensor noise to compute critical evacuation times.
+   - Live integration with a Raspberry Pi Pico W / ESP32-8048S043 digital twin cockpit.
+
+6. **Earth-to-Space Fire Bridge**
+   - Cross-calibration of NASA FIRMS satellite Fire Radiative Power (FRP) with microgravity combustion physics.
+
+7. **NASA PSI Database**
+   - 14 official Physical Sciences Informatics studies and 32 validated parameters.
 
 ---
 
-## ⚡ Inicio Rápido (< 2 minutos)
+## Technology Stack
 
-### Opción 1: Script Automático
+- **Frontend:** Next.js 14 (App Router) / React 18 / TypeScript / Tailwind CSS / Recharts / Lucide.
+- **Backend:** FastAPI (Python), Pydantic v2, pytest.
+- **AI:** Gemini API with dataset grounding, plus a local Ollama/Qwen-2.5 fallback for offline (air-gapped) operation.
+- **Data sources:** NASA Physical Sciences Informatics (PSI) and NASA Technical Reports Server (NTRS).
+- **Infrastructure:** Docker Compose + Nginx + Let's Encrypt.
+
+---
+
+## Quick Start (< 2 minutes)
+
+### Option 1: Docker Compose
+
+```bash
+docker compose up -d --build
+```
+
+- Frontend: <http://localhost:8066>
+- Backend: <http://localhost:8067/docs>
+
+### Option 2: Automated script (Windows)
+
 ```powershell
 .\start-dev.ps1
 ```
 
-### Opción 2: Manual
+### Option 3: Manual
 
-#### Backend:
+#### Backend
+
 ```bash
 cd backend
-.\.venv\Scripts\Activate.ps1
+python -m venv .venv
+.venv\Scripts\activate      # Linux/macOS: source .venv/bin/activate
+pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
-*API docs disponibles en:* `http://localhost:8000/docs`
 
-#### Frontend:
+API docs: <http://localhost:8000/docs>
+
+#### Frontend
+
 ```bash
 cd frontend
+npm install
 npm run dev
 ```
-*Panel interactivo disponible en:* `http://localhost:3000`
+
+Dashboard: <http://localhost:3000> (redirects to `/es` or `/en`)
 
 ---
 
-## 🌐 Internacionalización (ES / EN)
+## Internationalization (ES / EN)
 
-La interfaz está disponible en español e inglés mediante [`next-intl`](https://next-intl.dev) con rutas por idioma.
+The interface is available in Spanish and English through [`next-intl`](https://next-intl.dev) with locale-prefixed routes.
 
-| Ruta | Idioma |
+| Route | Language |
 | --- | --- |
-| `/` | Redirige según el navegador (cookie `NEXT_LOCALE`) |
-| `/es`, `/es/pitch` | Español (idioma por defecto) |
-| `/en`, `/en/pitch` | Inglés |
+| `/` | Redirects based on the browser (cookie `NEXT_LOCALE`) |
+| `/es`, `/es/pitch` | Spanish (default) |
+| `/en`, `/en/pitch` | English |
 
-- El selector **ES / EN** está en el navbar (escritorio y menú móvil) y en la cabecera del pitch.
-- La detección inicial usa `Accept-Language`; la elección manual se guarda un año en la cookie `NEXT_LOCALE`.
-- Los textos viven en `frontend/messages/es.json` y `frontend/messages/en.json`, organizados por namespace (`nav`, `hero`, `catalog`, `footer`, `metadata`, `localeSwitcher`).
-- Configuración: `frontend/locales.ts`, `frontend/i18n.ts`, `frontend/middleware.ts` y `frontend/navigation.ts` (helpers `Link`/`useRouter` con prefijo de idioma).
+- The **ES / EN** switcher lives in the navbar (desktop and mobile menu) and in the pitch header.
+- Initial detection uses `Accept-Language`; a manual choice is stored for one year in the `NEXT_LOCALE` cookie.
+- UI strings live in `frontend/messages/es.json` and `frontend/messages/en.json`, organized by namespace (`nav`, `hero`, `catalog`, `metrics`, `comparison`, `simulator`, `bridge`, `kalman`, `cockpit`, `footage`, `analytics`, `pitch`, `ai`, `footer`, `metadata`).
+- Configuration: `frontend/locales.ts`, `frontend/i18n.ts`, `frontend/middleware.ts` and `frontend/navigation.ts` (locale-aware `Link`/`useRouter` helpers).
 
-Para añadir un texto nuevo, agrega la misma clave en **ambos** archivos JSON; `next build` falla si una clave falta en el idioma que se renderiza.
+When adding a new string, add the same key to **both** JSON files. Namespaces are verified 1:1.
 
-> Estado: Fase 0 completada (infraestructura, navbar, hero, catálogo, footer y metadata). Los componentes internos de la home, el contenido del pitch y las respuestas del agente IA siguen en español (fases 1–3).
+The backend also accepts a `lang=es|en` parameter (query string or JSON body) on the content-generating endpoints: `/api/ai/ask`, `/api/ai/simulate`, `/api/telemetry/kalman`, `/api/firms/summary`, `/api/firms/frp`, `/api/experiments` and `/api/scenarios`. The frontend forwards the active locale on every call, so AI answers, diagnostics, experiment narratives and chart data arrive already localized.
+
+> Status: **full ES/EN localization of the web interface and backend-generated content** — UI, AI answers, simulator diagnostics, Kalman telemetry, NASA FIRMS bridge and experiment narratives. Official NASA PSI study descriptions remain in their source language (English), and the Telegram bot uses its own conversational language. Risk levels are returned as stable codes (`Extreme`, `Critical`, `Moderate`, `Low`) and translated by the UI.
+
+---
+
+## Tests
+
+```bash
+cd backend
+pytest
+```
+
+The suite covers microgravity physics models, aerospace guardrails, the Kalman filter and API contracts (**35 tests**).
+
+Frontend build and type checks:
+
+```bash
+cd frontend
+npm run build
+```
+
+---
+
+## Project Structure
+
+```
+stellarapp/
+├─ backend/            FastAPI service, physics engine, AI service, tests
+│  ├─ main.py
+│  ├─ ai_service.py
+│  ├─ physics_engine.py
+│  ├─ firms_service.py
+│  ├─ telegram_service.py
+│  ├─ data/            NASA datasets (combustion + PSI)
+│  └─ tests/
+├─ frontend/           Next.js 14 application
+│  ├─ app/[locale]/    Localized routes (home + pitch)
+│  ├─ components/      Dashboard, charts, Kalman HUD, AI assistants
+│  ├─ messages/        es.json / en.json
+│  └─ middleware.ts    Locale detection and routing
+├─ hardware/           ESP32 cockpit firmware and Pico W bridge
+├─ scripts/            Telemetry bridge scripts
+└─ docker-compose.yml
+```
+
+---
+
+## Deployment
+
+Production runs on a Linux server behind Nginx:
+
+- `stellarapp_frontend` → `127.0.0.1:8066`
+- `stellarapp_backend` → `127.0.0.1:8067`
+- Public host: `stellarapp.nerosystem.solutions` (HTTPS via Let's Encrypt)
+
+```bash
+git pull
+docker compose up -d --build
+```
+
+---
+
+## Data & Credits
+
+- NASA Physical Sciences Informatics (PSI) — <https://psi.nasa.gov>
+- NASA Technical Reports Server (NTRS) — <https://ntrs.nasa.gov>
+- NASA FIRMS — <https://firms.modaps.eosdis.nasa.gov>
+- Saffire, BASS-II, FLEX-2, SAME and ACME experiment data.
+- Official NASA imagery: <https://images.nasa.gov> (public domain).
+
+**Team StellarApp** — NASA International Space Apps Challenge 2026.

@@ -13,11 +13,12 @@ import AIAssistantModal from "../../components/AIAssistantModal";
 import AnalyticsCharts from "../../components/AnalyticsCharts";
 import FloatingAIAgent from "../../components/FloatingAIAgent";
 import { Experiment, MetricsData } from "../../types";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Search, Sparkles, Terminal, ChevronRight, AlertTriangle } from "lucide-react";
 
 export default function Home() {
   const t = useTranslations();
+  const locale = useLocale();
   const [metrics, setMetrics] = useState<MetricsData | null>(null);
   const [experiments, setExperiments] = useState<Experiment[]>([]);
   const [search, setSearch] = useState("");
@@ -41,7 +42,7 @@ export default function Home() {
         });
       });
 
-    fetch("/api/experiments")
+    fetch(`/api/experiments?lang=${locale}`)
       .then((res) => res.json())
       .then((data) => setExperiments(data))
       .catch(() => {
@@ -50,7 +51,7 @@ export default function Home() {
           .then((d) => setExperiments(d))
           .catch(() => {});
       });
-  }, []);
+  }, [locale]);
 
   const filteredExperiments = experiments.filter((exp) => {
     const matchesSearch =

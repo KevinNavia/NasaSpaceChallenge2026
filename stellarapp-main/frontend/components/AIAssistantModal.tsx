@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { X, Send, Sparkles, Terminal, BookOpen } from "lucide-react";
 import MarkdownRenderer from "./MarkdownRenderer";
 
@@ -16,22 +17,22 @@ interface ChatMessage {
 }
 
 export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalProps) {
+  const t = useTranslations("ai.assistant");
+  const locale = useLocale();
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      content:
-        "Especialista de IA de la NASA para Seguridad contra Incendios en Microgravedad activo. " +
-        "Indexación completa de las misiones Saffire, BASS-II y FLEX-2. ¿Qué parámetro físico o protocolo de extinción para Artemis/Marte deseas consultar?",
+      content: t("intro"),
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
   const sampleQuestions = [
-    "¿Por qué las llamas son esféricas en microgravedad?",
-    "¿Qué peligro representa el 26% de O2 en Artemis?",
-    "¿Cómo actúa el protocolo de extinción en la ISS si no hay convección?",
-    "¿Qué descubrió FLEX-2 sobre el fenómeno de 'Cool Flames'?",
+    t("questions.q1"),
+    t("questions.q2"),
+    t("questions.q3"),
+    t("questions.q4"),
   ];
 
   if (!isOpen) return null;
@@ -49,7 +50,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
       const resp = await fetch("/api/ai/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: q }),
+        body: JSON.stringify({ query: q, lang: locale }),
       });
 
       if (resp.ok) {
@@ -70,11 +71,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
         ...newMsgs,
         {
           role: "assistant",
-          content:
-            "**DIAGNÓSTICO DE SEGURIDAD OPERACIONAL (FALLBACK LOCAL):**\n\n" +
-            "1. **Mecanismo Físico:** En microgravedad (0g), la ausencia de flotabilidad convectiva elimina las corrientes ascendentes. El oxígeno se transfiere únicamente por difusión lenta.\n" +
-            "2. **Peligro en Cabina:** La combustión latente ('smoldering') puede no emitir humo negro ni luz visible, liberando monóxido de carbono sin activar detectores convencionales.\n" +
-            "3. **Protocolo:** Detener la ventilación del módulo afectado por debajo de 1.2 cm/s e inundar con gas nitrógeno.",
+          content: t("fallback"),
           sources: ["EXP-SAFFIRE-001", "EXP-BASS-011"],
         },
       ]);
@@ -95,9 +92,9 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
             <Terminal className="h-5 w-5 text-[#76b900]" />
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                AGENTE DE INTELIGENCIA DE COMBUSTIÓN NASA
+                {t("headerTitle")}
               </h3>
-              <p className="text-[10px] text-[#898989] font-mono">GROUNDING EN PAPERS SAFFIRE & BASS</p>
+              <p className="text-[10px] text-[#898989] font-mono">{t("grounding")}</p>
             </div>
           </div>
           <button onClick={onClose} className="p-1 text-[#898989] hover:text-white transition-colors">
@@ -127,7 +124,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
                 {m.sources && m.sources.length > 0 && (
                   <div className="mt-3 pt-2 border-t border-[#333333] flex items-center space-x-1.5 text-[10px] text-[#76b900] font-mono">
                     <BookOpen className="h-3 w-3" />
-                    <span>REF: {m.sources.join(", ")}</span>
+                    <span>{t("ref", { sources: m.sources.join(", ") })}</span>
                   </div>
                 )}
               </div>
@@ -136,14 +133,14 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
 
           {loading && (
             <div className="flex items-center space-x-2 text-[#76b900] text-xs font-mono py-2">
-              <span className="animate-pulse">PROCESANDO CONSULTA CON MOTOR GEMINI...</span>
+              <span className="animate-pulse">{t("processing")}</span>
             </div>
           )}
         </div>
 
         {/* Suggestion Pills */}
         <div className="px-4 py-2 bg-[#1a1a1a] border-t border-[#333333] flex items-center gap-2 overflow-x-auto text-[11px]">
-          <span className="text-[10px] font-bold text-[#898989] uppercase tracking-wider shrink-0">PROMPTS:</span>
+          <span className="text-[10px] font-bold text-[#898989] uppercase tracking-wider shrink-0">{t("prompts")}</span>
           {sampleQuestions.map((q, idx) => (
             <button
               key={idx}
@@ -162,7 +159,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Introduce tu consulta técnica sobre fuego en microgravedad..."
+            placeholder={t("placeholder")}
             className="flex-1 bg-[#1a1a1a] border border-[#333333] px-4 py-2.5 text-xs text-white placeholder-[#757575] focus:outline-none focus:border-[#76b900]"
           />
           <button

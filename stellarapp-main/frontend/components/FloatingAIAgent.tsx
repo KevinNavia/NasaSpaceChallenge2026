@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Sparkles,
   Terminal,
@@ -23,6 +24,8 @@ interface ChatMessage {
 }
 
 export default function FloatingAIAgent() {
+  const t = useTranslations("ai.floating");
+  const locale = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [input, setInput] = useState("");
@@ -32,19 +35,16 @@ export default function FloatingAIAgent() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      content:
-        "👨‍🚀 **¡HOLA! SOY TU ASISTENTE DE MISIÓN EN MICROGRAVEDAD (STELLARAPP)**\n\n" +
-        "Estoy indexado con los experimentos de vuelo **Saffire (I-IV)**, **BASS-II**, **FLEX-2**, **SAME** y los estándares de fuego **NASA-STD-6001** / **NASA-STD-3001**.\n\n" +
-        "Tengo **guardrails activos**: solo respondo consultas sobre seguridad espacial, combustión en 0g/Luna/Marte y protección de la tripulación. ¿Qué parámetro deseas evaluar?",
+      content: t("intro"),
       sources: ["NASA-STD-6001B", "Saffire-I"],
     },
   ]);
 
   const quickQuestions = [
-    "¿Por qué las llamas son esféricas y azules en 0g?",
-    "¿Qué peligro tiene el 26% de O₂ en Artemis?",
-    "¿Cómo detecta SAME el humo aglomerado en la ISS?",
-    "¿Cuáles son los límites térmicos del astronauta y del casco?",
+    t("questions.q1"),
+    t("questions.q2"),
+    t("questions.q3"),
+    t("questions.q4"),
   ];
 
   const scrollToBottom = () => {
@@ -79,7 +79,7 @@ export default function FloatingAIAgent() {
       const resp = await fetch("/api/ai/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: q }),
+        body: JSON.stringify({ query: q, lang: locale }),
       });
 
       if (resp.ok) {
@@ -103,10 +103,7 @@ export default function FloatingAIAgent() {
         ...prev,
         {
           role: "assistant",
-          content:
-            "**DIAGNÓSTICO TÉCNICO LOCAL (FALLBACK EN RED LOCAL):**\n\n" +
-            "1. **Mecanismo Físico:** En microgravedad no existe empuje convectivo natural. El frente de llama depende únicamente del flujo forzado de ventilación en cabina.\n" +
-            "2. **Mitigación Operacional:** Detener recirculación de aire bajo 1.2 cm/s para inducir apagado por radiación (radiative quenching) e inyectar nitrógeno N₂.",
+          content: t("fallback"),
           sources: ["EXP-SAFFIRE-001"],
         },
       ]);
@@ -126,16 +123,14 @@ export default function FloatingAIAgent() {
     setMessages([
       {
         role: "assistant",
-        content:
-          "👨‍🚀 **COMUNICACIÓN REINICIADA:**\n\n" +
-          "Guardrails activos. Realiza cualquier consulta técnica sobre microgravedad, Saffire, FIRMS o seguridad en Artemis/Marte.",
+        content: t("resetIntro"),
         sources: ["NASA-STD-6001B"],
       },
     ]);
   };
 
   return (
-    <aside aria-label="Asistente de IA Flotante" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end">
+    <aside aria-label={t("widgetAria")} className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end">
       {/* 1. Closed state: Floating Astronaut Widget (Option 1: 100% Transparent / Hologram) */}
       {!isOpen && (
         <button
@@ -149,7 +144,7 @@ export default function FloatingAIAgent() {
           <div className="relative w-14 h-14 flex-shrink-0 animate-bounce" style={{ animationDuration: "2.5s" }}>
             <img
               src="/images/astronaut-agent.png"
-              alt="Astronauta Asistente NASA"
+              alt={t("avatarAlt")}
               className="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(118,185,0,0.85)] group-hover:scale-110 transition-transform duration-300"
             />
           </div>
@@ -157,11 +152,11 @@ export default function FloatingAIAgent() {
           <div className="flex flex-col text-left drop-shadow-[0_2px_5px_rgba(0,0,0,0.95)]">
             <div className="flex items-center space-x-1.5">
               <span className="text-xs font-bold tracking-wider uppercase text-white group-hover:text-[#76b900] transition-colors">
-                ASISTENTE NASA
+                {t("widgetTitle")}
               </span>
             </div>
             <span className="text-[10px] font-mono text-[#a7a7a7] group-hover:text-white transition-colors">
-              ASTRONAUTA • EN ÓRBITA
+              {t("widgetSub")}
             </span>
           </div>
         </button>
@@ -192,13 +187,13 @@ export default function FloatingAIAgent() {
               <div>
                 <div className="flex items-center space-x-1.5">
                   <h3 className="text-[11px] font-bold uppercase tracking-wider text-white">
-                    ASTRONAUTA ASISTENTE NASA
+                    {t("title")}
                   </h3>
                   <span className="h-1.5 w-1.5 rounded-full bg-[#76b900] animate-pulse" />
                 </div>
                 <div className="flex items-center space-x-1 text-[9px] font-mono text-[#76b900]">
                   <ShieldCheck className="h-3 w-3" />
-                  <span>GUARDRAILS ACTIVOS • COMBUSTIÓN EN 0G</span>
+                  <span>{t("guardrails")}</span>
                 </div>
               </div>
             </div>
@@ -206,21 +201,21 @@ export default function FloatingAIAgent() {
             <div className="flex items-center space-x-1 text-[#898989]">
               <button
                 onClick={resetChat}
-                title="Reiniciar chat"
+                title={t("resetTitle")}
                 className="p-1 hover:text-white hover:bg-[#262626] rounded-[2px] transition-colors"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
               </button>
               <button
                 onClick={() => setIsMinimized(!isMinimized)}
-                title={isMinimized ? "Maximizar" : "Minimizar"}
+                title={isMinimized ? t("maximize") : t("minimize")}
                 className="p-1 hover:text-white hover:bg-[#262626] rounded-[2px] transition-colors"
               >
                 {isMinimized ? <Maximize2 className="h-3.5 w-3.5" /> : <Minimize2 className="h-3.5 w-3.5" />}
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                title="Cerrar ventana"
+                title={t("closeTitle")}
                 className="p-1 hover:text-[#df6500] hover:bg-[#262626] rounded-[2px] transition-colors"
               >
                 <X className="h-4 w-4" />
@@ -262,10 +257,10 @@ export default function FloatingAIAgent() {
                             alt="Avatar"
                             className="w-3.5 h-3.5 object-contain inline-block"
                           />
-                          <span className="text-[#76b900] font-bold">ASTRONAUTA STELLARAPP</span>
+                          <span className="text-[#76b900] font-bold">{t("assistantName")}</span>
                         </>
                       ) : (
-                        <span>INGENIERO DE MISIÓN</span>
+                        <span>{t("engineerName")}</span>
                       )}
                     </div>
 
@@ -288,7 +283,7 @@ export default function FloatingAIAgent() {
                         <div className="mt-2.5 pt-2 border-t border-[#333333] flex flex-wrap items-center gap-1.5 text-[9px] font-mono">
                           <span className="text-[#898989] flex items-center">
                             <BookOpen className="h-3 w-3 mr-1 text-[#76b900]" />
-                            CITAS NASA:
+                            {t("citations")}
                           </span>
                           {msg.sources.map((src, sIdx) => (
                             <span
@@ -307,7 +302,7 @@ export default function FloatingAIAgent() {
                 {loading && (
                   <div className="flex items-center space-x-2 text-xs font-mono text-[#76b900] bg-[#1a1a1a] p-2.5 border border-[#333333] rounded-[2px]">
                     <div className="h-3 w-3 border-2 border-[#76b900] border-t-transparent animate-spin rounded-full" />
-                    <span>EL ASTRONAUTA ESTÁ CONSULTANDO LA TELEMETRÍA Y NORMAS NASA...</span>
+                    <span>{t("loading")}</span>
                   </div>
                 )}
                 <div ref={messagesEndRef} />
@@ -322,7 +317,7 @@ export default function FloatingAIAgent() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
                     disabled={loading}
-                    placeholder="Pregúntale al astronauta sobre microgravedad o fuego..."
+                    placeholder={t("placeholder")}
                     className="flex-1 bg-black border border-[#333333] px-3 py-2 text-xs text-white placeholder-[#757575] focus:outline-none focus:border-[#76b900] rounded-[2px]"
                   />
                   <button
@@ -334,8 +329,8 @@ export default function FloatingAIAgent() {
                   </button>
                 </div>
                 <div className="flex items-center justify-between text-[9px] font-mono text-[#757575] mt-1.5 px-0.5">
-                  <span>GROUNDING: Saffire • BASS • FLEX • FIRMS</span>
-                  <span className="text-[#76b900]">GUARDRAIL: 100% CIENTÍFICO</span>
+                  <span>{t("grounding")}</span>
+                  <span className="text-[#76b900]">{t("guardrailBadge")}</span>
                 </div>
               </div>
             </>

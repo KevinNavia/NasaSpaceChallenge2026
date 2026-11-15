@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from ai_service import CombustionAIService
 from physics_engine import engine, SCENARIOS
 from firms_service import firms_bridge
+from i18n import localize_experiment, localize_experiments, normalize_lang
 import telegram_service
 
 load_dotenv()
@@ -64,6 +65,7 @@ def load_psi_full_database() -> Dict[str, Any]:
 
 class QueryRequest(BaseModel):
     query: str = Field(..., min_length=1, max_length=2000, description="Consulta del astronauta o ingeniero")
+    lang: str = Field(default="es", max_length=5, description="Idioma de respuesta (es/en)")
 
 class SimulationRequest(BaseModel):
     material: str = Field(default="PMMA", max_length=100)
@@ -71,6 +73,7 @@ class SimulationRequest(BaseModel):
     oxygen_concentration_pct: float = Field(default=21.0, ge=0.0, le=100.0, description="Concentración de O2 (%)")
     pressure_kpa: float = Field(default=101.3, ge=0.1, le=500.0, description="Presión atmosférica (kPa)")
     air_flow_velocity_cms: float = Field(default=5.0, ge=0.0, le=200.0, description="Flujo de aire forzado (cm/s)")
+    lang: str = Field(default="es", max_length=5, description="Idioma de respuesta (es/en)")
 
 class MaterialEvalRequest(BaseModel):
     material: str = Field(default="Nomex", max_length=100)
@@ -122,9 +125,10 @@ def get_experiments(
     material: Optional[str] = Query(None, description="Filtro por material"),
     environment: Optional[str] = Query(None, description="Filtro por entorno (0g, 1g, Lunar, Marte)"),
     risk: Optional[str] = Query(None, description="Filtro por nivel de riesgo"),
-    search: Optional[str] = Query(None, description="Búsqueda libre")
+    search: Optional[str] = Query(None, description="Búsqueda libre"),
+    lang: Optional[str] = Query("es", description="Idioma de las narrativas (es/en)")
 ):
-    items = load_data()
+    items = localize_experiments(load_data(), lang)
 
     if material:
         items = [i for i in items if material.lower() in i["material"].lower()]
@@ -145,37 +149,38 @@ def get_experiments(
     return items
 
 @app.get("/api/experiments/{exp_id}")
-def get_experiment_detail(exp_id: str):
+def get_experiment_detail(exp_id: str, lang: Optional[str] = Query("es")):
     data = load_data()
     for item in data:
         if item["id"].lower() == exp_id.lower():
-            return item
+            return localize_experiment(item, lang)
     raise HTTPException(status_code=404, detail="Experimento no encontrado")
 
 @app.get("/api/comparison")
-def get_gravity_comparison(material: str = "PMMA"):
+def get_gravity_comparison(material: str = "PMMA", lang: Optional[str] = Query("es")):
     data = load_data()
     matches = [d for d in data if material.lower() in d["material"].lower()]
     return {
         "target_material": material,
-        "comparison_data": matches
+        "comparison_data": localize_experiments(matches, lang)
     }
 
 @app.post("/api/ai/ask")
 async def ask_ai(req: QueryRequest):
     if not req.query.strip():
         raise HTTPException(status_code=400, detail="La consulta no puede estar vacía")
-    result = await ai_service.ask_safety_assistant(req.query)
+    result = await ai_service.ask_safety_assistant(req.query, req.lang)
     return result
 
 @app.post("/api/ai/simulate")
 async def simulate_risk(req: SimulationRequest):
-    result = await ai_service.simulate_combustion(req.model_dump())
+    result = await ai_service.simulate_combustion(req.model_dump(), req.lang)
     frp_data = firms_bridge.compute_frp_radiation(
         req.material,
         result.get("estimated_flame_spread_mms", 1.0),
         req.oxygen_concentration_pct,
-        req.gravity_g
+        req.gravity_g,
+        req.lang
     )
     result["frp_radiation_analysis"] = frp_data
     return result
@@ -185,10 +190,11 @@ class FrpRequest(BaseModel):
     spread_rate_mms: float = Field(default=1.45, ge=0.0, le=100.0)
     oxygen_concentration_pct: float = Field(default=21.0, ge=0.0, le=100.0)
     gravity_g: float = Field(default=0.0001, ge=0.0, le=10.0)
+    lang: str = Field(default="es", max_length=5)
 
 @app.get("/api/firms/summary")
-def get_firms_summary():
-    return firms_bridge.get_firms_summary()
+def get_firms_summary(lang: Optional[str] = Query("es")):
+    return firms_bridge.get_firms_summary(lang)
 
 @app.post("/api/firms/frp")
 def calculate_frp(req: FrpRequest):
@@ -196,13 +202,15 @@ def calculate_frp(req: FrpRequest):
         req.material,
         req.spread_rate_mms,
         req.oxygen_concentration_pct,
-        req.gravity_g
+        req.gravity_g,
+        req.lang
     )
 
 class KalmanRequest(BaseModel):
     scenario_id: str = Field(default="iss", max_length=50)
     o2_pct: float = Field(default=21.0, ge=0.0, le=100.0)
     broadcast_to_telegram: Optional[bool] = Field(default=False)
+    lang: str = Field(default="es", max_length=5)
 
 class TelegramBroadcastRequest(BaseModel):
     title: str = Field(..., max_length=150)
@@ -220,6 +228,7 @@ class HardwareTelemetryRequest(BaseModel):
     status: str = Field(default="NOMINAL", max_length=60)
     scenario_id: str = Field(default="rover", max_length=50)
     broadcast_to_telegram: Optional[bool] = False
+    lang: str = Field(default="es", max_length=5)
 
 _latest_hardware: Dict[str, Any] = {
     "active": False,
@@ -235,8 +244,18 @@ _latest_hardware: Dict[str, Any] = {
 }
 
 @app.get("/api/scenarios")
-def get_scenarios():
-    return [s.to_dict() for s in SCENARIOS.values()]
+def get_scenarios(lang: Optional[str] = Query("es")):
+    from i18n import KALMAN, normalize_lang
+    texts = KALMAN[normalize_lang(lang)]["scenarios"]
+    scenarios = []
+    for s in SCENARIOS.values():
+        data = s.to_dict()
+        localized = texts.get(s.id)
+        if localized:
+            data["name"] = localized["name"]
+            data["description"] = localized["description"]
+        scenarios.append(data)
+    return scenarios
 
 # --- NASA Physical Sciences Informatics (PSI) Full Database Endpoints ---
 @app.get("/api/psi/overview")
@@ -427,18 +446,18 @@ def evaluate_material_flammability(req: MaterialEvalRequest):
 
 @app.post("/api/telemetry/kalman")
 async def get_kalman_telemetry(req: KalmanRequest):
-    result = engine.compute_telemetry(req.scenario_id, req.o2_pct)
+    result = engine.compute_telemetry(req.scenario_id, req.o2_pct, req.lang)
     if req.broadcast_to_telegram:
         await telegram_service.broadcast_alert(
-            title=f"Telemetría en Vivo: {result['scenario']['name']}",
-            message=f"Alerta: {result['alert_title']}\nDiagnóstico: {result['diagnosis']}",
-            severity="CRITICAL" if result["safety_level"] == "CRÍTICO" else "WARNING",
+            title=f"Telemetría en Vivo: {result['scenario']['name']}" if normalize_lang(req.lang) == "es" else f"Live Telemetry: {result['scenario']['name']}",
+            message=f"Alerta: {result['alert_title']}\nDiagnóstico: {result['diagnosis']}" if normalize_lang(req.lang) == "es" else f"Alert: {result['alert_title']}\nDiagnosis: {result['diagnosis']}",
+            severity="CRITICAL" if result["safety_code"] == "critical" else "WARNING",
             details={
-                "Oxígeno": f"{result['o2_percentage']}%",
-                "CO Crudo": f"{result['raw_co_ppm']} ppm",
-                "CO Filtrado (Kalman)": f"{result['filtered_co_ppm']} ppm",
-                "Ganancia Kalman": f"{result['kalman_gain']}",
-                "Evacuación Límite": result["critical_evac_time"]
+                "Oxígeno" if normalize_lang(req.lang) == "es" else "Oxygen": f"{result['o2_percentage']}%",
+                "CO Crudo" if normalize_lang(req.lang) == "es" else "Raw CO": f"{result['raw_co_ppm']} ppm",
+                "CO Filtrado (Kalman)" if normalize_lang(req.lang) == "es" else "Filtered CO (Kalman)": f"{result['filtered_co_ppm']} ppm",
+                "Ganancia Kalman" if normalize_lang(req.lang) == "es" else "Kalman Gain": f"{result['kalman_gain']}",
+                "Evacuación Límite" if normalize_lang(req.lang) == "es" else "Evacuation Limit": result["critical_evac_time"]
             }
         )
     return result
@@ -459,7 +478,7 @@ async def post_hardware_telemetry(req: HardwareTelemetryRequest):
         "scenario_id": req.scenario_id,
         "last_seen": now
     }
-    result = engine.compute_telemetry(req.scenario_id, req.o2_kalman)
+    result = engine.compute_telemetry(req.scenario_id, req.o2_kalman, req.lang)
     result["hardware"] = {
         "device": req.device,
         "chip_temp_c": req.chip_temp_c,
@@ -468,15 +487,15 @@ async def post_hardware_telemetry(req: HardwareTelemetryRequest):
     }
     if req.broadcast_to_telegram:
         await telegram_service.broadcast_alert(
-            title=f"🚨 ALERTA HARDWARE // {req.device}",
-            message=f"Estado Sensor: {req.status}\nDiagnóstico: {result['diagnosis']}",
-            severity="CRITICAL" if result["safety_level"] == "CRÍTICO" else "WARNING",
+            title=f"🚨 ALERTA HARDWARE // {req.device}" if normalize_lang(req.lang) == "es" else f"🚨 HARDWARE ALERT // {req.device}",
+            message=f"Estado Sensor: {req.status}\nDiagnóstico: {result['diagnosis']}" if normalize_lang(req.lang) == "es" else f"Sensor Status: {req.status}\nDiagnosis: {result['diagnosis']}",
+            severity="CRITICAL" if result["safety_code"] == "critical" else "WARNING",
             details={
                 "Temp Chip": f"{req.chip_temp_c} °C",
                 "O₂ Kalman": f"{req.o2_kalman} %",
                 "CO Sensor": f"{req.co_ppm} ppm",
                 "Ganancia K": f"{req.k_gain}",
-                "Evacuación": result["critical_evac_time"]
+                "Evacuación" if normalize_lang(req.lang) == "es" else "Evacuation": result["critical_evac_time"]
             }
         )
     return result

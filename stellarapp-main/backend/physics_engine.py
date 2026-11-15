@@ -1,6 +1,8 @@
 import random
 from typing import Dict, Tuple, List, Any
 
+from i18n import KALMAN, normalize_lang
+
 class ScenarioConfig:
     def __init__(self, id: str, name: str, gravity: float, volume_m3: float, ventilation_factor: float, co_multiplier: float, evac_time_scale: float, description: str):
         self.id = id
@@ -79,9 +81,17 @@ class FireSafetyEngine:
             k: KalmanGasFilter() for k in SCENARIOS.keys()
         }
 
-    def compute_telemetry(self, scenario_id: str, o2_pct: float) -> Dict[str, Any]:
+    def compute_telemetry(self, scenario_id: str, o2_pct: float, lang: str = "es") -> Dict[str, Any]:
+        lang = normalize_lang(lang)
+        texts = KALMAN[lang]
         scen = SCENARIOS.get(scenario_id, SCENARIOS["iss"])
         kf = self.filters[scen.id]
+
+        scenario_data = scen.to_dict()
+        localized_scenario = texts["scenarios"].get(scen.id)
+        if localized_scenario:
+            scenario_data["name"] = localized_scenario["name"]
+            scenario_data["description"] = localized_scenario["description"]
 
         # Validación y restricción física (Límites de atmósfera espacial 0.0% a 100.0%)
         o2_pct = max(0.0, min(100.0, float(o2_pct)))
@@ -95,57 +105,36 @@ class FireSafetyEngine:
 
         # Matriz de Contingencia y Seguridad de Tripulación
         if filtered_co >= 140.0 or o2_pct >= 36.0:
-            level = "CRÍTICO"
+            code = "critical"
             color = "#e52020"
-            title = "NIVEL ROJO // EVACUACIÓN INMEDIATA"
-            msg = f"Toxicidad letal inminente por CO en {scen.name}."
-            actions = [
-                "Ponerse máscaras de respiración autónoma (O2 al 100%)",
-                "Aislar compuertas herméticas del módulo afectado",
-                "Activar supresión por dilución de gas inerte N2",
-                "Iniciar despresurización de emergencia / evacuación a nave de retorno"
-            ]
-            time_crit = "< 3 min" if scen.evac_time_scale < 0.5 else "< 7 min"
+            time_crit = texts["times"]["critical_short"] if scen.evac_time_scale < 0.5 else texts["times"]["critical_long"]
         elif filtered_co >= 60.0 or o2_pct >= 26.0:
-            level = "ALERTA"
+            code = "alert"
             color = "#df6500"
-            title = "NIVEL NARANJA // ALERTA TÓXICA"
-            msg = f"Acumulación sostenida de monóxido de carbono detectada en {scen.name}."
-            actions = [
-                "Aumentar extracción forzada del sistema ECLSS",
-                "Verificar sensores redundantes en esclusa",
-                "Detener experimentos de combustión activos"
-            ]
-            time_crit = "8–12 min" if scen.evac_time_scale < 0.5 else "15–25 min"
+            time_crit = texts["times"]["alert_short"] if scen.evac_time_scale < 0.5 else texts["times"]["alert_long"]
         elif filtered_co >= 25.0 or o2_pct >= 22.5:
-            level = "PRECAUCIÓN"
+            code = "caution"
             color = "#bff230"
-            title = "NIVEL AMARILLO // PRECAUCIÓN"
-            msg = "Elevación anómala en la tasa de oxidación de materiales de cabina."
-            actions = [
-                "Aumentar frecuencia de muestreo del filtro Kalman a 10 Hz",
-                "Inspeccionar visualmente panel de potencia y racks de aviónica"
-            ]
-            time_crit = "60+ min"
+            time_crit = texts["times"]["caution"]
         else:
-            level = "NOMINAL"
+            code = "nominal"
             color = "#76b900"
-            title = "NIVEL VERDE // PARÁMETROS NOMINALES"
-            msg = "Atmósfera estable y balance de gases dentro del estándar NASA."
-            actions = ["Mantener ciclo estándar de reciclaje de aire ECLSS"]
-            time_crit = "Estable"
+            time_crit = texts["times"]["nominal"]
+
+        scenario_name = scenario_data["name"]
 
         return {
-            "scenario": scen.to_dict(),
+            "scenario": scenario_data,
             "o2_percentage": o2_pct,
             "raw_co_ppm": round(raw_reading, 2),
             "filtered_co_ppm": filtered_co,
             "kalman_gain": kalman_gain,
-            "safety_level": level,
+            "safety_level": texts["levels"][code],
+            "safety_code": code,
             "alert_color": color,
-            "alert_title": title,
-            "diagnosis": msg,
-            "required_actions": actions,
+            "alert_title": texts["titles"][code],
+            "diagnosis": texts["messages"][code].format(scenario=scenario_name),
+            "required_actions": list(texts["actions"][code]),
             "critical_evac_time": time_crit,
         }
 

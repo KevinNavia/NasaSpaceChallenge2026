@@ -2,6 +2,7 @@
 
 import React from "react";
 import { MetricsData } from "../types";
+import { useTranslations } from "next-intl";
 import { Database, AlertTriangle, Flame, ShieldCheck } from "lucide-react";
 
 interface MetricsCardsProps {
@@ -9,6 +10,8 @@ interface MetricsCardsProps {
 }
 
 export default function MetricsCards({ metrics }: MetricsCardsProps) {
+  const t = useTranslations("metrics");
+
   if (!metrics) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
@@ -21,27 +24,27 @@ export default function MetricsCards({ metrics }: MetricsCardsProps) {
 
   const cards = [
     {
-      title: "EXPERIMENTOS DE VUELO",
+      title: t("experiments.title"),
       value: metrics.total_experiments,
-      subtitle: `${metrics.unique_materials_count} materiales analizados (Saffire, BASS, FLEX)`,
+      subtitle: t("experiments.subtitle", { count: metrics.unique_materials_count }),
       icon: Database,
     },
     {
-      title: "CASOS 'COOL FLAMES'",
+      title: t("coolFlames.title"),
       value: metrics.cool_flame_detections,
-      subtitle: "Combustión quasi-estacionaria sin llama visible (600-800K)",
+      subtitle: t("coolFlames.subtitle"),
       icon: Flame,
     },
     {
-      title: "TASA MÁXIMA DE PROPAGACIÓN",
+      title: t("maxSpread.title"),
       value: `${metrics.max_flame_spread_rate_mms} mm/s`,
-      subtitle: "Alcanzada en atmósfera de exploración Artemis (26% O₂)",
+      subtitle: t("maxSpread.subtitle"),
       icon: AlertTriangle,
     },
     {
-      title: "PERFILES CRÍTICOS",
+      title: t("criticalProfiles.title"),
       value: metrics.critical_risk_count,
-      subtitle: "Riesgos de alto impacto para hábitats de Luna y Marte",
+      subtitle: t("criticalProfiles.subtitle"),
       icon: ShieldCheck,
     },
   ];

@@ -1,0 +1,90 @@
+{
+  "EXP-SAFFIRE-001": {
+    "material_type": "Compuesto laminar sólido",
+    "environment": "Microgravedad (0g)",
+    "flame_shape": "Domo difuso alargado",
+    "soot_production": "Moderado",
+    "spacecraft_implication": "En microgravedad con ventilación, las llamas se propagan de forma constante; la ausencia de flotabilidad natural impide la disipación ascendente del calor, permitiendo que la llama se ancle en la capa límite del flujo de aire.",
+    "recommended_suppression": "Corte inmediato de ventilación + purga de inertización con nitrógeno"
+  },
+  "EXP-SAFFIRE-002": {
+    "material_type": "Textil de aramida",
+    "environment": "Microgravedad (0g)",
+    "flame_shape": "Micropluma autoextinguible",
+    "soot_production": "Bajo",
+    "spacecraft_implication": "El Nomex se autoextingue a presiones atmosféricas estándar de exploración (101.3 kPa, 21% O2). Alta seguridad pasiva contra incendios para prendas de tripulación.",
+    "recommended_suppression": "Autoextinción pasiva con flujo de aire normal"
+  },
+  "EXP-SAFFIRE-004": {
+    "material_type": "Termoplástico / Acrílico estructural",
+    "environment": "Microgravedad (atmósfera de exploración 0g)",
+    "flame_shape": "Zona de llama esférica gruesa con eyección intensa de gotas",
+    "soot_production": "Alto",
+    "spacecraft_implication": "En una atmósfera de exploración al 26% de O2 (perfil de preparación de EVA Artemis/Gateway), el PMMA arde un 95% más rápido que en condiciones terrestres estándar. Las gotas fundidas en combustión flotan sin control en 0g.",
+    "recommended_suppression": "Agua nebulizada fina + despresurización de cabina a < 20 kPa"
+  },
+  "EXP-BASS-011": {
+    "material_type": "Polímero termoplástico sólido",
+    "environment": "Microgravedad (0g)",
+    "flame_shape": "Semiesfera esférica",
+    "soot_production": "Medio",
+    "spacecraft_implication": "Sin flotabilidad, la pérdida radiativa de la llama esférica acelera la extinción a velocidades de flujo muy bajas (< 1.2 cm/s). El aire estancado actúa como extintor natural.",
+    "recommended_suppression": "Cortar de inmediato la circulación de aire de cabina"
+  },
+  "EXP-BASS-024": {
+    "material_type": "Fibra de celulosa",
+    "environment": "Microgravedad (0g)",
+    "flame_shape": "Casquete hemisférico azul pálido",
+    "soot_production": "Bajo",
+    "spacecraft_implication": "La transición a combustión latente puede persistir de forma invisible en microgravedad sin emitir humo visible, reavivándose al reanudarse la circulación de aire.",
+    "recommended_suppression": "Inspección por imagen térmica + inundación directa de CO2"
+  },
+  "EXP-FLEX-102": {
+    "material_type": "Combustible líquido de hidrocarburo",
+    "environment": "Microgravedad (0g)",
+    "flame_shape": "Esfera concéntrica perfecta",
+    "soot_production": "Ninguno (régimen de llama fría)",
+    "spacecraft_implication": "Descubrimiento de las llamas frías en microgravedad: la combustión continúa de forma casi estacionaria a 600-800 K tras desaparecer la llama caliente visible, consumiendo combustible sin ser detectada por sensores IR/UV.",
+    "recommended_suppression": "Verificación con sensor de cromatógrafo de gases dual + manta completa de N2 en cabina"
+  },
+  "EXP-REF-EARTH-001": {
+    "material_type": "Polímero termoplástico sólido",
+    "environment": "Gravedad terrestre normal (1g)",
+    "flame_shape": "Lágrima cónica por flotabilidad",
+    "soot_production": "Alto",
+    "spacecraft_implication": "Referencia terrestre: la flotabilidad crea un penacho convectivo ascendente que elimina calor y atrae oxidante fresco, produciendo una llama alta en forma de lágrima.",
+    "recommended_suppression": "Extintor estándar de polvo químico ABC o CO2"
+  },
+  "EXP-LUNAR-SIM-001": {
+    "material_type": "Recubrimiento de cable de fluoropolímero",
+    "environment": "Gravedad lunar (1/6 g)",
+    "flame_shape": "Penacho bajo asimétrico",
+    "soot_production": "Medio",
+    "spacecraft_implication": "La gravedad parcial (Luna 0.166g) combinada con O2 enriquecido (32%, hábitat EVA Artemis) crea las peores condiciones: flotabilidad suficiente para alimentar oxígeno, pero lo bastante baja para maximizar el tiempo de residencia de la llama.",
+    "recommended_suppression": "Despresurización del módulo no tripulado + agente limpio sustituto de halón (FK-5-1-12)"
+  },
+  "EXP-MARS-SIM-001": {
+    "material_type": "Panel estructural de aramida",
+    "environment": "Gravedad marciana (0.38g)",
+    "flame_shape": "Penacho elipsoidal inclinado",
+    "soot_production": "Bajo",
+    "spacecraft_implication": "En 0.38g, la velocidad de flujo impulsada por flotabilidad es aproximadamente el 62% de los valores terrestres. La llama permanece más cerca de las superficies del sustrato, aumentando el calentamiento conductivo de estructuras adyacentes.",
+    "recommended_suppression": "Aislamiento automatizado de zona con supresión gaseosa"
+  },
+  "EXP-ACME-001": {
+    "material_type": "Combustible gaseoso / difusión premezclada",
+    "environment": "Microgravedad (0g)",
+    "flame_shape": "Envolvente de llama fría esférica",
+    "soot_production": "Ninguno",
+    "spacecraft_implication": "Se demostró que las llamas frías pueden persistir a bajas temperaturas sin luz visible, agotando oxígeno y generando monóxido de carbono sin ser detectadas por alarmas de humo estándar.",
+    "recommended_suppression": "Inertización atmosférica total con nitrógeno + monitoreo con espectrómetro de absorción láser"
+  },
+  "EXP-SAME-001": {
+    "material_type": "Partículas de hollín y aerosoles",
+    "environment": "Microgravedad (0g)",
+    "flame_shape": "Nube de humo sin flotabilidad",
+    "soot_production": "Alto (macropartículas aglomeradas)",
+    "spacecraft_implication": "En 0g, la falta de mezcla por flotabilidad hace que las partículas de hollín se aglomeren en cadenas mucho mayores que en la Tierra. Los detectores de ionización terrestres estándar fallan o sufren retrasos graves.",
+    "recommended_suppression": "Detectores de humo por dispersión láser multiángulo + depuradores HEPA con carbón activo"
+  }
+}

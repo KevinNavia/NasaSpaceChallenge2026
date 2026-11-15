@@ -66,7 +66,7 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
         </Link>
 
         {/* Live ISS Orbital Telemetry Widget */}
-        <div className="hidden lg:flex items-center space-x-3 px-3 py-1.5 bg-[#1a1a1a] border border-[#333333] text-xs font-mono">
+        <div className="hidden lg:flex items-center space-x-3 px-3 h-8 bg-[#1a1a1a] border border-[#333333] text-xs font-mono box-border rounded-[2px]">
           <div className="flex items-center space-x-1.5 text-[#76b900]">
             <Radio className="h-3.5 w-3.5 animate-pulse" />
             <span className="font-bold uppercase tracking-wider">{t("issLive")}</span>
@@ -85,7 +85,7 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
         </div>
 
         {/* Desktop Actions */}
-        <div className="hidden sm:flex items-center space-x-2 sm:space-x-3">
+        <div className="hidden sm:flex items-center gap-2 sm:gap-2.5">
           <LocaleSwitcher className="rounded-[2px]" />
 
           <button
@@ -93,15 +93,15 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
               setShowQRModal(true);
               fetchSubscribers();
             }}
-            className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-[#0088cc] hover:bg-[#0077b5] text-white border border-[#0099e6] shadow-sm shadow-[#0088cc]/30 transition-colors"
+            className="h-8 inline-flex items-center space-x-1.5 px-3 text-xs font-bold uppercase tracking-wider bg-[#0088cc] hover:bg-[#0077b5] text-white border border-[#0099e6] rounded-[2px] box-border transition-colors"
           >
-            <Send className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            <Send className="h-3.5 w-3.5" />
             <span>{t("telegramLive")}</span>
           </button>
 
           <Link
             href="/pitch"
-            className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#76b900] border border-[#76b900] hover:bg-[#76b900] hover:text-black transition-colors"
+            className="h-8 inline-flex items-center space-x-1.5 px-3 text-xs font-bold uppercase tracking-wider text-[#76b900] border border-[#76b900] hover:bg-[#76b900] hover:text-black rounded-[2px] box-border transition-colors"
           >
             <Presentation className="h-3.5 w-3.5" />
             <span>{t("pitch")}</span>
@@ -110,7 +110,7 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
           {onOpenAnalytics && (
             <button
               onClick={onOpenAnalytics}
-              className="hidden lg:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white transition-colors"
+              className="hidden lg:inline-flex items-center space-x-1.5 h-8 px-3 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white rounded-[2px] box-border transition-colors"
             >
               <BarChart3 className="h-3.5 w-3.5 text-[#76b900]" />
               <span>{t("charts")}</span>
@@ -119,7 +119,7 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
 
           <button
             onClick={onOpenSimulator}
-            className="hidden lg:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white transition-colors"
+            className="hidden lg:inline-flex items-center space-x-1.5 h-8 px-3 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white rounded-[2px] box-border transition-colors"
           >
             <Compass className="h-3.5 w-3.5" />
             <span>{t("simulator")}</span>
