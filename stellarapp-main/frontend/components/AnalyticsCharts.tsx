@@ -30,6 +30,7 @@ import {
   Database,
   Search,
   FileText,
+  ExternalLink,
 } from "lucide-react";
 import { PsiStudy } from "@/types";
 import { useTranslations } from "next-intl";
@@ -938,6 +939,15 @@ export default function AnalyticsCharts() {
                     {/* Expanded Detail View */}
                     {selectedStudy?.psi_id === study.psi_id && (
                       <div className="mt-3 pt-3 border-t border-[#76b900]/40 space-y-3 bg-[#111111] -mx-4 -mb-4 p-4 text-xs font-mono">
+                        <a
+                          href={`https://psi.nasa.gov/physci/repo/search?q=${encodeURIComponent(study.psi_id)}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center space-x-1.5 px-2 py-1 bg-black border border-[#76b900]/40 text-[#76b900] text-[10px] font-bold uppercase tracking-wider hover:bg-[#76b900] hover:text-black transition-colors"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          <span>{t("psi.viewSource")}</span>
+                        </a>
                         <div>
                           <span className="text-[#76b900] font-bold block mb-1">{t("psi.methodology")}</span>
                           <p className="text-[#cccccc] text-[11px] leading-relaxed">

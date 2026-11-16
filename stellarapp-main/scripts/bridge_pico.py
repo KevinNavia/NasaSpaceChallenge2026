@@ -91,8 +91,8 @@ while True:
             continue
         last_post_time = now
 
-        is_critical = status == "CRITICO // EVACUACION" or o2_kalman >= 27.5 or temp_c >= 42.0 or co_ppm >= 70.0
-        should_broadcast = is_critical and (now - last_broadcast_time > 20)
+        is_critical = ("CRITICO" in status) or o2_kalman >= 27.5 or temp_c >= 43.5 or co_ppm >= 70.0
+        should_broadcast = is_critical and (now - last_broadcast_time > 60)
 
         alert_symbol = "🚨" if is_critical else ("⚠️" if "ALERTA" in status else "🟢")
         print(f"{alert_symbol} [{status}] Chip: {temp_c:.1f}°C | O₂ Kalman: {o2_kalman:.2f}% | CO: {co_ppm:.1f} ppm | K-Gain: {k_gain}", flush=True)

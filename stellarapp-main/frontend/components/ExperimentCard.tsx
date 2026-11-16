@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Experiment } from "../types";
 import { useTranslations } from "next-intl";
-import { ChevronDown, ChevronUp, BookOpen, Shield } from "lucide-react";
+import { ChevronDown, ChevronUp, BookOpen, Shield, ExternalLink } from "lucide-react";
 
 interface ExperimentCardProps {
   experiment: Experiment;
@@ -95,10 +95,17 @@ export default function ExperimentCard({ experiment }: ExperimentCardProps) {
               <span className="text-[10px] font-bold uppercase text-white block">{t("suppression")}</span>
               <p className="text-[#cccccc] mt-0.5 text-xs leading-relaxed">{experiment.recommended_suppression}</p>
             </div>
-            <div className="pt-1 text-[10px] text-[#757575] font-mono flex items-center space-x-1 uppercase">
+            <a
+              href={`https://ntrs.nasa.gov/search?q=${encodeURIComponent(experiment.nasa_reference)}`}
+              target="_blank"
+              rel="noreferrer"
+              title={t("source")}
+              className="pt-1 text-[10px] text-[#898989] hover:text-[#76b900] font-mono flex items-center space-x-1 uppercase transition-colors"
+            >
               <BookOpen className="h-3 w-3 text-[#76b900] shrink-0" />
               <span>{experiment.nasa_reference}</span>
-            </div>
+              <ExternalLink className="h-3 w-3 shrink-0" />
+            </a>
           </div>
         )}
       </div>

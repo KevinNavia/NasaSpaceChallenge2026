@@ -1,12 +1,29 @@
 # StellarApp — NASA Space Apps Challenge 2026
 
+[![NASA Space Apps](https://img.shields.io/badge/NASA_Space_Apps-2026-0B3D91?style=for-the-badge&logo=nasa&logoColor=white)](https://www.spaceappschallenge.org/)
+[![Production Live](https://img.shields.io/badge/Live_Platform-stellarapp.nerosystem.solutions-76b900?style=for-the-badge&logo=cloudflare&logoColor=white)](https://stellarapp.nerosystem.solutions)
+[![Next.js 14](https://img.shields.io/badge/Next.js-14_App_Router-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
 **English** · [Español](README.es.md)
 
 **Challenge:** Fire Safety and Combustion in Microgravity
 
 An interactive AI platform that unlocks, classifies and models four decades of NASA research on fire physics in microgravity (ISS, Cygnus Saffire, BASS-II, FLEX-2), aimed at protecting astronauts on **Artemis (Moon)** missions and spacecraft traveling to **Mars**.
 
-Live demo: <https://stellarapp.nerosystem.solutions>
+- 🌐 **Live Platform:** <https://stellarapp.nerosystem.solutions>
+- 🎥 **Operational Demonstration Video (HIL):** [Watch System Demo (MP4)](https://stellarapp.nerosystem.solutions/media/STELLARAPP_Demo.mp4)
+- 🤖 **Telegram IoT Cockpit Bot:** [@Stellar_App_bot](https://t.me/Stellar_App_bot)
+
+---
+
+## Official Flight Dossier & Technical Reports (PDF)
+
+| Document | Scope | Language | Direct Download |
+| --- | --- | :---: | :---: |
+| **NASA Space Apps Research Paper** | Comprehensive scientific & engineering report for Space Apps Challenge 2026 | English | [📄 Download PDF](https://stellarapp.nerosystem.solutions/STELLARAPP_NASA_INGLES.pdf) |
+| **Hardware & Avionics Specification** | RP2040 Pico W sensory probe + Sunton ESP32 4.3" TFT Cockpit schematic & pinouts | Technical | [📄 Download PDF](https://stellarapp.nerosystem.solutions/StellarApp_Ficha_Tecnica_Hardware_Software.pdf?v=2026) |
 
 ---
 
@@ -37,6 +54,19 @@ Live demo: <https://stellarapp.nerosystem.solutions>
 
 7. **NASA PSI Database**
    - 14 official Physical Sciences Informatics studies and 32 validated parameters.
+
+8. **Explainable Investigation Ranking**
+   - Ranks every investigation for a selected habitat profile (ISS, Artemis, lunar base, pressurized rover, EVA suit).
+   - 0–100 score built from four auditable factors: flammability (LOI vs ambient O₂), flame spread, detection difficulty and gravity relevance.
+
+9. **Earth Impact & Lessons Learned**
+   - Official NASA spinoffs linked to fire safety (water-mist extinguishers, smoke detection, firefighter air tanks and protective clothing).
+   - A 1967→Artemis timeline covering Apollo 1, Apollo 13, the Mir fire, Saffire and Artemis II.
+
+10. **NASA Challenge Reference Library**
+   - All 10 official sources from the challenge Resources tab (PSI, NASA Glenn, ScienceCasts, Researcher's Guide, historical cases and spinoffs), with PDF/EPUB downloads.
+   - An investigation map of 15 studies (dataset, brief-cited, active and future such as FM2 and LUCI), ISS facilities (CIR, MDCA, MSG, Cygnus) and verified facts.
+   - The partial-gravity data gap is stated explicitly.
 
 ---
 
@@ -110,7 +140,7 @@ The interface is available in Spanish and English through [`next-intl`](https://
 
 When adding a new string, add the same key to **both** JSON files. Namespaces are verified 1:1.
 
-The backend also accepts a `lang=es|en` parameter (query string or JSON body) on the content-generating endpoints: `/api/ai/ask`, `/api/ai/simulate`, `/api/telemetry/kalman`, `/api/firms/summary`, `/api/firms/frp`, `/api/experiments` and `/api/scenarios`. The frontend forwards the active locale on every call, so AI answers, diagnostics, experiment narratives and chart data arrive already localized.
+The backend also accepts a `lang=es|en` parameter (query string or JSON body) on the content-generating endpoints: `/api/ai/ask`, `/api/ai/simulate`, `/api/telemetry/kalman`, `/api/firms/summary`, `/api/firms/frp`, `/api/experiments`, `/api/ranking`, `/api/resources` and `/api/scenarios`. The frontend forwards the active locale on every call, so AI answers, diagnostics, experiment narratives and chart data arrive already localized.
 
 > Status: **full ES/EN localization of the web interface and backend-generated content** — UI, AI answers, simulator diagnostics, Kalman telemetry, NASA FIRMS bridge and experiment narratives. Official NASA PSI study descriptions remain in their source language (English), and the Telegram bot uses its own conversational language. Risk levels are returned as stable codes (`Extreme`, `Critical`, `Moderate`, `Low`) and translated by the UI.
 

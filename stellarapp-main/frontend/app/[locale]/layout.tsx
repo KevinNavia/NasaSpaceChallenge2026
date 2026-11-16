@@ -41,7 +41,14 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('stellar_theme');if(t==='light'){document.documentElement.classList.add('light');}else{document.documentElement.classList.remove('light');}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="antialiased selection:bg-cyan-500 selection:text-white">
         <NextIntlClientProvider messages={messages}>
           {children}

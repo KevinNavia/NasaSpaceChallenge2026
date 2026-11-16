@@ -16,6 +16,12 @@ export default function AISimulator() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<SimulationResult | null>(null);
 
+  const applyPreset = (o2Value: number, pressureValue: number, gravityValue: number) => {
+    setO2(o2Value);
+    setPressure(pressureValue);
+    setGravity(gravityValue);
+  };
+
   const runSimulation = async () => {
     setLoading(true);
     try {
@@ -112,6 +118,41 @@ export default function AISimulator() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
         {/* Form Controls */}
         <div className="lg:col-span-7 space-y-5">
+          {/* Atmosphere presets aligned with the NASA challenge brief */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#757575] mr-1">
+              {t("presetsLabel")}
+            </span>
+            <button
+              type="button"
+              onClick={() => applyPreset(21, 101.3, 0.0001)}
+              className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-black border border-[#333333] text-[#cccccc] hover:border-[#76b900] transition-colors"
+            >
+              {t("presetIss")}
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(26, 56.5, 0.166)}
+              className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-black border border-[#333333] text-[#cccccc] hover:border-[#76b900] transition-colors"
+            >
+              {t("presetArtemis")}
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(30, 70.3, 0.166)}
+              className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-black border border-[#333333] text-[#cccccc] hover:border-[#76b900] transition-colors"
+            >
+              {t("presetLunar")}
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(100, 29.6, 0.0001)}
+              className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-black border border-[#76b900]/60 text-[#76b900] hover:bg-[#76b900] hover:text-black transition-colors"
+            >
+              {t("presetSuit")}
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-bold uppercase tracking-wider text-[#a7a7a7] mb-2">
@@ -161,7 +202,7 @@ export default function AISimulator() {
               <input
                 type="range"
                 min="16"
-                max="38"
+                max="100"
                 step="0.5"
                 value={o2}
                 onChange={(e) => setO2(parseFloat(e.target.value))}
@@ -181,7 +222,7 @@ export default function AISimulator() {
               </div>
               <input
                 type="range"
-                min="35"
+                min="20"
                 max="102"
                 step="1"
                 value={pressure}

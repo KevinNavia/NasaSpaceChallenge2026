@@ -211,7 +211,15 @@ USER QUERY:
 KEY INSTRUCTIONS:
 1. Explain the exact physical mechanism (lack of natural convection and hydrostatic thrust in 0g, slow diffusive transport, spherical/blue flame or cool-flame phenomena).
 2. Detail the implications for the spacecraft atmosphere and the operational suppression recommendation for the crew (ECLSS).
-3. Always answer in formal English, citing at least one experiment ({experiment_ids})."""
+3. Always answer in formal English, citing at least one experiment ({experiment_ids}).
+
+NASA REFERENCE LIBRARY (use it and cite it when relevant):
+- PSI Data Repository: Combustion Science — https://psi.nasa.gov/physci/repo/search?q=combustion
+- NASA Combustion Science, Glenn Research Center — CIR, MDCA, FM2, SoFIE, FLARE, ACME, BASS, FLEX, SAME, SLICE, SPICE, DAFT
+- A Researcher's Guide to: Combustion Science (NASA, 2015)
+- NASA-STD-6001B (flammability), NASA-STD-3001 (crew thermal limits)
+- Historical cases: Apollo 1 (1967 fire), Apollo 13 (1970 O2 tank explosion, not a fire), Mir fire (1997)
+Important: there is no partial-gravity combustion data in PSI yet; FM2 (1/6 g) and LUCI will provide it."""
 
     return f"""Eres el Especialista de IA de la NASA para Seguridad contra Incendios en Microgravedad (ISS, Artemis, Marte).
 Responde a la consulta del astronauta o ingeniero de forma técnica, rigurosa y concisa (en 2 párrafos) en español.
@@ -224,7 +232,15 @@ CONSULTA DEL USUARIO:
 INSTRUCCIONES CLAVE:
 1. Explica el mecanismo físico exacto (falta de convección natural y empuje hidrostático en 0g, transporte por difusión lenta, llama esférica/azul o fenómenos de llama fría).
 2. Detalla las implicaciones para la atmósfera de la nave y la recomendación operacional de supresión para la tripulación (ECLSS).
-3. Responde siempre en español formal, citando al menos un experimento ({experiment_ids})."""
+3. Responde siempre en español formal, citando al menos un experimento ({experiment_ids}).
+
+BIBLIOTECA DE REFERENCIA NASA (úsala y cítala cuando sea relevante):
+- PSI Data Repository: Combustion Science — https://psi.nasa.gov/physci/repo/search?q=combustion
+- NASA Combustion Science, Glenn Research Center — CIR, MDCA, FM2, SoFIE, FLARE, ACME, BASS, FLEX, SAME, SLICE, SPICE, DAFT
+- A Researcher's Guide to: Combustion Science (NASA, 2015)
+- NASA-STD-6001B (inflamabilidad), NASA-STD-3001 (límites térmicos de tripulación)
+- Casos históricos: Apolo 1 (incendio, 1967), Apolo 13 (explosión de tanque de O₂, 1970; no fue un incendio), incendio de la Mir (1997)
+Importante: todavía no existen datos de combustión en gravedad parcial en PSI; FM2 (1/6 g) y LUCI los aportarán."""
 
 
 # ---------------------------------------------------------------------------
@@ -425,5 +441,56 @@ FIRMS = {
         "hazard_critical": "Critical: High surface radiative emission without an escape plume",
         "hazard_moderate": "Moderate / Manageable by ECLSS",
         "firms_equivalent": "{value} MW (FIRMS equivalent)",
+    },
+}
+
+
+# ---------------------------------------------------------------------------
+# Investigation ranking: habitat profiles
+# ---------------------------------------------------------------------------
+RANKING_PROFILES = {
+    "es": {
+        "iss": {
+            "name": "ISS / Estación Espacial",
+            "description": "Microgravedad, 21% O₂, 101.3 kPa (referencia terrestre orbital).",
+        },
+        "artemis": {
+            "name": "Artemis (referencia)",
+            "description": "26% O₂ a 56.5 kPa y 0.166 g; perfil de exploración usado en Saffire-IV.",
+        },
+        "lunar": {
+            "name": "Base lunar (brief)",
+            "description": "≥30% O₂ y ≤10.2 psi (70.3 kPa) a 0.166 g; atmósfera prevista para la base lunar.",
+        },
+        "rover": {
+            "name": "Rover presurizado",
+            "description": "≥30% O₂ y ≤10.2 psi (70.3 kPa) a 0.166 g; volumen hiperconfinado.",
+        },
+        "suit": {
+            "name": "Traje EVA",
+            "description": "100% O₂ a 4.3 psi (29.6 kPa) en microgravedad; máxima inflamabilidad.",
+        },
+    },
+    "en": {
+        "iss": {
+            "name": "ISS / Space Station",
+            "description": "Microgravity, 21% O₂, 101.3 kPa (orbital Earth reference).",
+        },
+        "artemis": {
+            "name": "Artemis (reference)",
+            "description": "26% O₂ at 56.5 kPa and 0.166 g; exploration profile used in Saffire-IV.",
+        },
+        "lunar": {
+            "name": "Lunar base (brief)",
+            "description": "≥30% O₂ and ≤10.2 psi (70.3 kPa) at 0.166 g; planned lunar base atmosphere.",
+        },
+        "rover": {
+            "name": "Pressurized rover",
+            "description": "≥30% O₂ and ≤10.2 psi (70.3 kPa) at 0.166 g; hyper-confined volume.",
+        },
+        "suit": {
+            "name": "EVA suit",
+            "description": "100% O₂ at 4.3 psi (29.6 kPa) in microgravity; maximum flammability.",
+        },
     },
 }

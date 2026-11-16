@@ -12,9 +12,14 @@ import ExperimentCard from "../../components/ExperimentCard";
 import AIAssistantModal from "../../components/AIAssistantModal";
 import AnalyticsCharts from "../../components/AnalyticsCharts";
 import FloatingAIAgent from "../../components/FloatingAIAgent";
+import RankingTable from "../../components/RankingTable";
+import EarthImpact from "../../components/EarthImpact";
+import FireHistoryTimeline from "../../components/FireHistoryTimeline";
+import ResourcesSection from "../../components/ResourcesSection";
+import DemoVideoModal from "../../components/DemoVideoModal";
 import { Experiment, MetricsData } from "../../types";
 import { useLocale, useTranslations } from "next-intl";
-import { Search, Sparkles, Terminal, ChevronRight, AlertTriangle } from "lucide-react";
+import { Search, Sparkles, Terminal, ChevronRight, AlertTriangle, Play } from "lucide-react";
 
 export default function Home() {
   const t = useTranslations();
@@ -25,6 +30,7 @@ export default function Home() {
   const [selectedRisk, setSelectedRisk] = useState("all");
   const [selectedEnv, setSelectedEnv] = useState("all");
   const [aiModalOpen, setAiModalOpen] = useState(false);
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/metrics")
@@ -93,7 +99,10 @@ export default function Home() {
       />
 
       <main className="flex-1 max-w-[1280px] w-full mx-auto px-6 py-10 space-y-16">
-        {/* NVIDIA Hero Chapter */}
+        {/* ========================================================
+            FASE 1: EL RETO Y LA FÍSICA EN 0G (EL PROBLEMA)
+           ======================================================== */}
+        {/* 1.1 NVIDIA Hero Chapter */}
         <section className="relative bg-[#1a1a1a] border border-[#333333] p-8 sm:p-12">
           {/* Corner Square */}
           <div className="corner-square" />
@@ -116,10 +125,18 @@ export default function Home() {
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <button
-                onClick={openFloatingAI}
-                className="px-6 py-3 bg-[#76b900] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#5a8d00] transition-colors flex items-center space-x-2"
+                onClick={() => setDemoModalOpen(true)}
+                className="px-6 py-3 bg-[#76b900] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#5a8d00] transition-colors flex items-center space-x-2 shadow-lg shadow-[#76b900]/20"
               >
-                <Sparkles className="h-4 w-4 fill-black" />
+                <Play className="h-4 w-4 fill-black" />
+                <span>{t("hero.ctaDemo")}</span>
+              </button>
+
+              <button
+                onClick={openFloatingAI}
+                className="px-6 py-3 bg-black text-white border border-[#333333] hover:border-[#76b900] font-bold text-xs uppercase tracking-wider transition-colors flex items-center space-x-2"
+              >
+                <Sparkles className="h-4 w-4 text-[#76b900]" />
                 <span>{t("hero.ctaAI")}</span>
               </button>
 
@@ -140,40 +157,26 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 1. KPIs & Metrics */}
-        <section>
-          <MetricsCards metrics={metrics} />
-        </section>
+        {/* 1.2 Lecciones Aprendidas & Antecedentes Históricos */}
+        <FireHistoryTimeline />
 
-        {/* 2. Physical Comparison (1g vs 0g) */}
+        {/* 1.3 Comparativa Física Fundamental (1g vs 0g) */}
         <section>
           <ComparisonViewer />
         </section>
 
-        {/* 2.5 Official NASA Video & Photo Evidence */}
+        {/* 1.4 Metraje y Evidencia Oficial de Video NASA */}
         <NASAOfficialFootage />
 
-        {/* 3. AI Atmospheric Simulator */}
+        {/* ========================================================
+            FASE 2: DATOS CIENTÍFICOS Y CLASIFICACIÓN (LA EVIDENCIA)
+           ======================================================== */}
+        {/* 2.1 KPIs & Métricas Globales */}
         <section>
-          <AISimulator />
+          <MetricsCards metrics={metrics} />
         </section>
 
-        {/* 4. Kalman Filter Gas Toxicity Telemetry */}
-        <section>
-          <KalmanTelemetry />
-        </section>
-
-        {/* 5. Earth-to-Space Fire Bridge (NASA FIRMS & FRP) */}
-        <section>
-          <EarthSpaceBridge />
-        </section>
-
-        {/* 6. Scientific Analytics & Charts Dashboard */}
-        <section>
-          <AnalyticsCharts />
-        </section>
-
-        {/* 7. Filterable Experiment Catalog */}
+        {/* 2.2 Catálogo Filtrable de Experimentos y Materiales */}
         <section className="space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#333333]">
             <div>
@@ -237,6 +240,48 @@ export default function Home() {
             </div>
           )}
         </section>
+
+        {/* 2.3 Ranking Explicable de Hábitats Espaciales */}
+        <section>
+          <RankingTable />
+        </section>
+
+        {/* ========================================================
+            FASE 3: INTELIGENCIA PREDICTIVA Y MODELADO (LA SOLUCIÓN)
+           ======================================================== */}
+        {/* 3.1 Simulador Atmosférico IA */}
+        <section>
+          <AISimulator />
+        </section>
+
+        {/* 3.2 Dashboard de Gráficos & Analítica Científica */}
+        <section>
+          <AnalyticsCharts />
+        </section>
+
+        {/* ========================================================
+            FASE 4: HARDWARE-IN-THE-LOOP Y AVIÓNICA (VALIDACIÓN EN VIVO)
+           ======================================================== */}
+        {/* 4.1 Telemetría Kalman HIL (Pico W + Sunton ESP32 + Bot Telegram) */}
+        <section>
+          <KalmanTelemetry />
+        </section>
+
+        {/* ========================================================
+            FASE 5: IMPACTO TERRESTRE Y RESPALDO DOCUMENTAL (EL SPINOFF)
+           ======================================================== */}
+        {/* 5.1 Puente Satelital Tierra-Espacio (NASA FIRMS & FRP) */}
+        <section>
+          <EarthSpaceBridge />
+        </section>
+
+        {/* 5.2 Transferencia Tecnológica & Spinoffs Terrestres */}
+        <EarthImpact />
+
+        {/* 5.3 Biblioteca Oficial y Recursos de la NASA (NASA PSI / NTRS) */}
+        <section>
+          <ResourcesSection />
+        </section>
       </main>
 
       {/* Footer */}
@@ -252,6 +297,7 @@ export default function Home() {
       </footer>
 
       <AIAssistantModal isOpen={aiModalOpen} onClose={() => setAiModalOpen(false)} />
+      <DemoVideoModal isOpen={demoModalOpen} onClose={() => setDemoModalOpen(false)} />
       <FloatingAIAgent />
     </div>
   );

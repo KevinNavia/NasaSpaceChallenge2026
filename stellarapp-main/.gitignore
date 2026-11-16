@@ -38,3 +38,7 @@ Thumbs.db
 
 hardware/esp32_cockpit/.pio/
 hardware/**/.pio/
+
+# Root temporary binaries (tracked in frontend/public)
+/*.mp4
+/*.pdf

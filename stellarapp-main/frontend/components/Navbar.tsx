@@ -3,9 +3,16 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Flame, Compass, Sparkles, Presentation, Radio, Globe2, BarChart3, Send, X, QrCode, Menu } from "lucide-react";
+import { Flame, Compass, Sparkles, Presentation, Radio, Globe2, BarChart3, Send, X, QrCode, Menu, Cpu } from "lucide-react";
 import { Link } from "../navigation";
 import LocaleSwitcher from "./LocaleSwitcher";
+import ThemeToggle from "./ThemeToggle";
+import HardwareConnectModal from "./HardwareConnectModal";
+import {
+  subscribeHardwareStatus,
+  subscribeHardwareTelemetry,
+  isWebSerialConnected,
+} from "../lib/webSerial";
 
 interface NavbarProps {
   onOpenSimulator: () => void;
@@ -27,6 +34,8 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
   const [showQRModal, setShowQRModal] = useState(false);
   const [subCount, setSubCount] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showHardwareModal, setShowHardwareModal] = useState(false);
+  const [hwActive, setHwActive] = useState(false);
 
   const fetchSubscribers = () => {
     fetch("/api/telegram/status")
@@ -34,6 +43,36 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
       .then((data) => setSubCount(data.subscribers_count))
       .catch(() => {});
   };
+
+  useEffect(() => {
+    const unsubStatus = subscribeHardwareStatus((s) => {
+      if (s.connected) setHwActive(true);
+    });
+    const unsubTele = subscribeHardwareTelemetry(() => {
+      setHwActive(true);
+    });
+
+    const checkHw = () => {
+      fetch("/api/telemetry/hardware")
+        .then((r) => r.json())
+        .then((d) => {
+          if (d.is_live || isWebSerialConnected()) {
+            setHwActive(true);
+          } else {
+            setHwActive(false);
+          }
+        })
+        .catch(() => {});
+    };
+    checkHw();
+    const intervalHw = setInterval(checkHw, 3000);
+
+    return () => {
+      unsubStatus();
+      unsubTele();
+      clearInterval(intervalHw);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchISS = () => {
@@ -86,17 +125,36 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
 
         {/* Desktop Actions */}
         <div className="hidden sm:flex items-center gap-2 sm:gap-2.5">
+          <ThemeToggle className="rounded-[2px]" />
           <LocaleSwitcher className="rounded-[2px]" />
+
+          {/* Hardware Pico W USB Button */}
+          <button
+            onClick={() => setShowHardwareModal(true)}
+            aria-label={t("hardwareConnect")}
+            title={t("hardwareConnect")}
+            className={`relative h-8 w-8 inline-flex items-center justify-center rounded-[2px] box-border transition-colors border ${
+              hwActive
+                ? "bg-[#14230b] text-[#76b900] border-[#76b900]"
+                : "text-[#a7a7a7] hover:text-white border-[#333333] hover:border-white"
+            }`}
+          >
+            <Cpu className="h-4 w-4" />
+            {hwActive && (
+              <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#76b900] animate-pulse" />
+            )}
+          </button>
 
           <button
             onClick={() => {
               setShowQRModal(true);
               fetchSubscribers();
             }}
-            className="h-8 inline-flex items-center space-x-1.5 px-3 text-xs font-bold uppercase tracking-wider bg-[#0088cc] hover:bg-[#0077b5] text-white border border-[#0099e6] rounded-[2px] box-border transition-colors"
+            aria-label={t("telegramLive")}
+            title={t("telegramLive")}
+            className="h-8 w-8 inline-flex items-center justify-center bg-[#0088cc] hover:bg-[#0077b5] text-white border border-[#0099e6] rounded-[2px] box-border transition-colors"
           >
-            <Send className="h-3.5 w-3.5" />
-            <span>{t("telegramLive")}</span>
+            <Send className="h-4 w-4" />
           </button>
 
           <Link
@@ -110,10 +168,11 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
           {onOpenAnalytics && (
             <button
               onClick={onOpenAnalytics}
-              className="hidden lg:inline-flex items-center space-x-1.5 h-8 px-3 text-xs font-bold uppercase tracking-wider text-white border border-[#333333] hover:border-white rounded-[2px] box-border transition-colors"
+              aria-label={t("charts")}
+              title={t("charts")}
+              className="h-8 w-8 inline-flex items-center justify-center text-white border border-[#333333] hover:border-white rounded-[2px] box-border transition-colors"
             >
-              <BarChart3 className="h-3.5 w-3.5 text-[#76b900]" />
-              <span>{t("charts")}</span>
+              <BarChart3 className="h-4 w-4 text-[#76b900]" />
             </button>
           )}
 
@@ -128,6 +187,18 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
 
         {/* Mobile Hamburger Button */}
         <div className="flex sm:hidden items-center space-x-2">
+          <button
+            onClick={() => setShowHardwareModal(true)}
+            className={`p-1.5 rounded-[2px] border ${
+              hwActive
+                ? "bg-[#14230b] text-[#76b900] border-[#76b900]"
+                : "bg-[#111111] text-[#a7a7a7] border-[#333333]"
+            }`}
+            aria-label={t("hardwareConnect")}
+            title={t("hardwareConnect")}
+          >
+            <Cpu className="h-4 w-4" />
+          </button>
           <button
             onClick={() => {
               setShowQRModal(true);
@@ -151,6 +222,26 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
       {/* Mobile Drawer */}
       {isMobileMenuOpen && (
         <div className="sm:hidden bg-[#0d0d0d] border-b border-[#333333] px-5 py-4 space-y-2.5 animate-in slide-in-from-top-2 duration-200">
+          <button
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              setShowHardwareModal(true);
+            }}
+            className="w-full flex items-center justify-between px-3.5 py-2.5 border border-[#333333] text-white text-xs font-bold uppercase tracking-wider bg-black/60 hover:border-white transition-colors rounded-[2px]"
+          >
+            <div className="flex items-center space-x-2">
+              <Cpu className="h-4 w-4 text-[#76b900]" />
+              <span>{t("hardwareConnect")}</span>
+            </div>
+            <span
+              className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                hwActive ? "bg-[#14230b] text-[#76b900]" : "bg-black/40 text-[#888888]"
+              }`}
+            >
+              {hwActive ? "LIVE" : "USB"}
+            </span>
+          </button>
+
           <button
             onClick={() => {
               setIsMobileMenuOpen(false);
@@ -201,11 +292,9 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
             <span>{t("simulator0g")}</span>
           </button>
 
-          {/* Language toggle (mobile) */}
-          <div className="flex items-center justify-between px-1 pt-1">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[#898989]">
-              {t("brandSuffix")}
-            </span>
+          {/* Controls toggle (mobile) */}
+          <div className="flex items-center justify-start px-1 pt-1 gap-2">
+            <ThemeToggle className="rounded-[2px]" />
             <LocaleSwitcher className="rounded-[2px]" />
           </div>
 
@@ -311,6 +400,12 @@ export default function Navbar({ onOpenAI, onOpenSimulator, onOpenAnalytics }: N
           </div>
         </div>
       )}
+
+      {/* Hardware Connection Modal */}
+      <HardwareConnectModal
+        isOpen={showHardwareModal}
+        onClose={() => setShowHardwareModal(false)}
+      />
     </header>
   );
 }

@@ -13,6 +13,8 @@ from ai_service import CombustionAIService
 from physics_engine import engine, SCENARIOS
 from firms_service import firms_bridge
 from i18n import localize_experiment, localize_experiments, normalize_lang
+from ranking import PROFILES as RANKING_PROFILES, rank_experiments
+from resources import get_resources
 import telegram_service
 
 load_dotenv()
@@ -164,6 +166,25 @@ def get_gravity_comparison(material: str = "PMMA", lang: Optional[str] = Query("
         "target_material": material,
         "comparison_data": localize_experiments(matches, lang)
     }
+
+@app.get("/api/ranking")
+def get_ranking(
+    profile: str = Query("lunar", description="Perfil de hábitat: iss, artemis, lunar, rover, suit"),
+    lang: Optional[str] = Query("es", description="Idioma de las etiquetas (es/en)")
+):
+    """Ranks investigations by fire-safety relevance for a habitat profile."""
+    if profile not in RANKING_PROFILES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Perfil no válido. Use uno de: {', '.join(RANKING_PROFILES)}"
+        )
+    data = localize_experiments(load_data(), lang)
+    return rank_experiments(data, profile, lang)
+
+@app.get("/api/resources")
+def get_nasa_resources(lang: Optional[str] = Query("es", description="Idioma de las descripciones (es/en)")):
+    """Reference library from the NASA challenge Resources tab."""
+    return get_resources(lang)
 
 @app.post("/api/ai/ask")
 async def ask_ai(req: QueryRequest):

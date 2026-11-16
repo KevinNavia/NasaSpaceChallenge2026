@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Activity, ShieldAlert, Cpu, AlertTriangle, ArrowRight, Gauge, Send, Radio, Thermometer, Zap, Monitor } from "lucide-react";
+import { Activity, ShieldAlert, Cpu, AlertTriangle, ArrowRight, Gauge, Send, Radio, Thermometer, Zap, Monitor, Usb } from "lucide-react";
 import Esp32CockpitMirror from "./Esp32CockpitMirror";
+import HardwareConnectModal from "./HardwareConnectModal";
+import { subscribeHardwareTelemetry, isWebSerialConnected } from "../lib/webSerial";
 
 interface Scenario {
   id: string;
@@ -55,8 +57,9 @@ export default function KalmanTelemetry() {
   const [hardware, setHardware] = useState<HardwareState | null>(null);
   const [useHardwareSync, setUseHardwareSync] = useState(true);
   const [viewMode, setViewMode] = useState<"dual" | "mirror" | "analytics">("dual");
+  const [showHardwareModal, setShowHardwareModal] = useState(false);
 
-  // Poll hardware telemetry every 1.2s
+  // Poll hardware telemetry every 1.2s & listen to direct Web Serial stream
   useEffect(() => {
     let isMounted = true;
     const checkHardware = async () => {
@@ -78,9 +81,30 @@ export default function KalmanTelemetry() {
 
     checkHardware();
     const interval = setInterval(checkHardware, 1200);
+
+    const unsubTele = subscribeHardwareTelemetry((hwData) => {
+      if (isMounted) {
+        setHardware({
+          active: true,
+          is_live: true,
+          device: hwData.device || "Raspberry Pi Pico W",
+          chip_temp_c: hwData.chip_temp_c,
+          o2_raw: hwData.o2_raw,
+          o2_kalman: hwData.o2_kalman,
+          co_ppm: hwData.co_ppm,
+          k_gain: hwData.k_gain,
+          status: hwData.status,
+        });
+        if (useHardwareSync && hwData.o2_kalman) {
+          setO2Pct(parseFloat(hwData.o2_kalman.toFixed(1)));
+        }
+      }
+    });
+
     return () => {
       isMounted = false;
       clearInterval(interval);
+      unsubTele();
     };
   }, [useHardwareSync]);
 
@@ -228,32 +252,47 @@ export default function KalmanTelemetry() {
           </div>
         </div>
 
-        {/* View Mode Switcher */}
-        <div className="flex items-center space-x-1 bg-[#111111] p-1 border border-[#333333]">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Hardware Connect / Status Trigger */}
           <button
-            onClick={() => setViewMode("dual")}
-            className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
-              viewMode === "dual" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
+            onClick={() => setShowHardwareModal(true)}
+            className={`h-7 px-2.5 text-[11px] font-mono font-bold uppercase tracking-wider inline-flex items-center space-x-1.5 transition-colors border ${
+              isLiveHardware
+                ? "bg-[#14230b] text-[#76b900] border-[#76b900] hover:bg-[#1f3711]"
+                : "bg-[#161616] text-[#cccccc] border-[#444444] hover:border-[#76b900] hover:text-[#76b900]"
             }`}
           >
-            {t("viewModes.dual")}
+            <Cpu className="h-3.5 w-3.5" />
+            <span>{isLiveHardware ? "Pico W En Vivo" : "Conectar Pico W"}</span>
           </button>
-          <button
-            onClick={() => setViewMode("mirror")}
-            className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
-              viewMode === "mirror" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
-            }`}
-          >
-            {t("viewModes.mirror")}
-          </button>
-          <button
-            onClick={() => setViewMode("analytics")}
-            className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
-              viewMode === "analytics" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
-            }`}
-          >
-            {t("viewModes.analytics")}
-          </button>
+
+          {/* View Mode Switcher */}
+          <div className="flex items-center space-x-1 bg-[#111111] p-1 border border-[#333333]">
+            <button
+              onClick={() => setViewMode("dual")}
+              className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
+                viewMode === "dual" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
+              }`}
+            >
+              {t("viewModes.dual")}
+            </button>
+            <button
+              onClick={() => setViewMode("mirror")}
+              className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
+                viewMode === "mirror" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
+              }`}
+            >
+              {t("viewModes.mirror")}
+            </button>
+            <button
+              onClick={() => setViewMode("analytics")}
+              className={`px-2.5 py-1 text-[11px] font-mono uppercase font-bold transition-colors ${
+                viewMode === "analytics" ? "bg-[#76b900] text-black" : "text-[#888888] hover:text-white"
+              }`}
+            >
+              {t("viewModes.analytics")}
+            </button>
+          </div>
         </div>
 
         {isLiveHardware && (
@@ -385,6 +424,10 @@ export default function KalmanTelemetry() {
               <div>
                 <span className="text-[11px] font-bold uppercase text-white block mb-1">{t("physicalDiagnosis")}</span>
                 <p className="text-xs text-[#cccccc] leading-relaxed">{data.diagnosis}</p>
+                <div className="mt-2 p-2 bg-[#121212] border border-[#262626] text-[10px] font-mono text-[#8da2c0] flex items-start space-x-2">
+                  <span className="text-[#76b900] font-bold shrink-0">[NASA EMPIRICAL]</span>
+                  <span>{t("calibrationNote")}</span>
+                </div>
               </div>
 
               <div>
@@ -459,6 +502,12 @@ export default function KalmanTelemetry() {
         </div>
       </div>
       )}
+
+      {/* Hardware Connection Modal */}
+      <HardwareConnectModal
+        isOpen={showHardwareModal}
+        onClose={() => setShowHardwareModal(false)}
+      />
     </div>
   );
 }

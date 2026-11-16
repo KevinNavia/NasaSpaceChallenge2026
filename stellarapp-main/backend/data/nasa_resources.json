@@ -1,0 +1,390 @@
+{
+  "resources": [
+    {
+      "id": "psi",
+      "category": "data",
+      "title": "PSI Data Repository: Combustion Science",
+      "publisher": "NASA Physical Sciences Informatics",
+      "url": "https://psi.nasa.gov/physci/repo/search?q=combustion",
+      "description": {
+        "es": "Repositorio oficial de datos experimentales de combustión en microgravedad. Es la fuente primaria del reto y el origen de los estudios y parámetros validados de StellarApp.",
+        "en": "Official repository of microgravity combustion experimental data. It is the primary source of the challenge and the origin of StellarApp's validated studies and parameters."
+      },
+      "usedIn": ["catalog", "analytics", "ranking", "ai"]
+    },
+    {
+      "id": "glenn",
+      "category": "science",
+      "title": "NASA Combustion Science (Glenn Research Center)",
+      "publisher": "NASA Glenn Research Center",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "description": {
+        "es": "Panorama de las investigaciones de combustión y de las instalaciones de la ISS: CIR, MDCA, FM2, SoFIE, FLARE, ACME, BASS, FLEX, SAME, SLICE, SPICE y DAFT.",
+        "en": "Overview of combustion investigations and ISS facilities: CIR, MDCA, FM2, SoFIE, FLARE, ACME, BASS, FLEX, SAME, SLICE, SPICE and DAFT."
+      },
+      "usedIn": ["catalog", "resources", "ai"]
+    },
+    {
+      "id": "sciencecasts",
+      "category": "science",
+      "title": "NASA ScienceCasts: The Power of Studying Combustion on the ISS",
+      "publisher": "NASA",
+      "url": "https://www.youtube.com/watch?v=W1oXykoz9zg",
+      "description": {
+        "es": "Introducción de 3,6 minutos (2018) a la investigación de combustión de la NASA en la Estación Espacial Internacional.",
+        "en": "A 3.6-minute introduction (2018) to NASA combustion research on the International Space Station."
+      },
+      "usedIn": ["resources"]
+    },
+    {
+      "id": "guide",
+      "category": "science",
+      "title": "A Researcher's Guide to: Combustion Science",
+      "publisher": "NASA ISS Program Science Office (2015)",
+      "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/",
+      "description": {
+        "es": "Revisión de más de 50 páginas (Gokoglu et al., 2015) sobre la investigación de combustión en la ISS, lecciones aprendidas y oportunidades futuras. Incluye PDF y EPUB.",
+        "en": "A 50+ page review (Gokoglu et al., 2015) of ISS combustion research, lessons learned and future opportunities. PDF and EPUB available."
+      },
+      "usedIn": ["ai", "resources"]
+    },
+    {
+      "id": "apollo1",
+      "category": "history",
+      "title": "Apollo 1",
+      "publisher": "NASA Safety Center",
+      "url": "https://sma.nasa.gov/sma-disciplines/accllp/apollo-1",
+      "description": {
+        "es": "Incendio durante una prueba de lanzamiento con atmósfera de O₂ puro (1967); tres tripulantes fallecidos. Base de las lecciones sobre selección de materiales y diseño de escotillas.",
+        "en": "Fire during a pure-O₂ launch test (1967); three crew members died. Foundation for lessons on material selection and hatch design."
+      },
+      "usedIn": ["timeline", "ai"]
+    },
+    {
+      "id": "apollo13",
+      "category": "history",
+      "title": "Apollo 13",
+      "publisher": "NASA Safety Center",
+      "url": "https://sma.nasa.gov/sma-disciplines/accllp/apollo-13",
+      "description": {
+        "es": "Explosión de un tanque de oxígeno en vuelo (1970), no un incendio. Referencia para la resiliencia del ECLSS y la respuesta de emergencia.",
+        "en": "In-flight oxygen tank explosion (1970), not a fire. Reference for ECLSS resilience and emergency response."
+      },
+      "usedIn": ["timeline", "ai"]
+    },
+    {
+      "id": "mir",
+      "category": "history",
+      "title": "25 Years Ago: Fire Aboard Space Station Mir",
+      "publisher": "NASA History",
+      "url": "https://www.nasa.gov/history/25-years-ago-fire-aboard-space-station-mir/",
+      "description": {
+        "es": "Incendio de 1997 causado por un generador de oxígeno; la tripulación combatió las llamas y evaluó evacuar en la Soyuz. Caso clave para supresión y control de ventilación.",
+        "en": "1997 fire caused by an oxygen generator; the crew fought the flames and considered evacuating in the Soyuz. Key case for suppression and ventilation control."
+      },
+      "usedIn": ["timeline", "ai"]
+    },
+    {
+      "id": "airtanks",
+      "category": "spinoff",
+      "title": "Fireman's Air Tanks",
+      "publisher": "NASA Spinoff",
+      "url": "https://spinoff.nasa.gov/node/9582",
+      "description": {
+        "es": "Adaptación de la tecnología del traje espacial a los tanques de aire y equipos de respiración de los bomberos (década de 1970).",
+        "en": "Adaptation of spacesuit technology to firefighters' air tanks and breathing gear (1970s)."
+      },
+      "usedIn": ["impact"]
+    },
+    {
+      "id": "detector",
+      "category": "spinoff",
+      "title": "Fire Detector",
+      "publisher": "NASA Spinoff",
+      "url": "https://spinoff.nasa.gov/node/9407",
+      "description": {
+        "es": "Detector de humo desarrollado para el transbordador que distingue humo de polvo y reduce las falsas alarmas; aplicaciones industriales y mineras.",
+        "en": "Shuttle smoke detector that discriminates smoke from dust and reduces nuisance alarms; industrial and mining applications."
+      },
+      "usedIn": ["impact"]
+    },
+    {
+      "id": "attire",
+      "category": "spinoff",
+      "title": "New Technology for the Fire Attire",
+      "publisher": "NASA Spinoff",
+      "url": "https://spinoff.nasa.gov/node/9918",
+      "description": {
+        "es": "Aplicación de la tecnología de los trajes espaciales a la ropa protectora de los bomberos (década de 1980).",
+        "en": "Application of spacesuit technology to firefighters' protective clothing (1980s)."
+      },
+      "usedIn": ["impact"]
+    }
+  ],
+  "investigations": [
+    {
+      "id": "saffire",
+      "name": "Saffire I–III",
+      "class": { "es": "Materiales sólidos de nave", "en": "Spacecraft solid materials" },
+      "gravity": "0 g",
+      "hardware": "Cygnus",
+      "facility": "Cygnus freighter",
+      "status": "dataset",
+      "inDataset": true,
+      "note": {
+        "es": "Incendios controlados a gran escala en Cygnus. El dataset incluye además Saffire-IV con atmósfera de exploración.",
+        "en": "Large-scale controlled fires aboard Cygnus. The dataset also includes Saffire-IV with an exploration atmosphere."
+      }
+    },
+    {
+      "id": "bass",
+      "name": "BASS / BASS-II",
+      "class": { "es": "Combustibles sólidos y gaseosos", "en": "Solid and gaseous fuels" },
+      "gravity": "0 g",
+      "hardware": "MSG + conducto de SPICE",
+      "facility": "ISS · MSG",
+      "status": "dataset",
+      "inDataset": true,
+      "note": {
+        "es": "Quemado y extinción de una amplia variedad de muestras; usó el conducto de flujo modular de SPICE en el MSG.",
+        "en": "Burning and extinction of a wide variety of samples; used SPICE's modular flow duct in the MSG."
+      }
+    },
+    {
+      "id": "same",
+      "name": "SAME / SAME-R",
+      "class": { "es": "Humo y hollín", "en": "Smoke and soot" },
+      "gravity": "0 g",
+      "hardware": "Detectores de humo",
+      "facility": "ISS",
+      "status": "dataset",
+      "inDataset": true,
+      "note": {
+        "es": "Detección de humo en microgravedad; los detectores terrestres fallan con las aglomeraciones de hollín.",
+        "en": "Microgravity smoke detection; terrestrial detectors fail with soot agglomerates."
+      }
+    },
+    {
+      "id": "flex",
+      "name": "FLEX / FLEX-2",
+      "class": { "es": "Gotas de combustible líquido", "en": "Liquid fuel droplets" },
+      "gravity": "0 g",
+      "hardware": "MDCA en CIR",
+      "facility": "ISS · CIR",
+      "status": "dataset",
+      "inDataset": true,
+      "note": {
+        "es": "Supresión con gases inertes y descubrimiento de las llamas frías en gotas de n-heptano.",
+        "en": "Inert-gas suppression and discovery of cool flames in n-heptane droplets."
+      }
+    },
+    {
+      "id": "cfi",
+      "name": "CFI / CFI-G",
+      "class": { "es": "Llamas frías (gotas y gases)", "en": "Cool flames (droplets and gases)" },
+      "gravity": "0 g",
+      "hardware": "MDCA / CIR",
+      "facility": "ISS · CIR",
+      "status": "brief",
+      "inDataset": false,
+      "note": {
+        "es": "CFI-G usó una mezcla de hasta 85% de O₂ con un quemador esférico, generando una llama «de dentro hacia fuera».",
+        "en": "CFI-G used a mixture of up to 85% O₂ with a spherical burner, producing an inside-out flame."
+      }
+    },
+    {
+      "id": "acme",
+      "name": "ACME (6 experimentos)",
+      "class": { "es": "Combustibles gaseosos", "en": "Gaseous fuels" },
+      "gravity": "0 g",
+      "hardware": "CIR modular",
+      "facility": "ISS · CIR",
+      "status": "dataset",
+      "inDataset": true,
+      "note": {
+        "es": "Seis experimentos con el mismo conjunto modular de hardware en el CIR; incluye BRE, CFI-G y E-FIELD.",
+        "en": "Six experiments with the same modular hardware set in the CIR; includes BRE, CFI-G and E-FIELD."
+      }
+    },
+    {
+      "id": "bre",
+      "name": "BRE (Burning Rate Emulator)",
+      "class": { "es": "Inflamabilidad en atmósferas quietas", "en": "Flammability in still atmospheres" },
+      "gravity": "0 g",
+      "hardware": "ACME · CIR",
+      "facility": "ISS · CIR",
+      "status": "brief",
+      "inDataset": false,
+      "note": {
+        "es": "Estudio de inflamabilidad de materiales en función de sus propiedades, con combustibles gaseosos.",
+        "en": "Study of material flammability as a function of material properties, using gaseous fuels."
+      }
+    },
+    {
+      "id": "spice",
+      "name": "SPICE",
+      "class": { "es": "Punto de humo en coflujo", "en": "Smoke point in co-flow" },
+      "gravity": "0 g",
+      "hardware": "MSG + conducto de flujo",
+      "facility": "ISS · MSG",
+      "status": "brief",
+      "inDataset": false,
+      "note": {
+        "es": "Estabilidad y extinción de llamas de difusión tipo jet; su conducto se reutilizó en BASS.",
+        "en": "Stability and extinction of jet diffusion flames; its duct was reused in BASS."
+      }
+    },
+    {
+      "id": "slice",
+      "name": "SLICE",
+      "class": { "es": "Estructura y desprendimiento de llama", "en": "Flame structure and liftoff" },
+      "gravity": "0 g",
+      "hardware": "MSG + conducto de flujo",
+      "facility": "ISS · MSG",
+      "status": "brief",
+      "inDataset": false,
+      "note": {
+        "es": "Llamas de difusión laminares en coflujo, valiosas para validar modelos numéricos.",
+        "en": "Laminar co-flow diffusion flames, valuable for validating numerical models."
+      }
+    },
+    {
+      "id": "daft",
+      "name": "DAFT / DAFT-2",
+      "class": { "es": "Polvo y aerosoles", "en": "Dust and aerosols" },
+      "gravity": "0 g",
+      "hardware": "P-Trak modificado",
+      "facility": "ISS",
+      "status": "brief",
+      "inDataset": false,
+      "note": {
+        "es": "Verificó el instrumento P-Trak que luego se usó para la detección de humo en SAME.",
+        "en": "Validated the P-Trak instrument later used for smoke detection in SAME."
+      }
+    },
+    {
+      "id": "efield",
+      "name": "E-FIELD Flames",
+      "class": { "es": "Análogo de gravedad parcial", "en": "Partial-gravity analog" },
+      "gravity": "0 g + campo eléctrico",
+      "hardware": "ACME · CIR",
+      "facility": "ISS · CIR",
+      "status": "brief",
+      "inDataset": false,
+      "note": {
+        "es": "Usó el efecto de un campo eléctrico sobre los iones de la llama para imitar gravedad parcial.",
+        "en": "Used the effect of an electric field on flame ions to mimic partial gravity."
+      }
+    },
+    {
+      "id": "sofie",
+      "name": "SoFIE",
+      "class": { "es": "Ignición y extinción de combustible sólido", "en": "Solid fuel ignition and extinction" },
+      "gravity": "0 g",
+      "hardware": "ISS",
+      "facility": "ISS",
+      "status": "current",
+      "inDataset": false,
+      "note": {
+        "es": "Investiga si el ensayo de propagación a 1 g de NASA-STD-6001 es conservador en baja gravedad.",
+        "en": "Investigates whether NASA-STD-6001's 1-g flame propagation test is conservative in low gravity."
+      }
+    },
+    {
+      "id": "flare",
+      "name": "FLARE",
+      "class": { "es": "Límites de inflamabilidad a gravedad reducida", "en": "Flammability limits at reduced gravity" },
+      "gravity": "0 g / reducida",
+      "hardware": "Equipo internacional",
+      "facility": "ISS / tierra",
+      "status": "current",
+      "inDataset": false,
+      "note": {
+        "es": "Equipo internacional (JAXA, NASA, ESA, CNES, DLR) para correlacionar límites de inflamabilidad entre 1 g y microgravedad.",
+        "en": "International team (JAXA, NASA, ESA, CNES, DLR) correlating flammability limits between 1 g and microgravity."
+      }
+    },
+    {
+      "id": "fm2",
+      "name": "FM2",
+      "class": { "es": "Inflamabilidad de materiales en la Luna", "en": "Flammability of materials on the Moon" },
+      "gravity": "1/6 g",
+      "hardware": "Superficie lunar",
+      "facility": "Luna",
+      "status": "current",
+      "inDataset": false,
+      "note": {
+        "es": "Primer experimento de combustión en otro cuerpo planetario; estudia el quemado a 1/6 g.",
+        "en": "First combustion experiment on another planetary body; studies burning at 1/6 g."
+      }
+    },
+    {
+      "id": "luci",
+      "name": "LUCI",
+      "class": { "es": "Combustión a gravedad lunar", "en": "Lunar-g combustion" },
+      "gravity": "1/6 g",
+      "hardware": "Lunar",
+      "facility": "Luna",
+      "status": "future",
+      "inDataset": false,
+      "note": {
+        "es": "Investigación prevista para aportar los datos de gravedad parcial que hoy no existen en PSI.",
+        "en": "Planned investigation to provide the partial-gravity data that PSI does not yet contain."
+      }
+    }
+  ],
+  "facilities": [
+    {
+      "id": "cir",
+      "name": "Combustion Integrated Rack (CIR)",
+      "detail": {
+        "es": "Cámara de combustión de 100 litros en el módulo Destiny; único rack de la ISS dedicado a combustión. Lanzado en noviembre de 2008 (STS-126).",
+        "en": "100-liter combustion chamber in the Destiny module; the only ISS rack dedicated to combustion. Launched in November 2008 (STS-126)."
+      }
+    },
+    {
+      "id": "mdca",
+      "name": "Multi-user Droplet Combustion Apparatus (MDCA)",
+      "detail": {
+        "es": "Instalación multiusuario para experimentos de combustión de gotas, operada dentro del CIR.",
+        "en": "Multi-user facility for droplet combustion experiments, operated inside the CIR."
+      }
+    },
+    {
+      "id": "msg",
+      "name": "Microgravity Science Glovebox (MSG)",
+      "detail": {
+        "es": "Guante de guantera donde se realizaron BASS, BASS-II, SPICE y SLICE con un conducto de flujo modular.",
+        "en": "Glovebox where BASS, BASS-II, SPICE and SLICE ran with a modular flow duct."
+      }
+    },
+    {
+      "id": "cygnus",
+      "name": "Cygnus (Saffire)",
+      "detail": {
+        "es": "Carguero no tripulado usado para los mayores incendios controlados en microgravedad.",
+        "en": "Uncrewed freighter used for the largest controlled fires in microgravity."
+      }
+    }
+  ],
+  "facts": {
+    "energySharePct": 85,
+    "flameTempK": 2300,
+    "ambientTempK": 300,
+    "densityRatio": 8,
+    "moonO2Pct": 30,
+    "moonPressurePsi": 10.2,
+    "suitO2Pct": 100,
+    "suitPressurePsi": 4.3,
+    "moonO2IncreasePct": 40,
+    "suitPrebreathe": {
+      "es": "Para evitar la descompresión, los astronautas respiran O₂ al 100% antes de la EVA y así eliminan el nitrógeno absorbido; la atmósfera intermedia de la base lunar reduce ese tiempo de pre-respiración.",
+      "en": "To avoid decompression sickness, astronauts pre-breathe 100% O₂ before an EVA to expel absorbed nitrogen; the intermediate lunar base atmosphere shortens that pre-breathe time."
+    },
+    "cfiMaxO2Pct": 85,
+    "partialGravityGap": {
+      "es": "No hay datos de combustión en gravedad parcial en PSI. FM2 (Luna, 1/6 g) y LUCI aportarán esa evidencia; hasta entonces, los resultados de 0 g y 1 g acotan el comportamiento intermedio.",
+      "en": "There is no partial-gravity combustion data in PSI. FM2 (Moon, 1/6 g) and LUCI will provide that evidence; until then, 0 g and 1 g results bound the intermediate behavior."
+    }
+  }
+}
